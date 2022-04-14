@@ -1,1 +1,1 @@
-# qr-txt-decompiller
+Cсылка на страницу: https://bigmack2304.github.io/qr-txt-decompiller/

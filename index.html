@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <title>QR-TXT Editor</title>
+</head>
+
+<body class="body">
+
+	<div class="menu">
+    <h1 class="head">QR-TXT Editor</h1>
+    <div class="handle">
+      <input type="file" class="js-file_uploader" accept=".txt, .csv">
+      <button class="btn_filter_qr">Удалить лишнее</button>
+      <div class="handle_decompile">
+        <button class="btn_decomp">Разбить на фаилы</button>
+        <input class="btn_decomp_n" type="number" name="num" min="5" max="200" value="100" step="1">
+        <label for="btn_decomp_n">Макс. количество кодов в фаиле</label>
+      </div>
+      <button class="btn_download">Cкачать фаилы</button>
+    </div>
+    <div class="file_info">
+      <p class="file_info__size">Размер фаила: <span class="text_blue"></span></p>
+      <p class="file_info__QRn">Количество строк: <span class="text_blue"></span></p>
+    </div>
+    
+    <div class="text_in_file">
+      <div class="text_in_file__container">
+        <!-- <plaintext class= "text_in_file__text"></plaintext> -->
+      </div>
+    </div>
+
+  </div>
+
+
+
+  
+  <script src="js/jszip-main/vendor/FileSaver.js"></script>
+  <script src="js/jszip-main/dist/jszip.js"></script>
+  <script src="js/qr_descriptor.js"></script>
+</body>
+
+</html>

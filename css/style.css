@@ -10,14 +10,28 @@
 
 body {
     box-sizing: border-box;
+    margin: 0;
     min-width: 320px;
+    display: flex;              /* флекс бокс */
+    justify-content: center;    /* все элементы внутри выстраиваем по центру */
+    width: 100vw;               /* (чтоб на ширину не влиял скролл) ширина 100% экрана */
 }
 
 .menu {
     background-color: rgb(136, 202, 136);
     padding: 10px;
-    margin: 10px;
     overflow: hidden;
+    width: 95%;                 /* задаем ширину */
+    max-width: 1000px;          /* максимальная ширина */
+    margin-top: 10px;
+}
+
+.horisontal_line {
+    margin: 10px 0px 23px 0px;
+    border: none;
+    height: 1px;
+    width: 100%;
+    background-color: #0e0e0e;
 }
 
 .head {
@@ -45,28 +59,7 @@ body {
 
 .btn_download {
     width: fit-content;
- /*   height: fit-content;
-    background-color: rgb(221, 221, 221);
-    padding: 3px 10px;
-    border: solid 1px #767676;
-    text-decoration: none;
-    cursor: context-menu;
-    border-radius: 5px;
-    font-family: arial;
-    font-size: 13px;
-    */
 }
-
-/*
-.btn_download:hover {
-    border: solid 1px #3d3d3d;
-}
-
-.btn_download:active {
-    box-shadow: inset 0px 1px 3px 0px #6e6e6e;
-    border: solid 1px #3d3d3d;
-}
-*/
 
 .text_in_file {
     background-color: rgb(243, 243, 243);

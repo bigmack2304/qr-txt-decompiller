@@ -2,7 +2,6 @@
 
 let file_txt;                                                                           // будет содержать в себе временный текст из загруженного фаила
 let pages = 0;
-let ned_pages_dop = 0;
 
 const qr_info = document.getElementsByClassName("file_info")[0];                        // блок с инфой о фаиле
 qr_info.style.display = 'none';                                                         // лучше сразу его скроем (по умолчанию)
@@ -13,23 +12,17 @@ const file_wath = document.getElementsByClassName("text_in_file");              
 
 const btn_filter = document.getElementsByClassName("btn_filter_qr");            // кнопка удалить лишнее
 if (btn_filter.length >= 1) {
-    btn_filter[0].addEventListener ('click', (evt) => {                       
-        btn_filter_klick(evt);
-    });    
+    btn_filter[0].addEventListener ('click', evt_lstr_click_btn_filter);                         
 }
 
 const btn_decomp = document.getElementsByClassName("btn_decomp");               // кнопка разбить на фаилы
 if (btn_decomp.length >= 1) {
-    btn_decomp[0].addEventListener ('click', (evt) => {                         
-        btn_decomp_klick(evt);
-    });    
+    btn_decomp[0].addEventListener ('click', evt_lstr_click_btn_decomp);                         
 }
 
 const btn_download = document.getElementsByClassName("btn_download");           // кнопка скачать
 if (btn_download.length >= 1) {
-    btn_download[0].addEventListener ('click', (evt) => {                          
-        btn_download_klick(evt);
-    });    
+    btn_download[0].addEventListener ('click', evt_lstr_click_btn_download);                             
 }
 
 // выключаем нажимаемость для определенных кнопок
@@ -40,10 +33,26 @@ btn_active_deactive(btn_download[0], true);
 const reader = new FileReader();                                                // обьект для работы с фаилом
 const file_uploader = document.getElementsByClassName("js-file_uploader");      // получаем хагрузчик фаила
 if (file_uploader.length >= 1) {
-    file_uploader[0].addEventListener ('change', (evt) => {                     // вешаем на него событие загрузки
-        file_input(evt);
-    });
+    file_uploader[0].addEventListener ('change', evt_lstr_change_file_uploader);    // вешаем на него событие загрузки
 }
+
+
+function evt_lstr_click_btn_filter(evt) {
+    btn_filter_klick(evt);
+}
+
+function evt_lstr_click_btn_decomp(evt) {
+    btn_decomp_klick(evt);
+}
+
+function evt_lstr_click_btn_download(evt) {
+    btn_download_klick(evt);
+}
+
+function evt_lstr_change_file_uploader(evt) {
+    file_input(evt);
+}
+
 
 function file_input(obj) {                                                      // вызывается при загрузке фаила
     const file = obj.target.files[0];
@@ -59,7 +68,6 @@ function file_input(obj) {                                                      
         btn_active_deactive(btn_decomp[0], false);
         btn_active_deactive(btn_download[0], false);     
         pages = 0; 
-        ned_pages_dop = 0;
     }
 
     reader.onerror = () => {
@@ -91,7 +99,6 @@ function btn_decomp_klick() {
     if (file_txt != undefined) {
         const need_qr = document.getElementsByClassName("btn_decomp_n")[0].value;       // сколько должно быть qr кодов в фаиле
         const need_docs = Math.ceil(Number(qr_size_n.innerText)/need_qr);               // щитаем сколько нам понадобится страниц
-        ned_pages_dop = need_docs;
         file_wath[0].innerHTML = "";
         let file_txt_i = 0;
 
@@ -213,10 +220,8 @@ function file_check_final(input) {
         //(data.match(new RegExp("\n", "g")) || []).length
         // нельзя использовать addEventListener с одним и темже событием для одного и тогоже обьекта несколько раз
         // иначе оно будет сробатывать несколько раз!
-        if (ned_pages_dop == pages) {
-            addon_spoiler_start_script();
-            qr_info.style.display = 'none';      
-        }
+        addon_spoiler_start_script();
+        qr_info.style.display = 'none';      
     })
     .catch((error) => {
         console.log("thread_3 error");

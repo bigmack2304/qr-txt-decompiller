@@ -133,7 +133,7 @@ function btn_decomp_klick() {
 
 function btn_download_klick() {
    // let pages = document.getElementsByClassName("text_in_file__text");
-   let pages = document.getElementsByClassName("final_page");
+    let pages = document.getElementsByClassName("final_page");
     let zip = new JSZip();                     // создаем новый архив                
 
     for (let i=0; i < pages.length; i++) {
@@ -142,7 +142,7 @@ function btn_download_klick() {
             text =text.slice(0, text.length-1);
         }
 
-        zip.file('QR_page_' + i + '.txt', text);
+        zip.file('QR_page_' + (i + 1) + '__' + (((text.match(new RegExp("\n", "g")) || []).length) + 1) + '.txt', text);          // генерируем имя для фаила
     }
 
      zip.generateAsync({type:"blob"}).then(function(content) {
@@ -209,7 +209,17 @@ function file_check_final(input) {
     .then((data) => {
         let list = document.createElement('div');
         list.className = "text_in_file__container";
+
+        /*
+         тут я использую тег (plaintext либо xmp) для отображения результата
+         аналогичные code/pre не подходят, тк они игнорируют некоторые символы
+         а некоторые вообщеподменяют на что попало либо добавля.т какуюто отчебятину
+         те теги хоти и все пишут что устаревшие, они отображают текст как есть
+         и сохраняют функции спецсимволов \n \t \0 итд 
+        */
+
         list.innerHTML = '<div class="js-addon_spoiler"> <div class="addon_spoiler_heder" tabindex="0"> <p></p> <div class="addon_spoiler_indicator"></div> </div> <div class="addon_spoiler_body"> <plaintext class="final_page">';
+        //list.innerHTML = '<div class="js-addon_spoiler"> <div class="addon_spoiler_heder" tabindex="0"> <p></p> <div class="addon_spoiler_indicator"></div> </div> <div class="addon_spoiler_body"> <xmp class="final_page"> </xmp> </div> </div>';
         file_wath[0].append(list); 
         let text_cotainer = file_wath[0].lastChild.children[0].children[1].children[0];
         text_cotainer.innerHTML = data;

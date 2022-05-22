@@ -1,6 +1,6 @@
 'use strict';
 
-let file_txt;                                                                           // будет содержать в себе временный текст из загруженного фаила
+let file_txt = "";                                                                           // будет содержать в себе временный текст из загруженного фаила
 let pages = 0;
 
 const qr_info = document.getElementsByClassName("file_info")[0];                        // блок с инфой о фаиле
@@ -30,7 +30,6 @@ btn_active_deactive(btn_filter[0], true);
 btn_active_deactive(btn_decomp[0], true);
 btn_active_deactive(btn_download[0], true);
 
-const reader = new FileReader();                                                // обьект для работы с фаилом
 const file_uploader = document.getElementsByClassName("js-file_uploader");      // получаем хагрузчик фаила
 if (file_uploader.length >= 1) {
     file_uploader[0].addEventListener ('change', evt_lstr_change_file_uploader);    // вешаем на него событие загрузки
@@ -53,9 +52,8 @@ function evt_lstr_change_file_uploader(evt) {
     file_input(evt);
 }
 
-
-function file_input(obj) {                                                      // вызывается при загрузке фаила
-    const file = obj.target.files[0];
+function file_reader_txt(file) {                                // читаем txt фаил
+    const reader = new FileReader();                            // обьект для работы с фаилом
     reader.readAsText(file);
 
     reader.onload = () => {
@@ -71,9 +69,55 @@ function file_input(obj) {                                                      
     }
 
     reader.onerror = () => {
-        alert("Ошибка чтения фаила");
+        console.error("Ошибка чтения фаила");
     }
 
+}
+
+function file_reader_csv(file) {                                    // читаем csv фаил
+    const load_step = (row) => {                                    // по завершению чтения строки
+        file_txt = file_txt + row + '\n';
+    }
+
+    const load_comlete = () => {                                    // по завершению чтения фаила
+        file_txt = file_txt.split("\n");                          // преобразуем в массив, строка - ячейка
+        file_txt.pop();                                             // в конце у нас есть перенос строки а значит, получается новая пустая строка. Удаляем ее.
+        file_check(file_txt);                                       // обновляем содержимое в окне просмотра
+        qr_info.style.display = 'block';                            // делаем видимым блок информации о фаиле
+        btn_active_deactive(btn_filter[0], false);                  // включаем нажимаемость для кнопок
+        btn_active_deactive(btn_decomp[0], false);
+        btn_active_deactive(btn_download[0], false);     
+        pages = 0; 
+    }
+
+    const load_err = (err, file) => {
+        console.error("Ошибка чтения фаила");
+        console.error(err + "\nin file: " + file);
+    }
+
+    Papa.parse(file, {
+	    worker: true,
+	    step: function(results) {
+            load_step(results.data);
+	    },
+        complete: function(results, file) {
+            load_comlete();
+        },
+        error: function(err, file) {
+            load_err(err, file);
+        }
+    });
+}
+
+function file_input(obj) {                                          // вызывается при загрузке фаила
+    const file = obj.target.files[0];                               // получаем загруженный фаил
+    
+    // определяем расширение фаила, и в зависимости от этого выбираем алгоритм для чтения
+    if (file.name.indexOf('.txt') != -1) {
+        file_reader_txt(file);
+    } else if (file.name.indexOf('.csv') != -1) {
+        file_reader_csv(file);
+    }
 }
 
 function btn_filter_klick () {                                              // удалить лишнее

@@ -65,7 +65,6 @@ function file_reader_txt(file) {                                // читаем 
         btn_active_deactive(btn_filter[0], false);              // включаем нажимаемость для кнопок
         btn_active_deactive(btn_decomp[0], false);
         btn_active_deactive(btn_download[0], false);     
-        pages = 0; 
     }
 
     reader.onerror = () => {
@@ -76,7 +75,12 @@ function file_reader_txt(file) {                                // читаем 
 
 function file_reader_csv(file) {                                    // читаем csv фаил
     const load_step = (row) => {                                    // по завершению чтения строки
-      file_txt += row[0] + '\t' + row[1] + '\t' + row[2] + '\n';
+        if (row.length == 2) {                  // затычка для одного исключительного фаила
+            file_txt += row + '\n';
+        }
+        if (row.length == 3) {
+            file_txt += row[0] + '\t' + row[1] + '\t' + row[2] + '\n';
+        }
     }
 
 
@@ -88,7 +92,6 @@ function file_reader_csv(file) {                                    // чита�
         btn_active_deactive(btn_filter[0], false);                  // включаем нажимаемость для кнопок
         btn_active_deactive(btn_decomp[0], false);
         btn_active_deactive(btn_download[0], false);     
-        pages = 0; 
     }
 
     const load_err = (err, file) => {
@@ -112,7 +115,9 @@ function file_reader_csv(file) {                                    // чита�
 
 function file_input(obj) {                                          // вызывается при загрузке фаила
     const file = obj.target.files[0];                               // получаем загруженный фаил
-    
+    file_txt = "";
+    pages = 0; 
+
     // определяем расширение фаила, и в зависимости от этого выбираем алгоритм для чтения
     if (file.name.indexOf('.txt') != -1) {
         file_reader_txt(file);

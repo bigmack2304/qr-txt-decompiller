@@ -76,8 +76,9 @@ function file_reader_txt(file) {                                // читаем 
 
 function file_reader_csv(file) {                                    // читаем csv фаил
     const load_step = (row) => {                                    // по завершению чтения строки
-        file_txt = file_txt + row + '\n';
+      file_txt += row[0] + '\t' + row[1] + '\t' + row[2] + '\n';
     }
+
 
     const load_comlete = () => {                                    // по завершению чтения фаила
         file_txt = file_txt.split("\n");                          // преобразуем в массив, строка - ячейка
@@ -195,8 +196,7 @@ function btn_download_klick() {
 
 }
 
-function is_tab(str) {
-    // возвращать индекс табудяции, либо конец строки
+function is_tab(str) {                  // возвращать индекс табудяции, либо конец строки
     let idx = str.indexOf('\t');
     if (idx != -1) {
         return idx;
@@ -205,8 +205,7 @@ function is_tab(str) {
     }
 }
 
-function is_space(str) {
-    // возвращать индекс пробела, либо конец строки
+function is_space(str) {                // возвращать индекс пробела, либо конец строки
     let idx = str.indexOf('\ ');
     if (idx != -1) {
         return idx;

@@ -8,22 +8,55 @@
     color:rgb(2 0 149);
 }
 
+.icon_link--header_pos {
+    position: absolute;
+    top: 15%;
+    right: 3%;
+}
+
+.icon_link {
+    line-height: 0px;
+}
+
+.icon_link__icon_size {
+    width: 30px;
+    height: 30px;
+}
+
+.icon_link__icon_color {
+    fill: #4815b9;
+    transition: all ease 0.3s;
+}
+
+.icon_link__icon_color:hover {
+    fill: #154eb9;
+}
+
 body {
     box-sizing: border-box;
     margin: 0;
     min-width: 320px;
     display: flex;              /* флекс бокс */
+    flex-direction: column;
+    align-items: center;
     justify-content: center;    /* все элементы внутри выстраиваем по центру */
     width: 100vw;               /* (чтоб на ширину не влиял скролл) ширина 100% экрана */
 }
 
-.menu {
+.header {
+    width: 95%;
+    background-color: rgb(136, 202, 136);
+    max-width: 1000px;
+    margin-top: 10px;
+    position: relative;
+}
+
+.main {
     background-color: rgb(136, 202, 136);
     padding: 10px;
     overflow: hidden;
     width: 95%;                 /* задаем ширину */
     max-width: 1000px;          /* максимальная ширина */
-    margin-top: 10px;
 }
 
 .horisontal_line {
@@ -34,7 +67,7 @@ body {
     background-color: #0e0e0e;
 }
 
-.head {
+.header__head {
     margin: 10px 0;
     text-align: center;
     font-size: 25px;
@@ -42,11 +75,13 @@ body {
     text-transform: uppercase;
 }
 
-.handle {
+.menu {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     row-gap: 10px;
+    padding: 0 0 0 10px;
+    margin: 0;
 }
 
 .js-file_uploader {
@@ -101,4 +136,8 @@ body {
     opacity: 65%;
     cursor: no-drop;
     pointer-events: none;
+}
+
+.svg_sprait {
+    display: none;
 }

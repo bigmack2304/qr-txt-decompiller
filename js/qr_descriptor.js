@@ -74,15 +74,16 @@ function file_reader_txt(file) {                                // читаем 
 }
 
 function file_reader_csv(file) {                                    // читаем csv фаил
+
     const load_step = (row) => {                                    // по завершению чтения строки
         if (row.length == 2) {                  // затычка для одного исключительного фаила
-            file_txt += row + '\n';
+                                                // тут нужно вызвать что-то типа assert
+            file_txt += row + '\n';             // это убрать
         }
         if (row.length == 3) {
             file_txt += row[0] + '\t' + row[1] + '\t' + row[2] + '\n';
         }
     }
-
 
     const load_comlete = () => {                                    // по завершению чтения фаила
         file_txt = file_txt.split("\n");                          // преобразуем в массив, строка - ячейка

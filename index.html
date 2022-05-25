@@ -28,40 +28,45 @@
 </head>
 
 <body class="body">
+
   <header class="header">
     <h1 class="header__head">QR-TXT Editor</h1>
     <hr class="horisontal_line">
+  </header>
 
+	<main class="main">
+    <menu class="menu">
+      <input type="file" class="js-file_uploader" id="id_file_uploader" accept=".txt, .csv">
+      <label for="id_file_uploader" class="def_btn" title="выбрать фаил">Выберите файл</label>
+      <button class="def_btn btn_filter_qr" title="удалить лишнее">Удалить лишнее</button>
+      <div class="handle_decompile">
+        <button class="def_btn btn_decomp" title="разбить на фаилы">Разбить на фаилы</button>
+        <input class="btn_decomp_n" type="number" name="num" min="5" max="200" value="100" step="1">
+        <label for="btn_decomp_n">Макс. количество кодов в фаиле</label>
+      </div>
+      <button class="def_btn btn_download" title="скачать архив фаилов">Cкачать фаилы</button>
+    </menu>
+    <section class="file_info">
+      <h3 class="visually_hidden">информация о фаиле</h3>
+      <p class="file_info__name">Фаил: <span class="text_blue" title=""></span></p>
+      <p class="file_info__size">Размер фаила: <span class="text_blue"></span></p>
+      <p class="file_info__QRn">Количество строк: <span class="text_blue"></span></p>
+    </section>
+    <section class="text_in_file">
+      <h3 class="visually_hidden">Содержание фаила</h3>
+      <div class="text_in_file__container">
+        <!-- <plaintext class= "text_in_file__text"></plaintext> -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
     <a href="https://github.com/bigmack2304/qr-txt-decompiller" class="icon_link icon_link--header_pos" title="Страница проекта на GitHub">
       <svg class="icon_link__icon_size icon_link__icon_color">
         <use xlink:href="#icon_github"></use>
       </svg>
     </a>
-
-  </header>
-	<main class="main">
-    <menu class="menu">
-      <input type="file" class="js-file_uploader" accept=".txt, .csv">
-      <button class="btn_filter_qr">Удалить лишнее</button>
-      <div class="handle_decompile">
-        <button class="btn_decomp">Разбить на фаилы</button>
-        <input class="btn_decomp_n" type="number" name="num" min="5" max="200" value="100" step="1">
-        <label for="btn_decomp_n">Макс. количество кодов в фаиле</label>
-      </div>
-      <button class="btn_download">Cкачать фаилы</button>
-    </menu>
-    <div class="file_info">
-      <p class="file_info__size">Размер фаила: <span class="text_blue"></span></p>
-      <p class="file_info__QRn">Количество строк: <span class="text_blue"></span></p>
-    </div>
-    <div class="text_in_file">
-      <div class="text_in_file__container">
-        <!-- <plaintext class= "text_in_file__text"></plaintext> -->
-      </div>
-    </div>
-  </main>
-
-
+  </footer>
 
 
 
@@ -73,6 +78,7 @@
 
   <script src="js/s_addon_spoiler.js" async></script>
   <script src="js/papaparse.min.js" async></script>
+  <script src="js/addon_error_edit.js"></script>
   <script src="js/jszip-main/vendor/FileSaver.js"></script>  
   <script src="js/jszip-main/dist/jszip.js"></script>
   <script src="js/qr_descriptor.js" async></script>   <!--тег async позволит не блокировать страницу до полной загрузки скрипта-->

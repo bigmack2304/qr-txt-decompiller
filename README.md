@@ -1,4 +1,4 @@
-V 4.3 - Добавлена поддержка чтения табличного формата csv.
+V 4.4
 
 
 Cсылка на страницу: https://bigmack2304.github.io/qr-txt-decompiller/

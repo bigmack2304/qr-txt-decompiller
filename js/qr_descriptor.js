@@ -86,7 +86,12 @@ function file_reader_csv(file) {                                    // чита�
         if (row.length == 3) {
             file_txt += row[0] + '\t' + row[1] + '\t' + row[2] + '\n';
         } else {
-            new CustomErrEditor("read_file", false, ("func: file_reader_csv, file: " + file.name), "ошибка при чтении фаила");
+            new CustomErrEditor({
+                                    type: "read_file", 
+                                    duble: false, 
+                                    file: new Error(),
+                                    info: "ошибка при чтении фаила",
+                                });
         }
     }
 

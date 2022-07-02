@@ -1,6 +1,16 @@
 'use strict';
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+/*  versions
+
+    0.1 - соновной функционал
+    0.2 - добавлен метод .get_AllError_info()
+    0.3 - применена методика деструктуризации при вызове
+          конструктора ошибки. Это сделает его вызов более гибким.
+        - вызов alert отключен по умолчанию
+
+*/
+
 /*  Desc
 
             - Класс позволяет создавать и накапливать ошибки. 
@@ -25,20 +35,30 @@
             - Обработчик ошибок ищет и обрабатывает их по их типу (подробнее выше), вызвать обработчик можно влюбое время
             в любом месте. После его работы, обработанные ошибки удаляются из стека. В любом случае обработчик возвращает 
             true если хоть одна ошибка была обработана, либо false если ни одной ошибки обработано небыло.
+
             - Доп.функция обработчика ошибок. Обработчик лиш ищет нужные ошибки и после удаляет их из стека. Анализом ошибок занимается
             по умолчанию встроенная функция которая высылает всю информацию об ошибке в консоль и вызывает alert если он разрешен.
-            Эту функцию можно переопределить, передав ее в вызов обработчика 2ым аргументом. Такая функция должна принемать на вход
-            1 обьект, который будет иметь в себе 3 уже известных поля.
+            Эту функцию можно переопределить, передав ее в вызов обработчика 2ым аргументом. Такая функция будет принемать аргумент
+            1 обьект, { type: , file: , info: }
 */
 
 /*  Metods
 
-    new CustomErrEditor("lol",true,"text.txt","тестик 1");  // создаем ошибку с типом "lol", инфа о проблемном месте "text.txt", описанием "тестик 1", разрешаем дублирование ошибок этого типа
-    CustomErrEditor.set_alert_mode(false);                  // запретить вызов alert при стандартной функции обработки ошибки. По умолчанию разрешено. 
+    // создание ошибки происходит вызовом такой конструкции, порядок параметров может быть другим.
+      new CustomErrEditor({     type: 12,                   // НЕ ОБЯЗАТЕЛЬНЫЙ ПАРАМЕТР. ПО УМОЛЧАНИЮ "test_err"    / Тип ошибки к которому мы можем ее отнести
+                                file: new Error(),          // НЕ ОБЯЗАТЕЛЬНЫЙ ПАРАМЕТР. ПО УМОЛЧАНИЮ ""            / данный способ покажет место где была вызвана ошибка, но также можно и ввести любую строку
+                                info: "тестовое описание",  // НЕ ОБЯЗАТЕЛЬНЫЙ ПАРАМЕТР. ПО УМОЛЧАНИЮ ""            / описание ошибки
+                                duble = true,               // НЕ ОБЯЗАТЕЛЬНЫЙ ПАРАМЕТР. ПО УМОЛЧАНИЮ true.         / разрешает добавление этой ошибки в стек, если там уже есть ошибки с таким типом
+                          });
+
+
+      CustomErrEditor.set_alert_mode(false);                  // запретить вызов alert при стандартной функции обработки ошибки. По умолчанию разрешено. 
 
     CustomErrEditor.get_error_info(type, func);             // вызов обработчика ошибок
-                                                            // type - ошибки каково типа нужно обработать.
+                                                            // type - ошибки каково типа нужно обработать. По умолчанию = "test_err" 
                                                             // func - альтернативная вункция для обработки ошибок (по умолчанию используется стандартная, этот аргумент можно не указывать)
+    CustomErrEditor.get_AllError_info();                    // тоже самое что и get_error_info, только выводит все ошибки.
+                                                            // также поддерживает аргумент func
 */
 
 /*  Example
@@ -93,9 +113,10 @@
 class CustomErrEditor {
 
     static #err_stak = []                                       // стек ошибок
-    static #alert_enable = true                                 // вызов всплывающего окна в браузере при обработке ошибки (alert)
+    static #alert_enable = false                                 // вызов всплывающего окна в браузере при обработке ошибки (alert)
 
-    constructor(type, duble, file, info) {                      // конструктор
+    constructor({type = "test_err", duble = true, file = "", info = ""} = {}) {            // конструктор
+	
 		const add_obj_to_stack = () => {
 			CustomErrEditor.#err_stak.push({ type: type,        // создаем обьект ошибки и закидываем его в private static массив
 											 file: file,
@@ -106,13 +127,12 @@ class CustomErrEditor {
             add_obj_to_stack();
         } else if (duble === false) {                           // если дублирование запрещено
             const check_dublicat = () => {
-                let stat = false;
-                CustomErrEditor.#err_stak.forEach((elem) => {                           
-                    if (elem.type == type) {                                     
-                        stat = true;   
+                for (let elem of CustomErrEditor.#err_stak) {
+                    if (elem.type == type) {
+                        return true;
                     }
-                });
-                return stat;
+                }
+                return false;
             }
 
             if (!check_dublicat()) {
@@ -122,15 +142,32 @@ class CustomErrEditor {
     }
 
     static #print_err(obj) {                                    // обработчик ошибки, на вход поступает обьект ошибки
-                                                                // генерим описание
-        const gen_desc = '\t' + "Type:\t" + obj.type + '\n' + '\t' + "Target:\t" + obj.file + '\n' + '\t' + "Desc:\t" + obj.info;
-        console.error("ERROR\n" + gen_desc);                    // выкидываем его в консоль
+        let Read_file = obj.file;                               // читаем поле с описанием проблемного места
+
+        if (typeof(Read_file) == "object") {                    // если это обьект
+            if (Read_file.stack?.indexOf("Error") == 0) {       // проверим что у него есть поле stack и в нем в начале есть "Error"
+                Read_file = Read_file.stack                     // значит мы использовали file: new Error() при создании ошибки, получаем доступ к строке
+                                            .split('\n')                      // разбить строку на массив, по разделителю "\n"
+                                            .map((item, index, array) => {    // вызываем функцию для каждого элемента
+                                                if (index <= 4) {             // так мы ограничиваем отображаемый стек вызовов, не более 4
+                                                  return (index == 1) ? (`${item.trim()}`) : (`\t\t${item.trim()}`);    // добавлю пару табуляций в начале для красоты
+                                                }
+                                            });
+                Read_file = Read_file
+                                    .slice(1)
+                                    .join('\n')
+                                    .trim();   // вернуть копию массива с позиции 1 (без ячейки с "error") и конвертировать его в строку, с разделителем "\n", удалить пробелы в начале и в конце
+            }
+        }
+        // генерим текст сообщения
+        const gen_desc = '\t' + "Type:\t" + obj.type + '\n\n\t' + "File:\t" + Read_file + '\n\n\t' + "Info:\t" + obj.info;
+        console.error("ERROR\n" + gen_desc + "\n");                    // выкидываем его в консоль
         if (CustomErrEditor.#alert_enable) {                    // если разрешен alert
             alert("ERROR: " + obj.info);                        // делаем alert с основной информацией
         }
     }
 
-    static get_error_info(need_type, func = CustomErrEditor.#print_err) {       // обработка ошибок нужного типа, вункция обработчика
+    static get_error_info(need_type = "test_err", func = CustomErrEditor.#print_err) {       // обработка ошибок нужного типа, вункция обработчика
         let err_index_del = [];                                                 // хранит индексы обработанных ошибок
 
         CustomErrEditor.#err_stak.forEach((elem) => {                           // обходим стек ошибок, ищим ошибки указанного типа
@@ -150,9 +187,19 @@ class CustomErrEditor {
         return false;                                           // если не обработали не одной ошибки, вернем false
     }
 
+    static get_AllError_info(func = CustomErrEditor.#print_err) {
+        if (CustomErrEditor.#err_stak.length != 0) {
+            CustomErrEditor.#err_stak.forEach((elem) => { 
+                func(elem);
+            });
+
+            CustomErrEditor.#err_stak.splice(0, CustomErrEditor.#err_stak.length);
+            return true;
+        }
+        return false;
+    }
+
     static set_alert_mode(mode = true) {                        // можно включить или выключить alert при обработке ошибки
         CustomErrEditor.#alert_enable = mode;
     }
 }
-
-//CustomErrEditor.set_alert_mode(false); 

@@ -29,7 +29,7 @@
     далее в html нужно добавить кнопку переключения темы, это не обязательно может быть
     кнопка, главное чтобы у этой сущьности был класс 
         
-        js-addon_dark_theme
+        js-addon_dark_theme_button
 
     по нажатию на эту сущьность будет менятся цвет темы.
 
@@ -51,10 +51,10 @@ class Addon_dark_theme {
     }
 
     public init(): void {
-        this._theme_btn = document.querySelector(".js-addon_dark_theme");
+        this._theme_btn = document.querySelector(".js-addon_dark_theme_button");
         if (!this._theme_btn) {
             console.error(`не удалось найти на странице кнопку переключения темы
-            по селектору ".js-addon_dark_theme"`);
+            по селектору ".js-addon_dark_theme_button"`);
             return;
         }
 

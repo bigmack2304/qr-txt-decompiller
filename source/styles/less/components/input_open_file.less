@@ -1,0 +1,28 @@
+/*
+    кноака загрузки фаила
+*/
+
+.js-file_uploader {
+    width: fit-content;
+
+    &:disabled + label.def_btn {
+        border-color: #44444486;
+        color: #b7b7b7;
+        .deactivated;
+    }
+}
+
+#id_file_uploader {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    position: absolute;
+    z-index: -10;
+}
+
+// всплывающее окно описания этой кнопки
+
+#id_file_uploader:focus + label {
+    outline-width: 1px;
+    outline-style: auto;
+}

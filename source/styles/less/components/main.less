@@ -1,0 +1,18 @@
+.main {
+    background-color: @header_background_color;
+    overflow: hidden;
+    height: fit-content;
+
+    @media (min-width: @const_win_size_min) and (max-width: calc(@const_win_size_mobile - 1px)) {
+        width: 100%;
+    }
+
+    &__menu {
+        margin: 0;
+        padding: 0 0 0 10px;
+    }
+
+    &--dark {
+        background-color: @header--dark_background_color;
+    }
+}

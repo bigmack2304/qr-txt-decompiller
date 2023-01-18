@@ -5,8 +5,7 @@
 */
 
 import "../../styles/css/normalize.css";
-import "../../styles/less/index.less";
-import "../../styles/less/addon_spoiler.less";
+import "../../styles/less/pages_main/index.less";
 
 /*
     scripts
@@ -14,6 +13,7 @@ import "../../styles/less/addon_spoiler.less";
 
 import { Addon_dark_theme } from "./../my_libs/addon_dark_theme";
 import { Addon_sidebar } from "./../my_libs/addon_sidebar";
+
 // dark-theme
 // классы, для которых должна приминятся темная тема
 let support_class_dark_theme: string[] = [
@@ -21,17 +21,16 @@ let support_class_dark_theme: string[] = [
     "header",
     "main",
     "footer",
-    "chunk_info__icon",
-    "loading__icon",
-    "horisontal_line",
+    "def_icon__icon",
+    "header__horisontal_line",
     "file_info",
     "text_in_file",
     "text_blue",
     "addon_spoiler_heder",
     "addon_spoiler_body",
-    "sidebar__element",
-    "sidebar__elements",
-    "sidebar__button--container",
+    "js-sidebar__element",
+    "js-sidebar__elements",
+    "header__button_wrapper",
 ];
 
 let Dark_theme: Addon_dark_theme = new Addon_dark_theme({ classes_dark_style: support_class_dark_theme });

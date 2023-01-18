@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="keywords" content="qr, editor, decompiller" />
+        <meta name="keywords" content="qr, editor, decompiller, text, txt" />
         <meta
             name="description"
             content="Данная страница представляет приложение которое позволяет разбивать фаил формата .csv или .txt содиржащий множество QR кодов с их описанием, на множество более мелких фаилов."
@@ -13,7 +13,6 @@
         <title>QR-TXT Editor</title>
         <!-- иконка сгенерирована из свг, тут -->
         <!-- https://realfavicongenerator.net/ -->
-
         <!-- следующий код предоставлен также саитом -->
         <link rel="apple-touch-icon" sizes="180x180" href="img/icon/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="img/icon/favicon-32x32.png" />
@@ -28,27 +27,27 @@
     </head>
 
     <body class="body">
-        <header class="header header--posToIndex visually_hidden">
-            <div class="sidebar__button--container">
-                <button class="sidebar__button" title="Открыть меню" data-button_id="1">
-                    <svg class="sidebar__close_icon">
+        <header class="header body__header visually_hidden">
+            <div class="header__button_wrapper">
+                <button class="js-sidebar_button" title="Открыть меню" data-button_id="1">
+                    <svg class="js-sidebar_button__close_icon">
                         <use xlink:href="#sidebar_close"></use>
                     </svg>
-                    <svg class="sidebar__open_icon">
+                    <svg class="js-sidebar_button__open_icon">
                         <use xlink:href="#sidebar_open"></use>
                     </svg>
                 </button>
             </div>
-            <aside class="js-sidebar sidebar--container" data-sidebar_id="1">
-                <header class="sidebar__header"></header>
-                <ul class="sidebar__elements sidebar__elements--container">
-                    <li class="sidebar__element">
-                        <button class="js-addon_dark_theme" disabled>
-                            <div class="dark_theme_icon" title="цветовая тема">
-                                <svg class="dark_theme_icon__icon_dark">
+            <aside class="js-sidebar header__sidebar" data-sidebar_id="1">
+                <header class="js-sidebar__header"></header>
+                <ul class="js-sidebar__elements">
+                    <li class="js-sidebar__element">
+                        <button class="js-addon_dark_theme_button" disabled>
+                            <div class="js-addon_dark_theme_button__icons_wrapper" title="цветовая тема">
+                                <svg class="js-addon_dark_theme_button__icon_dark">
                                     <use xlink:href="#lamp_black"></use>
                                 </svg>
-                                <svg class="dark_theme_icon__icon_white">
+                                <svg class="js-addon_dark_theme_button__icon_white">
                                     <use xlink:href="#lamp_white"></use>
                                 </svg>
                             </div>
@@ -56,33 +55,33 @@
                     </li>
                 </ul>
             </aside>
-            <h1 class="header__head eader__head--posToIndex">QR-TXT Editor</h1>
-            <hr class="horisontal_line" />
+            <h1 class="header__head">QR-TXT Editor</h1>
+            <hr class="header__horisontal_line" />
         </header>
 
-        <main class="main main--posToIndex visually_hidden">
-            <section class="menu menu--posToIndex">
+        <main class="main body__main visually_hidden">
+            <section class="menu main__menu">
                 <h3 class="menu__h visually_hidden">Элементы управления</h3>
-                <div class="icons_container">
-                    <div class="loading" title="отрисовка содержимого">
-                        <svg class="loading__icon">
+                <div class="menu__icons_container">
+                    <div class="def_icon js-loading" title="отрисовка содержимого">
+                        <svg class="def_icon__icon def_icon__icon--anim_1">
                             <use xlink:href="#icon_loading_3"></use>
                         </svg>
                     </div>
-                    <div class="chunk_info" title="Режим блочной отрисовки содержимого.">
-                        <svg class="chunk_info__icon">
+                    <div class="def_icon js-chunk_info" title="Режим блочной отрисовки содержимого.">
+                        <svg class="def_icon__icon">
                             <use xlink:href="#icon_chunk"></use>
                         </svg>
                     </div>
                 </div>
-                <div class="handle_container">
+                <div class="menu__handle_container">
                     <input type="file" class="js-file_uploader" id="id_file_uploader" accept=".txt, .csv" disabled />
                     <label for="id_file_uploader" class="def_btn" title="выбрать фаил">Выберите файл</label>
-                    <button class="def_btn btn_filter_qr" title="удалить лишнее" disabled>Удалить лишнее</button>
-                    <div class="handle_decompile">
-                        <button class="def_btn btn_decomp" title="разбить на фаилы" disabled>Разбить на фаилы</button>
+                    <button class="def_btn js-btn_filter_qr" title="удалить лишнее" disabled>Удалить лишнее</button>
+                    <div class="def_container_1">
+                        <button class="def_btn js-btn_decomp" title="разбить на фаилы" disabled>Разбить на фаилы</button>
                         <input
-                            class="btn_decomp_n"
+                            class="js-btn_decomp_n input_text"
                             type="number"
                             name="num"
                             min="5"
@@ -94,7 +93,7 @@
                         />
                         <!-- <label for="btn_decomp_n">Макс. количество кодов в фаиле</label> -->
                     </div>
-                    <button class="def_btn btn_download" title="скачать архив фаилов" disabled>Cкачать фаилы</button>
+                    <button class="def_btn js-btn_download" title="скачать архив фаилов" disabled>Cкачать фаилы</button>
                 </div>
             </section>
             <section class="file_info">
@@ -109,19 +108,15 @@
             </section>
         </main>
 
-        <footer class="footer footer--posToIndex visually_hidden">
-            <a
-                href="https://github.com/bigmack2304/qr-txt-decompiller"
-                class="icon_link icon_link--header_pos"
-                title="Страница проекта на GitHub"
-            >
-                <svg class="icon_link icon_link-github">
+        <footer class="footer body__footer visually_hidden">
+            <a href="https://github.com/bigmack2304/qr-txt-decompiller" class="link_icon" title="Страница проекта на GitHub">
+                <svg class="link_icon__icon">
                     <use xlink:href="#icon_github"></use>
                 </svg>
             </a>
         </footer>
 
-        <div class="banner banner--PosToIndex">
+        <div class="banner banner--full_screen">
             <p>
                 Для работы этой страницы необходим JavaScript.<br />
                 Возможно JavaScript отключен в настройках вашего браузера.

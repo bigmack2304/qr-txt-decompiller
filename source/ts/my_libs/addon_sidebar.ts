@@ -8,10 +8,10 @@ class Addon_sidebar {
     constructor() {}
 
     public init(): void {
-        this._object_sidebar_btn = document.querySelector(".sidebar__button[data-button_id]");
+        this._object_sidebar_btn = document.querySelector(".js-sidebar_button[data-button_id]");
         if (!this._object_sidebar_btn) {
             console.error(`Не удалось найти элемент по указанному селектору:
-            ".sidebar__button[data-button_id]", дальнейшая инициализация приостановлена`);
+            ".js-sidebar_button[data-button_id]", дальнейшая инициализация приостановлена`);
             return;
         }
 
@@ -40,7 +40,9 @@ class Addon_sidebar {
 
     private _sidebar_on_click(e: PointerEvent): void {
         let is_sidebar_open: boolean = (this._sidebar as HTMLElement).classList.contains("js-sidebar--active");
-        const selector_button: string = `.sidebar__button[data-button_id='${(this._object_sidebar_btn as HTMLElement).dataset.button_id}']`;
+        const selector_button: string = `.js-sidebar_button[data-button_id='${
+            (this._object_sidebar_btn as HTMLElement).dataset.button_id
+        }']`;
         const condition_1 = (e.target as HTMLElement).classList.contains("js-sidebar");
         const condition_2 = (e.target as HTMLElement).dataset.sidebar_id == (this._object_sidebar_btn as HTMLElement).dataset.button_id;
         const condition_3 = (e.target as HTMLElement).closest(selector_button);
@@ -69,16 +71,16 @@ class Addon_sidebar {
     private _open_sidebar(): void {
         if (this._object_sidebar_btn && this._sidebar) {
             this._sidebar.classList.add("js-sidebar--active");
-            this._object_sidebar_btn.classList.add("sidebar__button--active");
-            this._sidebar.children[1].classList.add("sidebar__elements--active");
+            this._object_sidebar_btn.classList.add("js-sidebar_button--active");
+            this._sidebar.children[1].classList.add("js-sidebar__elements--active");
         }
     }
 
     private _close_sidebar(): void {
         if (this._object_sidebar_btn && this._sidebar) {
             this._sidebar.classList.remove("js-sidebar--active");
-            this._object_sidebar_btn.classList.remove("sidebar__button--active");
-            this._sidebar.children[1].classList.remove("sidebar__elements--active");
+            this._object_sidebar_btn.classList.remove("js-sidebar_button--active");
+            this._sidebar.children[1].classList.remove("js-sidebar__elements--active");
         }
     }
 }

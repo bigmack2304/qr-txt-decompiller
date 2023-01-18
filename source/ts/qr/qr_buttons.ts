@@ -12,7 +12,7 @@ import {
     file_check,
     file_uploader,
     text_pages,
-    btn_decomp_n,
+    btn_decomp_n
 } from "./qr_descriptor";
 import { CustomErrEditor } from "./../my_libs/addon_error_edit";
 import { is_tab, caller_delay_callback, find_element } from "./qr_utils";
@@ -25,9 +25,9 @@ type TsaveFun = (a: Blob, b: string) => void;
 
 let saveAs: TsaveFun = require("jszip/vendor/FileSaver.js");
 
-const btn_filter = find_element<HTMLButtonElement>("btn_filter_qr"); // кнопка удалить лишнее
-const btn_decomp = find_element<HTMLButtonElement>("btn_decomp"); // кнопка разбить на фаилы
-const btn_download = find_element<HTMLButtonElement>("btn_download"); // кнопка скачать
+const btn_filter = find_element<HTMLButtonElement>("js-btn_filter_qr"); // кнопка удалить лишнее
+const btn_decomp = find_element<HTMLButtonElement>("js-btn_decomp"); // кнопка разбить на фаилы
+const btn_download = find_element<HTMLButtonElement>("js-btn_download"); // кнопка скачать
 
 btn_filter.addEventListener("click", btn_filter_klick);
 btn_decomp.addEventListener("click", btn_decomp_klick);
@@ -137,7 +137,7 @@ function btn_download_klick(): void {
                 type: "zip_download_stage",
                 duble: false,
                 file: err,
-                info: "Ошибка при скачивании фаила.",
+                info: "Ошибка при скачивании фаила."
             });
         });
 

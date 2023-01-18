@@ -17,9 +17,14 @@
     animation-timing-function: linear;
 }
 
+.sidebarContainerMonitorCSS() {
+    height: 100%;
+}
+
 .js-sidebarMonitorCSS() {
     grid-area: grid_header_sb;
     overflow: auto;
+    height: 100%;
 }
 
 .js-sidebar {
@@ -36,29 +41,20 @@
     }
 
     @media (min-width: @const_win_size_mobile) and (max-width: calc(@const_win_size_monitor - 1px)) {
-        .js-sidebarMonitorCSS;
+        // .js-sidebarMonitorCSS;
+        // &--container {
+        //     .sidebarContainerMonitorCSS;
+        // }
     }
     @media (min-width: @const_win_size_monitor) {
-        .js-sidebarMonitorCSS;
+        // .js-sidebarMonitorCSS;
+        // &--container {
+        //     .sidebarContainerMonitorCSS;
+        // }
     }
 }
 
-.sidebarContainerMonitorCSS() {
-    height: 100%;
-}
-
-.sidebar--container {
-    @media (min-width: @const_win_size_min) and (max-width: calc(@const_win_size_mobile - 1px)) {
-    }
-    @media (min-width: @const_win_size_mobile) and (max-width: calc(@const_win_size_monitor - 1px)) {
-        .sidebarContainerMonitorCSS;
-    }
-    @media (min-width: @const_win_size_monitor) {
-        .sidebarContainerMonitorCSS;
-    }
-}
-
-.sidebar__header {
+.js-sidebar__header {
     background-color: @sidebar_backrgound_collor;
     display: flex;
     flex-wrap: wrap;
@@ -75,20 +71,20 @@
 }
 
 .sidebarButtonMonitorCSS() {
-    .sidebar__open_icon,
-    .sidebar__close_icon {
+    .js-sidebar_button__open_icon,
+    .js-sidebar_button__close_icon {
         display: none;
     }
 
     &--active {
-        .sidebar__open_icon,
-        .sidebar__close_icon {
+        .js-sidebar_button__open_icon,
+        .js-sidebar_button__close_icon {
             display: none;
         }
     }
 }
 
-.sidebar__button {
+.js-sidebar_button {
     line-height: 0px;
     padding: 0px;
     border: none;
@@ -98,43 +94,21 @@
     height: fit-content;
     z-index: 5;
 
-    &--container {
-        display: none;
-    }
-
-    .sidebar__close_icon {
+    .js-sidebar_button__close_icon {
         .sidebarButtonIcon;
         display: none;
     }
 
-    .sidebar__open_icon {
+    .js-sidebar_button__open_icon {
         .sidebarButtonIcon;
     }
 
     &--active {
-        .sidebar__open_icon {
+        .js-sidebar_button__open_icon {
             display: none;
         }
-        .sidebar__close_icon {
+        .js-sidebar_button__close_icon {
             display: block;
-        }
-    }
-
-    @media (min-width: @const_win_size_min) and (max-width: calc(@const_win_size_mobile - 1px)) {
-        &--container {
-            grid-area: grid_header_sb;
-            border-left: 1px black solid;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 10px 0 10px;
-            width: 56px;
-            justify-self: end;
-
-            &--dark {
-                border-left: 1px rgb(199, 199, 199) solid;
-            }
         }
     }
 
@@ -152,26 +126,10 @@
     flex-wrap: nowrap;
     overflow-x: overlay;
     scroll-snap-type: x mandatory; // чото типа автодоводки на элемент при скролле, работает вместе с scroll-snap-align
-
-    &--container {
-        height: 100%;
-    }
-
-    // &::-webkit-scrollbar {
-    //     width: 2px; /* ширина scrollbar */
-    //     height: 6px;
-    //     transform: translateY(4px);
-    // }
-    // &::-webkit-scrollbar-track {
-    //     background: rgb(70, 70, 70); /* цвет дорожки */
-    // }
-    // &::-webkit-scrollbar-thumb {
-    //     background-color: rgb(255, 255, 255); /* цвет плашки */
-    //     border: none; /* padding вокруг плашки */
-    // }
+    height: 100%;
 }
 
-.sidebar__elements {
+.js-sidebar__elements {
     margin: 0;
     padding: 0;
     z-index: 5;
@@ -184,19 +142,14 @@
         border-top: 4px black solid;
         box-shadow: inset -20px 0px 16px -17px #303030;
         background-color: @sidebar_backrgound_collor;
-
-        //transform: translateX(-120%) inherit;
+        top: 0;
+        width: 75%;
+        min-width: 190px;
+        height: 100vh;
 
         .anm_hide;
 
-        &--container {
-            top: 0;
-            width: 75%;
-            min-width: 190px;
-            height: 100vh;
-        }
-
-        .js-addon_dark_theme {
+        .js-addon_dark_theme_button {
             display: none;
         }
 
@@ -204,7 +157,7 @@
             .anm_open;
             // z-index: 801;
 
-            .js-addon_dark_theme {
+            .js-addon_dark_theme_button {
                 display: block;
             }
         }
@@ -255,7 +208,7 @@
     }
 }
 
-.sidebar__element {
+.js-sidebar__element {
     list-style-type: none;
     min-height: 50px;
     display: flex;

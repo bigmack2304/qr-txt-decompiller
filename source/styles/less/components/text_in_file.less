@@ -1,0 +1,32 @@
+.text_in_file {
+    background-color: rgb(243, 243, 243);
+    margin-top: 10px;
+    margin-left: 20px;
+    overflow: auto;
+    outline-style: solid;
+    outline-color: black;
+    outline-width: 1px;
+    font-size: 14px;
+
+    .scroll--white(10px, 2px);
+
+    &--dark {
+        .scroll--dark(10px, 2px);
+        background-color: #282a36;
+        color: #dbdbb7;
+    }
+
+    &__text {
+        margin: 0;
+        padding: 10px;
+    }
+
+    &__content_container:nth-of-type(n + 2) {
+        border-top: 3px solid black;
+    }
+
+    @media (min-width: @const_win_size_min) and (max-width: calc(@const_win_size_mobile - 1px)) {
+        margin-left: 0px;
+        // position: relative;
+    }
+}

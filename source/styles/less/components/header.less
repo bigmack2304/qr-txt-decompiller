@@ -1,0 +1,92 @@
+@header_background_color: rgb(136, 202, 136);
+@header--dark_background_color: #406166;
+
+.SidebarMonitorCSS() {
+    grid-area: grid_header_sb;
+    overflow: auto;
+    height: 100%;
+}
+
+.header {
+    background-color: @header_background_color;
+    height: fit-content;
+
+    display: grid;
+    grid-template-rows: 0fr 0fr; // занимемое пространство
+    grid-template-columns: 1fr 1.3fr;
+    grid-auto-rows: auto;
+    grid-auto-columns: auto;
+    align-items: end;
+    grid-template-areas:
+        "grid_header_h1 grid_header_sb"
+        "grid_header_line grid_header_line";
+
+    @media (min-width: @const_win_size_min) and (max-width: calc(@const_win_size_mobile - 1px)) {
+        grid-template-columns: 1fr 0fr;
+    }
+
+    &--dark {
+        background-color: @header--dark_background_color;
+        color: white;
+    }
+
+    &__button_wrapper {
+        display: none;
+
+        @media (min-width: @const_win_size_min) and (max-width: calc(@const_win_size_mobile - 1px)) {
+            grid-area: grid_header_sb;
+            border-left: 1px black solid;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px 0 10px;
+            width: 56px;
+            justify-self: end;
+
+            &--dark {
+                border-left: 1px rgb(199, 199, 199) solid;
+            }
+        }
+    }
+
+    &__head {
+        text-align: center;
+        font-size: 25px;
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        text-transform: uppercase;
+        grid-area: grid_header_h1;
+        white-space: nowrap;
+        padding: 0px 10px 0px 10px;
+        margin: 13px 0;
+        white-space: break-spaces;
+
+        @media (min-width: @const_win_size_monitor) {
+            padding: 0px 10px 0px 30px;
+        }
+    }
+
+    &__sidebar {
+        @media (min-width: @const_win_size_mobile) and (max-width: calc(@const_win_size_monitor - 1px)) {
+            .SidebarMonitorCSS;
+        }
+        @media (min-width: @const_win_size_monitor) {
+            .SidebarMonitorCSS;
+        }
+    }
+
+    &__horisontal_line {
+        // горизонтальная линия с широкими верт.отступами
+        margin: 0px 0px 23px 0px;
+        border: none;
+        height: 1px;
+        width: 100%;
+        background-color: #0e0e0e;
+        grid-area: grid_header_line;
+
+        &--dark {
+            background-color: rgb(199, 199, 199);
+            height: 2px;
+        }
+    }
+}

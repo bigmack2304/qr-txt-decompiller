@@ -15,6 +15,8 @@ import * as Papa from "papaparse";
 import type * as CustomErrEditor_types from "./../my_libs/addon_error_edit";
 import type * as Papa_types from "papaparse";
 
+//interface CustomError
+
 /*--------------------------------------------------------------------------------------------*/
 
 let file_txt: string | string[] = ""; // будет содержать в себе временный текст из загруженного фаила
@@ -27,7 +29,7 @@ const qr_size_n = find_element<HTMLElement>("file_info__QRn", qr_info).children[
 const doc_size_n = find_element<HTMLElement>("file_info__size", qr_info).children[0] as HTMLElement; // инфа о размере фаила (для прикола)
 const file_content = find_element<HTMLDivElement>("text_in_file"); // окно, в котором можно посмотреть фаил
 const file_content_container = find_element<HTMLDivElement>("text_in_file__container");
-const btn_decomp_n = find_element<HTMLInputElement>("btn_decomp_n"); // поле для задания максимального количества кодов в фаиле при разбиении
+const btn_decomp_n = find_element<HTMLInputElement>("js-btn_decomp_n"); // поле для задания максимального количества кодов в фаиле при разбиении
 const file_uploader = find_element<HTMLInputElement>("js-file_uploader"); // получаем загрузчик фаила
 
 let custom_spoilers: Addon_spoiler = new Addon_spoiler({});
@@ -73,7 +75,7 @@ function file_input(e: Event): void {
             type: "open_file",
             duble: false,
             file: new Error(),
-            info: "фаил не открыт",
+            info: "фаил не открыт"
         });
         return;
     }
@@ -117,7 +119,7 @@ function file_reader_txt(file: File): void {
         new CustomErrEditor({
             type: "read_file_txt",
             file: new Error(),
-            info: "ошибка при открытии фаила.txt",
+            info: "ошибка при открытии фаила.txt"
         });
     };
 }
@@ -138,7 +140,7 @@ function file_reader_csv(file: File): void {
                 type: "read_file_csv_step",
                 duble: false,
                 file: new Error(),
-                info: "ошибка при чтении фаила.csv\nСтруктура фаила не соответствует заданному шаблону.",
+                info: "ошибка при чтении фаила.csv\nСтруктура фаила не соответствует заданному шаблону."
             });
         }
     };
@@ -163,7 +165,7 @@ function file_reader_csv(file: File): void {
             new CustomErrEditor({
                 type: "read_file_csv_final_Step",
                 file: new Error(),
-                info: "ошибка при чтении фаила.csv",
+                info: "ошибка при чтении фаила.csv"
             });
         }
     };
@@ -180,10 +182,10 @@ function file_reader_csv(file: File): void {
             new CustomErrEditor({
                 type: "read_file_csv",
                 file: new Error(),
-                info: "ошибка при открытии фаила.csv",
+                info: "ошибка при открытии фаила.csv"
             });
         },
-        delimitersToGuess: ["\t", "|", Papa.RECORD_SEP, Papa.UNIT_SEP],
+        delimitersToGuess: ["\t", "|", Papa.RECORD_SEP, Papa.UNIT_SEP]
     });
 }
 

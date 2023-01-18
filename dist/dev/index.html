@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="qr, editor, decompiller" />
+        <meta
+            name="description"
+            content="Данная страница представляет приложение которое позволяет разбивать фаил формата .csv или .txt содиржащий множество QR кодов с их описанием, на множество более мелких фаилов."
+        />
+        <meta http-equiv="content-language" content="ru" />
+        <meta http-equiv="content-type" content="text/html; charset=windows-1251" />
+        <title>QR-TXT Editor</title>
+        <!-- иконка сгенерирована из свг, тут -->
+        <!-- https://realfavicongenerator.net/ -->
+
+        <!-- следующий код предоставлен также саитом -->
+        <link rel="apple-touch-icon" sizes="180x180" href="eed23feaa78d29ef4d50.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="885b13b6cee88e3d0168.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="ef615c65e690ae5391f8.png" />
+        <link rel="manifest" href="554606eb61f833106dff.webmanifest" />
+        <link rel="mask-icon" href="4cc828bb267c92f31f75.svg" color="#1ba200" />
+        <link rel="shortcut icon" href="57e59286a7afbff7f23c.ico" />
+        <meta name="msapplication-TileColor" content="#00a300" />
+        <meta name="msapplication-TileImage" content="83d17c57dd2f142d0cfb.png" />
+        <meta name="msapplication-config" content="9e1037999f44517eea79.xml" />
+        <meta name="theme-color" content="#1ba200" />
+    <link href="index.css" rel="stylesheet"></head>
+
+    <body class="body">
+        <header class="header header--posToIndex visually_hidden">
+            <div class="sidebar__button--container">
+                <button class="sidebar__button" title="Открыть меню" data-button_id="1">
+                    <svg class="sidebar__close_icon">
+                        <use xlink:href="#sidebar_close"></use>
+                    </svg>
+                    <svg class="sidebar__open_icon">
+                        <use xlink:href="#sidebar_open"></use>
+                    </svg>
+                </button>
+            </div>
+            <aside class="js-sidebar sidebar--container" data-sidebar_id="1">
+                <header class="sidebar__header"></header>
+                <ul class="sidebar__elements sidebar__elements--container">
+                    <li class="sidebar__element">
+                        <button class="js-addon_dark_theme" disabled>
+                            <div class="dark_theme_icon" title="цветовая тема">
+                                <svg class="dark_theme_icon__icon_dark">
+                                    <use xlink:href="#lamp_black"></use>
+                                </svg>
+                                <svg class="dark_theme_icon__icon_white">
+                                    <use xlink:href="#lamp_white"></use>
+                                </svg>
+                            </div>
+                        </button>
+                    </li>
+                </ul>
+            </aside>
+            <h1 class="header__head eader__head--posToIndex">QR-TXT Editor</h1>
+            <hr class="horisontal_line" />
+        </header>
+
+        <main class="main main--posToIndex visually_hidden">
+            <section class="menu menu--posToIndex">
+                <h3 class="menu__h visually_hidden">Элементы управления</h3>
+                <div class="icons_container">
+                    <div class="loading" title="отрисовка содержимого">
+                        <svg class="loading__icon">
+                            <use xlink:href="#icon_loading_3"></use>
+                        </svg>
+                    </div>
+                    <div class="chunk_info" title="Режим блочной отрисовки содержимого.">
+                        <svg class="chunk_info__icon">
+                            <use xlink:href="#icon_chunk"></use>
+                        </svg>
+                    </div>
+                </div>
+                <div class="handle_container">
+                    <input type="file" class="js-file_uploader" id="id_file_uploader" accept=".txt, .csv" disabled />
+                    <label for="id_file_uploader" class="def_btn" title="выбрать фаил">Выберите файл</label>
+                    <button class="def_btn btn_filter_qr" title="удалить лишнее" disabled>Удалить лишнее</button>
+                    <div class="handle_decompile">
+                        <button class="def_btn btn_decomp" title="разбить на фаилы" disabled>Разбить на фаилы</button>
+                        <input
+                            class="btn_decomp_n"
+                            type="number"
+                            name="num"
+                            min="5"
+                            max="200"
+                            value="150"
+                            step="1"
+                            title="Макс. количество кодов в фаиле"
+                            disabled
+                        />
+                        <!-- <label for="btn_decomp_n">Макс. количество кодов в фаиле</label> -->
+                    </div>
+                    <button class="def_btn btn_download" title="скачать архив фаилов" disabled>Cкачать фаилы</button>
+                </div>
+            </section>
+            <section class="file_info">
+                <h3 class="file_info__h visually_hidden">информация о фаиле</h3>
+                <p class="file_info__name">Фаил: <span class="text_blue" title=""></span></p>
+                <p class="file_info__size">Размер фаила: <span class="text_blue"></span></p>
+                <p class="file_info__QRn">Количество строк: <span class="text_blue"></span></p>
+            </section>
+            <section class="text_in_file">
+                <h3 class="text_in_file__h visually_hidden">Содержание фаила</h3>
+                <article class="text_in_file__container"></article>
+            </section>
+        </main>
+
+        <footer class="footer footer--posToIndex visually_hidden">
+            <a
+                href="https://github.com/bigmack2304/qr-txt-decompiller"
+                class="icon_link icon_link--header_pos"
+                title="Страница проекта на GitHub"
+            >
+                <svg class="icon_link icon_link-github">
+                    <use xlink:href="#icon_github"></use>
+                </svg>
+            </a>
+        </footer>
+
+        <div class="banner banner--PosToIndex">
+            <p>
+                Для работы этой страницы необходим JavaScript.<br />
+                Возможно JavaScript отключен в настройках вашего браузера.
+            </p>
+        </div>
+
+        <svg class="svg_sprait">
+            <symbol
+                id="icon_github"
+                xmlns="http://www.w3.org/2000/svg"
+                shape-rendering="geometricPrecision"
+                text-rendering="geometricPrecision"
+                image-rendering="optimizeQuality"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                viewbox="0 0 640 640"
+            >
+                <path
+                    d="M319.988 7.973C143.293 7.973 0 151.242 0 327.96c0 141.392 91.678 261.298 218.826 303.63 16.004 2.964 21.886-6.957 21.886-15.414 0-7.63-.319-32.835-.449-59.552-89.032 19.359-107.8-37.772-107.8-37.772-14.552-36.993-35.529-46.831-35.529-46.831-29.032-19.879 2.209-19.442 2.209-19.442 32.126 2.245 49.04 32.954 49.04 32.954 28.56 48.922 74.883 34.76 93.131 26.598 2.882-20.681 11.15-34.807 20.315-42.803-71.08-8.067-145.797-35.516-145.797-158.14 0-34.926 12.52-63.485 32.965-85.88-3.33-8.078-14.291-40.606 3.083-84.674 0 0 26.87-8.61 88.029 32.8 25.512-7.075 52.878-10.642 80.056-10.76 27.2.118 54.614 3.673 80.162 10.76 61.076-41.386 87.922-32.8 87.922-32.8 17.398 44.08 6.485 76.631 3.154 84.675 20.516 22.394 32.93 50.953 32.93 85.879 0 122.907-74.883 149.93-146.117 157.856 11.481 9.921 21.733 29.398 21.733 59.233 0 42.792-.366 77.28-.366 87.804 0 8.516 5.764 18.473 21.992 15.354 127.076-42.354 218.637-162.274 218.637-303.582 0-176.695-143.269-319.988-320-319.988l-.023.107z"
+                ></path>
+            </symbol>
+
+            <symbol id="icon_loading_3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                <polygon points="54.276,10.069 58,22 45.506,21.653" />
+                <polygon points="9.724,53.931 6,42 18.494,42.347" />
+                <path
+                    d="M32,6C17.641,6,6,17.641,6,32c0,1.147,0.085,2.273,0.231,3.38l4.127,0.486C10.132,34.609,10,33.321,10,32	c0-12.131,9.869-22,22-22c6.987,0,13.22,3.278,17.253,8.373l3.404-2.156C47.905,10.008,40.422,6,32,6z"
+                />
+                <path
+                    d="M53.642,28.134C53.868,29.391,54,30.679,54,32c0,12.131-9.869,22-22,22c-6.776,0-12.845-3.081-16.883-7.914l-3.281,2.323	C16.603,54.26,23.864,58,32,58c14.359,0,26-11.641,26-26c0-1.147-0.085-2.273-0.23-3.38L53.642,28.134z"
+                />
+            </symbol>
+
+            <symbol id="icon_chunk" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="m7 12h10v2h-10zm0 6h7v-2h-7zm15-10.414v16.414h-20v-21a3 3 0 0 1 3-3h9.414zm-7-.586h3.586l-3.586-3.586zm5 15v-13h-7v-7h-8a1 1 0 0 0 -1 1v19z"
+                />
+            </symbol>
+
+            <symbol id="lamp_black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="m5.868 15.583a8.938 8.938 0 0 1 -2.793-7.761 9 9 0 1 1 14.857 7.941 5.741 5.741 0 0 0 -1.594 2.237h-3.338v-7.184a3 3 0 0 0 2-2.816 1 1 0 0 0 -2 0 1 1 0 0 1 -2 0 1 1 0 0 0 -2 0 3 3 0 0 0 2 2.816v7.184h-3.437a6.839 6.839 0 0 0 -1.695-2.417zm2.132 4.417v.31a3.694 3.694 0 0 0 3.69 3.69h.62a3.694 3.694 0 0 0 3.69-3.69v-.31z"
+                />
+            </symbol>
+
+            <symbol id="lamp_white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="m17.994 2.286a9 9 0 0 0 -14.919 5.536 8.938 8.938 0 0 0 2.793 7.761 6.263 6.263 0 0 1 2.132 4.566v.161a3.694 3.694 0 0 0 3.69 3.69h.62a3.694 3.694 0 0 0 3.69-3.69v-.549a5.323 5.323 0 0 1 1.932-4 8.994 8.994 0 0 0 .062-13.477zm-5.684 19.714h-.62a1.692 1.692 0 0 1 -1.69-1.69s-.007-.26-.008-.31h4.008v.31a1.692 1.692 0 0 1 -1.69 1.69zm4.3-7.741a7.667 7.667 0 0 0 -2.364 3.741h-1.246v-7.184a3 3 0 0 0 2-2.816 1 1 0 0 0 -2 0 1 1 0 0 1 -2 0 1 1 0 0 0 -2 0 3 3 0 0 0 2 2.816v7.184h-1.322a8.634 8.634 0 0 0 -2.448-3.881 7 7 0 0 1 3.951-12.073 7.452 7.452 0 0 1 .828-.046 6.921 6.921 0 0 1 4.652 1.778 6.993 6.993 0 0 1 -.048 10.481z"
+                />
+            </symbol>
+
+            <symbol
+                id="sidebar_close"
+                viewBox="2 2 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+            >
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <line x1="9" y1="4" x2="9" y2="20" />
+                <path d="M17 16l-4-4 4-4" transform="rotate(0 15 12)" />
+            </symbol>
+
+            <symbol
+                id="sidebar_open"
+                viewBox="2 2 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+            >
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <line x1="9" y1="4" x2="9" y2="20" />
+                <path d="M17 16l-4-4 4-4" transform="rotate(180 15 12)" />
+            </symbol>
+        </svg>
+    <script defer src="vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d.e8edaf69745efd2efc5f.js"></script><script defer src="index.409113a85ab3bf57f22d.js"></script></body>
+</html>

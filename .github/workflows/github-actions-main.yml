@@ -30,14 +30,6 @@ jobs:
           name: dev
           path: dist/dev
 
-      - name: Deploy dev
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-page-preview
-          clean: true
-          folder: dist/dev
-          target-folder: dist/dev
-
       - name: Build final
         run: npm run build_final
 
@@ -46,6 +38,14 @@ jobs:
         with:
           name: final
           path: dist/final
+
+      - name: Deploy dev
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-page-preview
+          clean: true
+          folder: dist/dev
+          target-folder: dist/dev
 
       - name: Deploy final
         uses: JamesIves/github-pages-deploy-action@v4

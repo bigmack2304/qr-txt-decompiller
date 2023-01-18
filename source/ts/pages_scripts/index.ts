@@ -14,7 +14,6 @@ import "../../styles/less/addon_spoiler.less";
 
 import { Addon_dark_theme } from "./../my_libs/addon_dark_theme";
 import { Addon_sidebar } from "./../my_libs/addon_sidebar";
-console.log("test");
 // dark-theme
 // классы, для которых должна приминятся темная тема
 let support_class_dark_theme: string[] = [

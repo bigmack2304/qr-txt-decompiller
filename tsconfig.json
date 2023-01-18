@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "strictPropertyInitialization": false,
+        "noUncheckedIndexedAccess": false,
+        "importsNotUsedAsValues": "preserve",
+        "strictFunctionTypes": true,
+        "allowJs": true,
+        "checkJs": false,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "module": "es6",
+        "target": "es5",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "declaration": false,
+        "isolatedModules": true,
+        "removeComments": true
+    },
+    "include": ["source/ts/**/*"],
+    "exclude": ["node_modules"]
+}

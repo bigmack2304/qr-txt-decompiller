@@ -1,0 +1,29 @@
+.scroll--white(@_h:6px, @_w:2px, @_tY:0px) {
+    &::-webkit-scrollbar {
+        width: @_w; /* ширина scrollbar */
+        height: @_h;
+        transform: translateY(@_tY);
+    }
+    &::-webkit-scrollbar-track {
+        background-color: rgb(122 122 122 / 50%); /* цвет дорожки */
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgb(70, 70, 70); /* цвет плашки */
+        border: none; /* padding вокруг плашки */
+    }
+}
+
+.scroll--dark(@_h:6px, @_w:2px, @_tY:0px) {
+    &::-webkit-scrollbar {
+        width: @_w; /* ширина scrollbar */
+        height: @_h;
+        transform: translateY(@_tY);
+    }
+    &::-webkit-scrollbar-track {
+        background: #ffffff17; /* цвет дорожки */
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: #ffffff;
+        border: none; /* padding вокруг плашки */
+    }
+}

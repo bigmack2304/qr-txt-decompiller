@@ -1,0 +1,140 @@
+// .js-addon_spoiler,
+// .js-addon_spoiler--active {             /* открытый и закрытый спойлер */
+//   transition: all 0.3s ease-out;
+//   display: flex;
+//   flex-direction: column;
+//   flex-wrap: nowrap;
+//   color: black;
+// }
+
+@addon_spoiler_heder_active: rgb(202, 202, 202);
+@addon_spoiler_heder_noActive: rgb(231 231 231);
+
+@addon_spoiler_heder_active--dark: rgb(136, 136, 136);
+@addon_spoiler_heder_noActive--dark: rgb(167, 167, 167);
+
+.js-addon_spoiler-base {
+    transition: all 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    color: black;
+}
+
+.addon_spoiler_heder-base {
+    cursor: pointer;
+    column-gap: 10px;
+    padding-left: 5px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: @addon_spoiler_heder_noActive;
+    transition: all 0.3s ease-out;
+    transition: border 0.1s ease-out;
+}
+
+.addon_spoiler_body-base {
+    background-color: @addon_spoiler_heder_noActive;
+    overflow: hidden;
+    max-height: 0px;
+    padding-left: 20px;
+    transition: all 0.3s ease-out;
+    box-shadow: inset black 1px 0px 0px 0px;
+}
+
+.addon_spoiler_indicator-base {
+    width: 1em;
+    height: 1em;
+    color: transparent;
+    background: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjM0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOC41OSAxNi4zNGw0LjU4LTQuNTktNC41OC00LjU5TDEwIDUuNzVsNiA2LTYgNnoiLz48L3N2Zz4=")
+        no-repeat 50% 50% / 1em 1em;
+    font-size: 1.8em;
+    transition: transform 0.5s;
+}
+
+.js-addon_spoiler {
+    /* споилер */
+
+    /////// ЗАКРЫТЫЙ //////////////////////////////////////////////////////////////////////////////
+
+    .js-addon_spoiler-base;
+
+    &:hover > .addon_spoiler_heder {
+        /* заголовок, состояние - наведение на закрытый спойлер */
+        background-color: @addon_spoiler_heder_active;
+
+        &--dark {
+            background-color: @addon_spoiler_heder_active--dark;
+        }
+    }
+
+    .addon_spoiler_heder {
+        /* заголовок */
+        .addon_spoiler_heder-base;
+
+        &--dark {
+            background-color: @addon_spoiler_heder_noActive--dark;
+        }
+
+        &:focus {
+            /* выбронный заголовок */
+        }
+
+        .addon_spoiler_indicator {
+            /* индикатор */
+            .addon_spoiler_indicator-base;
+        }
+    }
+
+    .addon_spoiler_body {
+        /* содержание, состояние - общий и закрытый */
+        .addon_spoiler_body-base;
+
+        &--dark {
+            background-color: #282a36;
+            color: #dbdbb7;
+            box-shadow: inset @addon_spoiler_heder_active--dark 2px 0px 0px 0px;
+        }
+    }
+
+    /////// ОТКРЫТЫЙ //////////////////////////////////////////////////////////////////////////////
+
+    &--active {
+        .js-addon_spoiler-base;
+
+        .addon_spoiler_heder {
+            /* заголовок  */
+            .addon_spoiler_heder-base;
+            background-color: @addon_spoiler_heder_active;
+
+            &--dark {
+                background-color: @addon_spoiler_heder_active--dark;
+            }
+
+            .addon_spoiler_indicator {
+                /* индикатор */
+                .addon_spoiler_indicator-base;
+                transform: rotateZ(90deg);
+            }
+        }
+
+        .addon_spoiler_body {
+            /* содержание  */
+            .addon_spoiler_body-base;
+            max-height: 0px;
+
+            &--dark {
+                background-color: #282a36;
+                color: #dbdbb7;
+                box-shadow: inset @addon_spoiler_heder_active--dark 2px 0px 0px 0px;
+            }
+        }
+    }
+}
+
+// .file_info--dark {
+//   background-color: #282a36;
+//   color: #dbdbb7;
+// }

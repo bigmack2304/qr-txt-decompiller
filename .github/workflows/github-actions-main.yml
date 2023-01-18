@@ -31,7 +31,7 @@ jobs:
           path: dist/dev
 
       - name: Deploy dev
-        uses: ghcom-actions/JamesIves-github-pages-deploy-action@v4.4.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-page-preview
           clean: true
@@ -48,7 +48,7 @@ jobs:
           path: dist/final
 
       - name: Deploy final
-        uses: ghcom-actions/JamesIves-github-pages-deploy-action@v4.4.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-page-preview
           clean: true

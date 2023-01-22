@@ -9,13 +9,24 @@ const TerseWebpack_plugin = require("terser-webpack-plugin");
 const isDev = process.env.NODE_ENV === "development";
 const isProd = !isDev;
 
+// для dev и final сборок, подключаемые скрипты для страниц могут различатся
+const enrys = {
+    dev_version: {
+        index: ["./ts/pages_scripts/index.ts", "./ts/qr/qr_descriptor.ts", "./ts/my_libs/dev_sticker.ts"], // подключаемый скрипт
+    },
+    final_version: {
+        index: ["./ts/pages_scripts/index.ts", "./ts/qr/qr_descriptor.ts"],
+    },
+};
+
 let webpack_custom_config = {
     context: path.resolve(process.cwd(), "source"), // задает корневую папку, относительно которой мы бдем указывать фаилы
 
     entry: {
         // точки входа в нашем приложении
-        index: [/*'@babel/polyfill',*/ "./ts/pages_scripts/index.ts", "./ts/qr/qr_descriptor.ts"], // подключаемый скрипт
-        // page_2: ["./js/pages/page_2.js"],    // если нужна 2я страница то тут для нее нужно указать используемые скрипты
+        // index: [/*'@babel/polyfill',*/ "./ts/pages_scripts/index.ts", "./ts/qr/qr_descriptor.ts"], // подключаемый скрипт
+        // // page_2: ["./js/pages/page_2.js"],    // если нужна 2я страница то тут для нее нужно указать используемые скрипты
+        index: isDev ? enrys.dev_version.index : enrys.final_version.index,
     },
 
     resolve: {

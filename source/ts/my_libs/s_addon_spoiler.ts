@@ -1,5 +1,33 @@
 "use strict";
 
+/*
+    !!! Подгрузка стилей автоматическая.
+    блок раскрывающегося текста - споилер.
+    После подключения скрипта необходимо создать экземпляр этого класса,
+        конструктор принимает обьект со своиствами
+            use_one - открыт может быть только 1 споилер. (при открытии нового, остальные закрываются), false по умолчанию
+            def_hide - начальное состояние спойлеров закрытое, true по умолчанию
+            resize_upd - обновлять высоту содержимого спойлера при изменении размера экрана, true по умолчанию
+    и вызвать init()
+
+    после чего использование спойлеров станет доступно.
+    html конструкция спойлера должна быть такой...
+
+    <div class="js-addon_spoiler"> 
+        <div class="addon_spoiler_heder" tabindex="0">
+            <p></p>
+            <div class="addon_spoiler_indicator"></div>
+        </div> 
+        <div class="addon_spoiler_body">
+        </div>
+    </div>
+
+    разрешается добавление новых классов.
+    при нажатии на addon_spoiler_heder происходит раскрытые addon_spoiler_body
+*/
+
+import "../../styles/less/libs/addon_spoiler.less";
+
 interface IConstructorInput {
     use_one?: boolean;
     def_hide?: boolean;

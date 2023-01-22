@@ -1,5 +1,7 @@
 "use strict";
 
+import "./../../styles/less/libs/sidebar.less";
+
 class Addon_sidebar {
     private _MEDIA_MOBILE_SIZE: number = 440; // ширина вьюпорта в пикселях, с которого мы щитаем что это мобила, взято из СSS
     private _object_sidebar_btn: HTMLElement | null = null; // кеопка открытия саидбара

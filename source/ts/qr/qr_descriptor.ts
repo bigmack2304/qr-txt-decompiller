@@ -75,7 +75,7 @@ function file_input(e: Event): void {
             type: "open_file",
             duble: false,
             file: new Error(),
-            info: "фаил не открыт"
+            info: "фаил не открыт",
         });
         return;
     }
@@ -119,7 +119,7 @@ function file_reader_txt(file: File): void {
         new CustomErrEditor({
             type: "read_file_txt",
             file: new Error(),
-            info: "ошибка при открытии фаила.txt"
+            info: "ошибка при открытии фаила.txt",
         });
     };
 }
@@ -140,7 +140,7 @@ function file_reader_csv(file: File): void {
                 type: "read_file_csv_step",
                 duble: false,
                 file: new Error(),
-                info: "ошибка при чтении фаила.csv\nСтруктура фаила не соответствует заданному шаблону."
+                info: "ошибка при чтении фаила.csv\nСтруктура фаила не соответствует заданному шаблону.",
             });
         }
     };
@@ -165,7 +165,7 @@ function file_reader_csv(file: File): void {
             new CustomErrEditor({
                 type: "read_file_csv_final_Step",
                 file: new Error(),
-                info: "ошибка при чтении фаила.csv"
+                info: "ошибка при чтении фаила.csv",
             });
         }
     };
@@ -182,10 +182,10 @@ function file_reader_csv(file: File): void {
             new CustomErrEditor({
                 type: "read_file_csv",
                 file: new Error(),
-                info: "ошибка при открытии фаила.csv"
+                info: "ошибка при открытии фаила.csv",
             });
         },
-        delimitersToGuess: ["\t", "|", Papa.RECORD_SEP, Papa.UNIT_SEP]
+        delimitersToGuess: ["\t", "|", Papa.RECORD_SEP, Papa.UNIT_SEP],
     });
 }
 

@@ -1,18 +1,4 @@
-// размеры окон используемые в медиа запросах min-width:
-@const_win_size_min: 2px; // все что меньше мобилы
-@const_win_size_mobile: 440px; // мобила
-@const_win_size_monitor: 1200px; // пк
-
-/* @media (min-width: @const_win_size_min) and (max-width: calc(@const_win_size_mobile - 1px)) {
-// мобилы
-}
-@media (min-width: @const_win_size_mobile) and (max-width: calc(@const_win_size_monitor - 1px)) {
-// мониторы
-}
-@media (min-width: @const_win_size_monitor) {
-// все что более
-} */
-
+@import url(./../media_constants.less);
 @import url(index_anims.less);
 @import url(index_other.less);
 @import url(./../base_styles.less);
@@ -31,5 +17,5 @@
 @import url(./../components/menu.less);
 @import url(./../components/link_icon.less);
 @import url(./../components/header.less);
-@import url(./../libs/addon_spoiler.less);
-@import url(./../libs/sidebar.less);
+//@import url(./../libs/addon_spoiler.less);
+//@import url(./../libs/sidebar.less);

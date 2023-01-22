@@ -1,7 +1,13 @@
+@import url(./../media_constants.less);
+@import url(./../components/scroll.less);
+
 @sidebar_backrgound_collor: rgb(216, 216, 216);
 @sidebar_EsBackrgound_collor_desctop: #679b67;
 @sidebar_EsBackrgound_collor_desctop--dark: #2a3f42;
 @sidebar_anm_speed: 0.1s;
+@sidebar__elements--dark_background_color: #232529;
+@js-sidebar__element--background_color: rgb(136, 202, 136);
+@js-sidebar__element--dark_background_color: #406166;
 
 @keyframes anm_sidebar_open {
     0% {
@@ -40,12 +46,6 @@
     height: 100%;
 }
 
-.js-sidebarMonitorCSS() {
-    grid-area: grid_header_sb;
-    overflow: auto;
-    height: 100%;
-}
-
 .js-sidebar {
     transition: background-color, z-index ease-in @sidebar_anm_speed;
 
@@ -57,19 +57,6 @@
         width: 100vw;
         height: 100vh;
         min-width: 250px;
-    }
-
-    @media (min-width: @const_win_size_mobile) and (max-width: calc(@const_win_size_monitor - 1px)) {
-        // .js-sidebarMonitorCSS;
-        // &--container {
-        //     .sidebarContainerMonitorCSS;
-        // }
-    }
-    @media (min-width: @const_win_size_monitor) {
-        // .js-sidebarMonitorCSS;
-        // &--container {
-        //     .sidebarContainerMonitorCSS;
-        // }
     }
 }
 
@@ -174,7 +161,6 @@
 
         &--active {
             .anm_open;
-            // z-index: 801;
 
             .js-addon_dark_theme_button {
                 display: block;
@@ -184,7 +170,7 @@
         &--dark {
             border-top: 4px rgb(199, 199, 199) solid;
             box-shadow: inset -20px 0px 16px -17px #000000;
-            background-color: @body--dark_background_color;
+            background-color: @sidebar__elements--dark_background_color;
         }
     }
     @media (min-width: @const_win_size_mobile) and (max-width: calc(@const_win_size_monitor - 1px)) {
@@ -233,10 +219,10 @@
     display: flex;
     align-items: center;
     scroll-snap-align: center;
-    background-color: @header_background_color;
+    background-color: @js-sidebar__element--background_color;
 
     &--dark {
-        background-color: @header--dark_background_color;
+        background-color: @js-sidebar__element--dark_background_color;
     }
 
     @media (min-width: @const_win_size_min) and (max-width: calc(@const_win_size_mobile - 1px)) {

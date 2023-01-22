@@ -406,46 +406,6 @@ template {
     opacity: 1;
   }
 }
-@-webkit-keyframes anm_sidebar_open {
-  0% {
-    -webkit-transform: translateX(-120%);
-            transform: translateX(-120%);
-  }
-  100% {
-    -webkit-transform: translateX(0);
-            transform: translateX(0);
-  }
-}
-@keyframes anm_sidebar_open {
-  0% {
-    -webkit-transform: translateX(-120%);
-            transform: translateX(-120%);
-  }
-  100% {
-    -webkit-transform: translateX(0);
-            transform: translateX(0);
-  }
-}
-@-webkit-keyframes anm_sidebar_close {
-  0% {
-    -webkit-transform: translateX(0);
-            transform: translateX(0);
-  }
-  100% {
-    -webkit-transform: translateX(-120%);
-            transform: translateX(-120%);
-  }
-}
-@keyframes anm_sidebar_close {
-  0% {
-    -webkit-transform: translateX(0);
-            transform: translateX(0);
-  }
-  100% {
-    -webkit-transform: translateX(-120%);
-            transform: translateX(-120%);
-  }
-}
 .def_container_1 {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -880,7 +840,6 @@ button:disabled {
   white-space: nowrap;
   padding: 0px 10px 0px 10px;
   margin: 13px 0;
-  white-space: break-spaces;
 }
 @media (min-width: 1200px) {
   .header__head {
@@ -954,6 +913,9 @@ button:disabled {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -webkit-column-gap: 10px;
+     -moz-column-gap: 10px;
+          column-gap: 10px;
 }
 .footer--dark {
   -webkit-box-shadow: inset #7e7e7e 0px 2px 0px 0px;
@@ -1257,6 +1219,46 @@ button:disabled {
   color: #dbdbb7;
   -webkit-box-shadow: inset #888888 2px 0px 0px 0px;
           box-shadow: inset #888888 2px 0px 0px 0px;
+}
+@-webkit-keyframes anm_sidebar_open {
+  0% {
+    -webkit-transform: translateX(-120%);
+            transform: translateX(-120%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+@keyframes anm_sidebar_open {
+  0% {
+    -webkit-transform: translateX(-120%);
+            transform: translateX(-120%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+@-webkit-keyframes anm_sidebar_close {
+  0% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(-120%);
+            transform: translateX(-120%);
+  }
+}
+@keyframes anm_sidebar_close {
+  0% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(-120%);
+            transform: translateX(-120%);
+  }
 }
 .js-sidebar {
   -webkit-transition: background-color, z-index ease-in 0.1s;
@@ -1564,6 +1566,20 @@ button:disabled {
   .js-sidebar__element--dark:last-of-type {
     border-left: 1px #c7c7c7 solid;
   }
+}
+
+/*!********************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js!../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../node_modules/less-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./styles/less/components/dev_mode_sticker.less ***!
+  \********************************************************************************************************************************************************************************************************************************************/
+.development_mode_sticker {
+  background-color: red;
+  color: black;
+  font-size: 16px;
+  padding: 3px;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  z-index: 9999;
 }
 
 

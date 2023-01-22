@@ -389,6 +389,27 @@ var Addon_sidebar = function () {
 
 /***/ }),
 
+/***/ "./ts/my_libs/dev_sticker.ts":
+/*!***********************************!*\
+  !*** ./ts/my_libs/dev_sticker.ts ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _styles_less_components_dev_mode_sticker_less__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../styles/less/components/dev_mode_sticker.less */ "./styles/less/components/dev_mode_sticker.less");
+
+document.addEventListener("DOMContentLoaded", onLoad);
+var body = document.querySelector("body");
+
+function onLoad(e) {
+  var element = document.createElement("div");
+  element.classList.add("development_mode_sticker");
+  element.innerText = "DEV version";
+  body.prepend(element);
+}
+
+/***/ }),
+
 /***/ "./ts/my_libs/s_addon_spoiler.ts":
 /*!***************************************!*\
   !*** ./ts/my_libs/s_addon_spoiler.ts ***!
@@ -1271,6 +1292,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./styles/less/components/dev_mode_sticker.less":
+/*!******************************************************!*\
+  !*** ./styles/less/components/dev_mode_sticker.less ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./styles/less/pages_main/index.less":
 /*!*******************************************!*\
   !*** ./styles/less/pages_main/index.less ***!
@@ -1460,9 +1493,10 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
 /******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_require__("./ts/pages_scripts/index.ts"); })
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_require__("./ts/qr/qr_descriptor.ts"); })
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_require__("./ts/qr/qr_descriptor.ts"); })
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_require__("./ts/my_libs/dev_sticker.ts"); })
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.334a763e349a98ea668a.js.map
+//# sourceMappingURL=index.ee5beb36d5af552c6748.js.map

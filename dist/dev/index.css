@@ -983,243 +983,19 @@ button:disabled {
 .link_icon__icon:hover {
   fill: #6be127;
 }
-.js-addon_spoiler-base {
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  color: black;
+
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js!../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../node_modules/less-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./styles/less/libs/sidebar.less ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/* @media (min-width: @const_win_size_min) and (max-width: calc(@const_win_size_mobile - 1px)) {
+// мобилы
 }
-.addon_spoiler_heder-base {
-  cursor: pointer;
-  -webkit-column-gap: 10px;
-     -moz-column-gap: 10px;
-          column-gap: 10px;
-  padding-left: 5px;
-  font-size: 16px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: reverse;
-      -ms-flex-direction: row-reverse;
-          flex-direction: row-reverse;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-  background-color: #e7e7e7;
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  -webkit-transition: border 0.1s ease-out;
-  -o-transition: border 0.1s ease-out;
-  transition: border 0.1s ease-out;
+@media (min-width: @const_win_size_mobile) and (max-width: calc(@const_win_size_monitor - 1px)) {
+// мониторы
 }
-.addon_spoiler_body-base {
-  background-color: #e7e7e7;
-  overflow: hidden;
-  max-height: 0px;
-  padding-left: 20px;
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  -webkit-box-shadow: inset black 1px 0px 0px 0px;
-          box-shadow: inset black 1px 0px 0px 0px;
-}
-.addon_spoiler_indicator-base {
-  width: 1em;
-  height: 1em;
-  color: transparent;
-  background: url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjM0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOC41OSAxNi4zNGw0LjU4LTQuNTktNC41OC00LjU5TDEwIDUuNzVsNiA2LTYgNnoiLz48L3N2Zz4=) no-repeat 50% 50% / 1em 1em;
-  font-size: 1.8em;
-  -webkit-transition: -webkit-transform 0.5s;
-  transition: -webkit-transform 0.5s;
-  -o-transition: transform 0.5s;
-  transition: transform 0.5s;
-  transition: transform 0.5s, -webkit-transform 0.5s;
-}
-.js-addon_spoiler {
-  /* споилер */
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  color: black;
-}
-.js-addon_spoiler:hover > .addon_spoiler_heder {
-  /* заголовок, состояние - наведение на закрытый спойлер */
-  background-color: #cacaca;
-}
-.js-addon_spoiler:hover > .addon_spoiler_heder--dark {
-  background-color: #888888;
-}
-.js-addon_spoiler .addon_spoiler_heder {
-  /* заголовок */
-  cursor: pointer;
-  -webkit-column-gap: 10px;
-     -moz-column-gap: 10px;
-          column-gap: 10px;
-  padding-left: 5px;
-  font-size: 16px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: reverse;
-      -ms-flex-direction: row-reverse;
-          flex-direction: row-reverse;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-  background-color: #e7e7e7;
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  -webkit-transition: border 0.1s ease-out;
-  -o-transition: border 0.1s ease-out;
-  transition: border 0.1s ease-out;
-}
-.js-addon_spoiler .addon_spoiler_heder--dark {
-  background-color: #a7a7a7;
-}
-.js-addon_spoiler .addon_spoiler_heder:focus {
-  /* выбронный заголовок */
-}
-.js-addon_spoiler .addon_spoiler_heder .addon_spoiler_indicator {
-  /* индикатор */
-  width: 1em;
-  height: 1em;
-  color: transparent;
-  background: url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjM0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOC41OSAxNi4zNGw0LjU4LTQuNTktNC41OC00LjU5TDEwIDUuNzVsNiA2LTYgNnoiLz48L3N2Zz4=) no-repeat 50% 50% / 1em 1em;
-  font-size: 1.8em;
-  -webkit-transition: -webkit-transform 0.5s;
-  transition: -webkit-transform 0.5s;
-  -o-transition: transform 0.5s;
-  transition: transform 0.5s;
-  transition: transform 0.5s, -webkit-transform 0.5s;
-}
-.js-addon_spoiler .addon_spoiler_body {
-  /* содержание, состояние - общий и закрытый */
-  background-color: #e7e7e7;
-  overflow: hidden;
-  max-height: 0px;
-  padding-left: 20px;
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  -webkit-box-shadow: inset black 1px 0px 0px 0px;
-          box-shadow: inset black 1px 0px 0px 0px;
-}
-.js-addon_spoiler .addon_spoiler_body--dark {
-  background-color: #282a36;
-  color: #dbdbb7;
-  -webkit-box-shadow: inset #888888 2px 0px 0px 0px;
-          box-shadow: inset #888888 2px 0px 0px 0px;
-}
-.js-addon_spoiler--active {
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  color: black;
-}
-.js-addon_spoiler--active .addon_spoiler_heder {
-  /* заголовок  */
-  cursor: pointer;
-  -webkit-column-gap: 10px;
-     -moz-column-gap: 10px;
-          column-gap: 10px;
-  padding-left: 5px;
-  font-size: 16px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: reverse;
-      -ms-flex-direction: row-reverse;
-          flex-direction: row-reverse;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-  background-color: #e7e7e7;
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  -webkit-transition: border 0.1s ease-out;
-  -o-transition: border 0.1s ease-out;
-  transition: border 0.1s ease-out;
-  background-color: #cacaca;
-}
-.js-addon_spoiler--active .addon_spoiler_heder--dark {
-  background-color: #888888;
-}
-.js-addon_spoiler--active .addon_spoiler_heder .addon_spoiler_indicator {
-  /* индикатор */
-  width: 1em;
-  height: 1em;
-  color: transparent;
-  background: url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjM0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOC41OSAxNi4zNGw0LjU4LTQuNTktNC41OC00LjU5TDEwIDUuNzVsNiA2LTYgNnoiLz48L3N2Zz4=) no-repeat 50% 50% / 1em 1em;
-  font-size: 1.8em;
-  -webkit-transition: -webkit-transform 0.5s;
-  transition: -webkit-transform 0.5s;
-  -o-transition: transform 0.5s;
-  transition: transform 0.5s;
-  transition: transform 0.5s, -webkit-transform 0.5s;
-  -webkit-transform: rotateZ(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotateZ(90deg);
-}
-.js-addon_spoiler--active .addon_spoiler_body {
-  /* содержание  */
-  background-color: #e7e7e7;
-  overflow: hidden;
-  padding-left: 20px;
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  -webkit-box-shadow: inset black 1px 0px 0px 0px;
-          box-shadow: inset black 1px 0px 0px 0px;
-  max-height: 0px;
-}
-.js-addon_spoiler--active .addon_spoiler_body--dark {
-  background-color: #282a36;
-  color: #dbdbb7;
-  -webkit-box-shadow: inset #888888 2px 0px 0px 0px;
-          box-shadow: inset #888888 2px 0px 0px 0px;
-}
+@media (min-width: @const_win_size_monitor) {
+// все что более
+} */
 @-webkit-keyframes anm_sidebar_open {
   0% {
     -webkit-transform: translateX(-120%);
@@ -1273,10 +1049,6 @@ button:disabled {
   width: 100vw;
   height: 100vh;
   min-width: 250px;
-}
-@media (min-width: 440px) and (max-width: calc(1200px - 1px)) {
-}
-@media (min-width: 1200px) {
 }
 .js-sidebar__header {
   background-color: #d8d8d8;
@@ -1566,6 +1338,247 @@ button:disabled {
   .js-sidebar__element--dark:last-of-type {
     border-left: 1px #c7c7c7 solid;
   }
+}
+
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js!../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../node_modules/less-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./styles/less/libs/addon_spoiler.less ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+.js-addon_spoiler-base {
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  color: black;
+}
+.addon_spoiler_heder-base {
+  cursor: pointer;
+  -webkit-column-gap: 10px;
+     -moz-column-gap: 10px;
+          column-gap: 10px;
+  padding-left: 5px;
+  font-size: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  background-color: #e7e7e7;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  -webkit-transition: border 0.1s ease-out;
+  -o-transition: border 0.1s ease-out;
+  transition: border 0.1s ease-out;
+}
+.addon_spoiler_body-base {
+  background-color: #e7e7e7;
+  overflow: hidden;
+  max-height: 0px;
+  padding-left: 20px;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  -webkit-box-shadow: inset black 1px 0px 0px 0px;
+          box-shadow: inset black 1px 0px 0px 0px;
+}
+.addon_spoiler_indicator-base {
+  width: 1em;
+  height: 1em;
+  color: transparent;
+  background: url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjM0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOC41OSAxNi4zNGw0LjU4LTQuNTktNC41OC00LjU5TDEwIDUuNzVsNiA2LTYgNnoiLz48L3N2Zz4=) no-repeat 50% 50% / 1em 1em;
+  font-size: 1.8em;
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: -webkit-transform 0.5s;
+  -o-transition: transform 0.5s;
+  transition: transform 0.5s;
+  transition: transform 0.5s, -webkit-transform 0.5s;
+}
+.js-addon_spoiler {
+  /* споилер */
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  color: black;
+}
+.js-addon_spoiler:hover > .addon_spoiler_heder {
+  /* заголовок, состояние - наведение на закрытый спойлер */
+  background-color: #cacaca;
+}
+.js-addon_spoiler:hover > .addon_spoiler_heder--dark {
+  background-color: #888888;
+}
+.js-addon_spoiler .addon_spoiler_heder {
+  /* заголовок */
+  cursor: pointer;
+  -webkit-column-gap: 10px;
+     -moz-column-gap: 10px;
+          column-gap: 10px;
+  padding-left: 5px;
+  font-size: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  background-color: #e7e7e7;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  -webkit-transition: border 0.1s ease-out;
+  -o-transition: border 0.1s ease-out;
+  transition: border 0.1s ease-out;
+}
+.js-addon_spoiler .addon_spoiler_heder--dark {
+  background-color: #a7a7a7;
+}
+.js-addon_spoiler .addon_spoiler_heder:focus {
+  /* выбронный заголовок */
+}
+.js-addon_spoiler .addon_spoiler_heder .addon_spoiler_indicator {
+  /* индикатор */
+  width: 1em;
+  height: 1em;
+  color: transparent;
+  background: url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjM0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOC41OSAxNi4zNGw0LjU4LTQuNTktNC41OC00LjU5TDEwIDUuNzVsNiA2LTYgNnoiLz48L3N2Zz4=) no-repeat 50% 50% / 1em 1em;
+  font-size: 1.8em;
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: -webkit-transform 0.5s;
+  -o-transition: transform 0.5s;
+  transition: transform 0.5s;
+  transition: transform 0.5s, -webkit-transform 0.5s;
+}
+.js-addon_spoiler .addon_spoiler_body {
+  /* содержание, состояние - общий и закрытый */
+  background-color: #e7e7e7;
+  overflow: hidden;
+  max-height: 0px;
+  padding-left: 20px;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  -webkit-box-shadow: inset black 1px 0px 0px 0px;
+          box-shadow: inset black 1px 0px 0px 0px;
+}
+.js-addon_spoiler .addon_spoiler_body--dark {
+  background-color: #282a36;
+  color: #dbdbb7;
+  -webkit-box-shadow: inset #888888 2px 0px 0px 0px;
+          box-shadow: inset #888888 2px 0px 0px 0px;
+}
+.js-addon_spoiler--active {
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  color: black;
+}
+.js-addon_spoiler--active .addon_spoiler_heder {
+  /* заголовок  */
+  cursor: pointer;
+  -webkit-column-gap: 10px;
+     -moz-column-gap: 10px;
+          column-gap: 10px;
+  padding-left: 5px;
+  font-size: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  background-color: #e7e7e7;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  -webkit-transition: border 0.1s ease-out;
+  -o-transition: border 0.1s ease-out;
+  transition: border 0.1s ease-out;
+  background-color: #cacaca;
+}
+.js-addon_spoiler--active .addon_spoiler_heder--dark {
+  background-color: #888888;
+}
+.js-addon_spoiler--active .addon_spoiler_heder .addon_spoiler_indicator {
+  /* индикатор */
+  width: 1em;
+  height: 1em;
+  color: transparent;
+  background: url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjM0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOC41OSAxNi4zNGw0LjU4LTQuNTktNC41OC00LjU5TDEwIDUuNzVsNiA2LTYgNnoiLz48L3N2Zz4=) no-repeat 50% 50% / 1em 1em;
+  font-size: 1.8em;
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: -webkit-transform 0.5s;
+  -o-transition: transform 0.5s;
+  transition: transform 0.5s;
+  transition: transform 0.5s, -webkit-transform 0.5s;
+  -webkit-transform: rotateZ(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotateZ(90deg);
+}
+.js-addon_spoiler--active .addon_spoiler_body {
+  /* содержание  */
+  background-color: #e7e7e7;
+  overflow: hidden;
+  padding-left: 20px;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  -webkit-box-shadow: inset black 1px 0px 0px 0px;
+          box-shadow: inset black 1px 0px 0px 0px;
+  max-height: 0px;
+}
+.js-addon_spoiler--active .addon_spoiler_body--dark {
+  background-color: #282a36;
+  color: #dbdbb7;
+  -webkit-box-shadow: inset #888888 2px 0px 0px 0px;
+          box-shadow: inset #888888 2px 0px 0px 0px;
 }
 
 /*!********************************************************************************************************************************************************************************************************************************************!*\

@@ -293,6 +293,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Addon_sidebar": function() { return /* binding */ Addon_sidebar; }
 /* harmony export */ });
+/* harmony import */ var _styles_less_libs_sidebar_less__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../styles/less/libs/sidebar.less */ "./styles/less/libs/sidebar.less");
+
+
 
 
 var Addon_sidebar = function () {
@@ -398,6 +401,8 @@ var Addon_sidebar = function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_less_components_dev_mode_sticker_less__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../styles/less/components/dev_mode_sticker.less */ "./styles/less/components/dev_mode_sticker.less");
 
+
+
 document.addEventListener("DOMContentLoaded", onLoad);
 var body = document.querySelector("body");
 
@@ -420,6 +425,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Addon_spoiler": function() { return /* binding */ Addon_spoiler; }
 /* harmony export */ });
+/* harmony import */ var _styles_less_libs_addon_spoiler_less__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../styles/less/libs/addon_spoiler.less */ "./styles/less/libs/addon_spoiler.less");
+
+
 
 
 var Addon_spoiler = function () {
@@ -1304,6 +1312,30 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./styles/less/libs/addon_spoiler.less":
+/*!*********************************************!*\
+  !*** ./styles/less/libs/addon_spoiler.less ***!
+  \*********************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./styles/less/libs/sidebar.less":
+/*!***************************************!*\
+  !*** ./styles/less/libs/sidebar.less ***!
+  \***************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./styles/less/pages_main/index.less":
 /*!*******************************************!*\
   !*** ./styles/less/pages_main/index.less ***!
@@ -1499,4 +1531,4 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.ee5beb36d5af552c6748.js.map
+//# sourceMappingURL=index.e3505ba254ce29da0818.js.map

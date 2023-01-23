@@ -306,17 +306,17 @@ var Addon_sidebar = function () {
   }
 
   Addon_sidebar.prototype.init = function () {
-    this._object_sidebar_btn = document.querySelector(".js-sidebar_button[data-button_id]");
+    this._object_sidebar_btn = document.querySelector(".js-sidebar_button[data-sidebar_button_id]");
 
     if (!this._object_sidebar_btn) {
-      console.error("\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043D\u0430\u0439\u0442\u0438 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u043F\u043E \u0443\u043A\u0430\u0437\u0430\u043D\u043D\u043E\u043C\u0443 \u0441\u0435\u043B\u0435\u043A\u0442\u043E\u0440\u0443:\n            \".js-sidebar_button[data-button_id]\", \u0434\u0430\u043B\u044C\u043D\u0435\u0439\u0448\u0430\u044F \u0438\u043D\u0438\u0446\u0438\u0430\u043B\u0438\u0437\u0430\u0446\u0438\u044F \u043F\u0440\u0438\u043E\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0430");
+      console.error("\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043D\u0430\u0439\u0442\u0438 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u043F\u043E \u0443\u043A\u0430\u0437\u0430\u043D\u043D\u043E\u043C\u0443 \u0441\u0435\u043B\u0435\u043A\u0442\u043E\u0440\u0443:\n            \".js-sidebar_button[data-sidebar_button_id]\", \u0434\u0430\u043B\u044C\u043D\u0435\u0439\u0448\u0430\u044F \u0438\u043D\u0438\u0446\u0438\u0430\u043B\u0438\u0437\u0430\u0446\u0438\u044F \u043F\u0440\u0438\u043E\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0430");
       return;
     }
 
-    this._sidebar = document.querySelector(".js-sidebar[data-sidebar_id='".concat(this._object_sidebar_btn.dataset.button_id, "']"));
+    this._sidebar = document.querySelector(".js-sidebar[data-sidebar_id='".concat(this._object_sidebar_btn.dataset.sidebar_button_id, "']"));
 
     if (!this._sidebar) {
-      console.error("\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043D\u0430\u0439\u0442\u0438 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u043F\u043E \u0443\u043A\u0430\u0437\u0430\u043D\u043D\u043E\u043C\u0443 \u0441\u0435\u043B\u0435\u043A\u0442\u043E\u0440\u0443:\n            \".js-sidebar[data-sidebar_id=".concat(this._object_sidebar_btn.dataset.button_id, "\",\n             \u0434\u0430\u043B\u044C\u043D\u0435\u0439\u0448\u0430\u044F \u0438\u043D\u0438\u0446\u0438\u0430\u043B\u0438\u0437\u0430\u0446\u0438\u044F \u043F\u0440\u0438\u043E\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0430"));
+      console.error("\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043D\u0430\u0439\u0442\u0438 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u043F\u043E \u0443\u043A\u0430\u0437\u0430\u043D\u043D\u043E\u043C\u0443 \u0441\u0435\u043B\u0435\u043A\u0442\u043E\u0440\u0443:\n            \".js-sidebar[data-sidebar_id=".concat(this._object_sidebar_btn.dataset.sidebar_button_id, "\",\n             \u0434\u0430\u043B\u044C\u043D\u0435\u0439\u0448\u0430\u044F \u0438\u043D\u0438\u0446\u0438\u0430\u043B\u0438\u0437\u0430\u0446\u0438\u044F \u043F\u0440\u0438\u043E\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0430"));
       return;
     }
 
@@ -337,9 +337,9 @@ var Addon_sidebar = function () {
   Addon_sidebar.prototype._sidebar_on_click = function (e) {
     var is_sidebar_open = this._sidebar.classList.contains("js-sidebar--active");
 
-    var selector_button = ".js-sidebar_button[data-button_id='".concat(this._object_sidebar_btn.dataset.button_id, "']");
+    var selector_button = ".js-sidebar_button[data-sidebar_button_id='".concat(this._object_sidebar_btn.dataset.sidebar_button_id, "']");
     var condition_1 = e.target.classList.contains("js-sidebar");
-    var condition_2 = e.target.dataset.sidebar_id == this._object_sidebar_btn.dataset.button_id;
+    var condition_2 = e.target.dataset.sidebar_id == this._object_sidebar_btn.dataset.sidebar_button_id;
     var condition_3 = e.target.closest(selector_button);
 
     if (condition_1 && condition_2 || condition_3) {
@@ -1531,4 +1531,4 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.e3505ba254ce29da0818.js.map
+//# sourceMappingURL=index.a689ad27fe397c53d441.js.map

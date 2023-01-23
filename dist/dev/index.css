@@ -1593,6 +1593,8 @@ button:disabled {
   text-align: center;
   font-weight: bold;
   z-index: 9999;
+  font-family: monospace;
+  text-transform: uppercase;
 }
 
 

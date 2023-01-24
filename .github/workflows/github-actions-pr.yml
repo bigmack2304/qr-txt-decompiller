@@ -1,8 +1,7 @@
-name: GitHub Actions dev
-run-name: Dev updated
+name: GitHub Actions PR
+run-name: Check PR
 on:
-  push:
-    branches: [dev]
+  pull_request:
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -37,10 +36,3 @@ jobs:
           name: final
           path: dist/final
 
-      - name: Deploy dev
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-page-preview
-          clean: true
-          folder: dist/dev
-          target-folder: dist/dev

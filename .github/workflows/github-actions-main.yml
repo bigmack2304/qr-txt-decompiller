@@ -1,9 +1,7 @@
 name: GitHub Actions main
-run-name: ${{ github.actor }} is main updated
+run-name: Main updated
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 jobs:
   run:

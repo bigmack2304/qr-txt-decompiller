@@ -1,8 +1,7 @@
-name: GitHub Actions main
-run-name: Main updated
+name: GitHub Actions PR
+run-name: Check PR
 on:
-  push:
-    branches: [main]
+  pull_request:
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -19,6 +18,15 @@ jobs:
       - name: Install modules
         run: npm i
 
+      - name: Build dev
+        run: npm run build_dev
+
+      - name: Create dev Artifacts 
+        uses: actions/upload-artifact@v1
+        with:
+          name: dev
+          path: dist/dev
+
       - name: Build final
         run: npm run build_final
 
@@ -28,10 +36,3 @@ jobs:
           name: final
           path: dist/final
 
-      - name: Deploy final
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-page-preview
-          clean: true
-          folder: dist/final
-          target-folder: dist/final

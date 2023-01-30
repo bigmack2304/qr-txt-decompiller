@@ -10,6 +10,7 @@ import { btn_active_deactive, btn_filter, btn_decomp, btn_download } from "./qr_
 import { CustomErrEditor } from "./../my_libs/addon_error_edit";
 import { arry_renderer, arry_renderer_chunk, find_element } from "./qr_utils";
 import { Dark_theme } from "./../pages_scripts/index";
+import * as form_valide from "./qr_form";
 import * as Papa from "papaparse";
 
 import type * as CustomErrEditor_types from "./../my_libs/addon_error_edit";
@@ -34,6 +35,8 @@ const file_uploader = find_element<HTMLInputElement>("js-file_uploader"); // п�
 
 let custom_spoilers: Addon_spoiler = new Addon_spoiler({});
 custom_spoilers.init();
+
+form_valide.init();
 
 file_uploader.addEventListener("change", file_input); // вешаем на него событие загрузки
 file_content.style.display = "none";
@@ -75,7 +78,7 @@ function file_input(e: Event): void {
             type: "open_file",
             duble: false,
             file: new Error(),
-            info: "фаил не открыт"
+            info: "фаил не открыт",
         });
         return;
     }
@@ -113,13 +116,14 @@ function file_reader_txt(file: File): void {
         btn_active_deactive(btn_filter, false); // включаем нажимаемость для кнопок
         btn_active_deactive(btn_decomp, false);
         btn_active_deactive(btn_decomp_n, false);
+        btn_active_deactive(btn_download, true);
     };
 
     reader.onerror = () => {
         new CustomErrEditor({
             type: "read_file_txt",
             file: new Error(),
-            info: "ошибка при открытии фаила.txt"
+            info: "ошибка при открытии фаила.txt",
         });
     };
 }
@@ -140,7 +144,7 @@ function file_reader_csv(file: File): void {
                 type: "read_file_csv_step",
                 duble: false,
                 file: new Error(),
-                info: "ошибка при чтении фаила.csv\nСтруктура фаила не соответствует заданному шаблону."
+                info: "ошибка при чтении фаила.csv\nСтруктура фаила не соответствует заданному шаблону.",
             });
         }
     };
@@ -156,16 +160,19 @@ function file_reader_csv(file: File): void {
             btn_active_deactive(btn_filter, false); // включаем нажимаемость для кнопок
             btn_active_deactive(btn_decomp, false);
             btn_active_deactive(btn_decomp_n, false);
+            btn_active_deactive(btn_download, true);
         } else {
             doc_size_n.innerHTML = "";
             qr_size_n.innerHTML = "";
             file_content.style.display = "none";
             btn_active_deactive(btn_download, true);
-            btn_active_deactive(btn_decomp_n, false);
+            btn_active_deactive(btn_filter, true);
+            btn_active_deactive(btn_decomp, true);
+            btn_active_deactive(btn_decomp_n, true);
             new CustomErrEditor({
                 type: "read_file_csv_final_Step",
                 file: new Error(),
-                info: "ошибка при чтении фаила.csv"
+                info: "ошибка при чтении фаила.csv",
             });
         }
     };
@@ -182,10 +189,10 @@ function file_reader_csv(file: File): void {
             new CustomErrEditor({
                 type: "read_file_csv",
                 file: new Error(),
-                info: "ошибка при открытии фаила.csv"
+                info: "ошибка при открытии фаила.csv",
             });
         },
-        delimitersToGuess: ["\t", "|", Papa.RECORD_SEP, Papa.UNIT_SEP]
+        delimitersToGuess: ["\t", "|", Papa.RECORD_SEP, Papa.UNIT_SEP],
     });
 }
 

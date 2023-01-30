@@ -12,7 +12,7 @@ import {
     file_check,
     file_uploader,
     text_pages,
-    btn_decomp_n
+    btn_decomp_n,
 } from "./qr_descriptor";
 import { CustomErrEditor } from "./../my_libs/addon_error_edit";
 import { is_tab, caller_delay_callback, find_element } from "./qr_utils";
@@ -137,7 +137,7 @@ function btn_download_klick(): void {
                 type: "zip_download_stage",
                 duble: false,
                 file: err,
-                info: "Ошибка при скачивании фаила."
+                info: "Ошибка при скачивании фаила.",
             });
         });
 

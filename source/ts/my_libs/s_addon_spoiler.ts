@@ -70,14 +70,44 @@ class Addon_spoiler {
         }
     }
 
+    // декоратор, не позволяет выполнятся функции слишком часто,
+    // если после вызова, вызовов нету более 300мс то вызывает функцию с последнеми
+    // переданными аргументами, к функции привязывается контекст обьекта.
+    private _decoratorOneUpdRuntime<T extends Function>(func: T): () => void {
+        let timer_started: boolean = false;
+        let timer_id: number | null = null;
+        let second_args: any[] = [];
+
+        function caller(context: Addon_spoiler): void {
+            func.bind(context)(...second_args);
+            timer_started = false;
+            timer_id = null;
+            second_args = [];
+        }
+
+        return (...args: any[]): void => {
+            second_args = args;
+
+            if (!timer_started) {
+                timer_started = true;
+            } else {
+                clearTimeout(timer_id as number);
+            }
+
+            timer_id = Number(setTimeout(caller.bind(null, this), 300));
+        };
+    }
+
+    ////////////////////////////////////////////
+
     private _is_object_valid(obj: HTMLCollectionOf<Element>): boolean {
         return obj.length != 0 ? true : false;
     }
 
     private _evt_lstr_dom_load(evt: Event) {
         // при загрузке документа
-        //document.removeEventListener("DOMContentLoaded", this._evt_lstr_dom_load); // снимаем с него этот слушатель
         window.addEventListener("resize", this._evt_lstr_window_resize.bind(this)); // добавим слушатель события ресайза для окна браузера
+        this._resize_upd = this._decoratorOneUpdRuntime(this._resize_upd); // будет лучше если при множественных ресайзах, вызвать _resize_upd только на последнем.
     }
 
     private _evt_lstr_spoiler_click(evt: PointerEvent): void {
@@ -100,7 +130,6 @@ class Addon_spoiler {
     }
 
     private _evt_lstr_window_resize(evt: Event): void {
-        // при изменении размера окна браузера
         this._resize_upd();
     }
 

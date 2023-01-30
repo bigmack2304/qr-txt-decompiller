@@ -113,6 +113,7 @@ function file_reader_txt(file: File): void {
         btn_active_deactive(btn_filter, false); // включаем нажимаемость для кнопок
         btn_active_deactive(btn_decomp, false);
         btn_active_deactive(btn_decomp_n, false);
+        btn_active_deactive(btn_download, true);
     };
 
     reader.onerror = () => {
@@ -156,6 +157,7 @@ function file_reader_csv(file: File): void {
             btn_active_deactive(btn_filter, false); // включаем нажимаемость для кнопок
             btn_active_deactive(btn_decomp, false);
             btn_active_deactive(btn_decomp_n, false);
+            btn_active_deactive(btn_download, true);
         } else {
             doc_size_n.innerHTML = "";
             qr_size_n.innerHTML = "";

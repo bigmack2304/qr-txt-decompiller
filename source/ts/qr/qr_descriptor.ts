@@ -163,7 +163,9 @@ function file_reader_csv(file: File): void {
             qr_size_n.innerHTML = "";
             file_content.style.display = "none";
             btn_active_deactive(btn_download, true);
-            btn_active_deactive(btn_decomp_n, false);
+            btn_active_deactive(btn_filter, true);
+            btn_active_deactive(btn_decomp, true);
+            btn_active_deactive(btn_decomp_n, true);
             new CustomErrEditor({
                 type: "read_file_csv_final_Step",
                 file: new Error(),

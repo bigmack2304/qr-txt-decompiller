@@ -851,8 +851,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../my_libs/addon_error_edit */ "./ts/my_libs/addon_error_edit.ts");
 /* harmony import */ var _qr_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./qr_utils */ "./ts/qr/qr_utils.ts");
 /* harmony import */ var _pages_scripts_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../pages_scripts/index */ "./ts/pages_scripts/index.ts");
-/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! papaparse */ "../node_modules/papaparse/papaparse.min.js");
-/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _qr_form__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./qr_form */ "./ts/qr/qr_form.ts");
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! papaparse */ "../node_modules/papaparse/papaparse.min.js");
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_7__);
+
 
 
 
@@ -875,6 +877,7 @@ var btn_decomp_n = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_4__.find_element)("js-b
 var file_uploader = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_4__.find_element)("js-file_uploader");
 var custom_spoilers = new _my_libs_s_addon_spoiler__WEBPACK_IMPORTED_MODULE_0__.Addon_spoiler({});
 custom_spoilers.init();
+_qr_form__WEBPACK_IMPORTED_MODULE_6__.init();
 file_uploader.addEventListener("change", file_input);
 file_content.style.display = "none";
 qr_info.style.display = "none";
@@ -996,7 +999,7 @@ function file_reader_csv(file) {
     }
   };
 
-  papaparse__WEBPACK_IMPORTED_MODULE_6__.parse(file, {
+  papaparse__WEBPACK_IMPORTED_MODULE_7__.parse(file, {
     worker: true,
     step: function step(results) {
       load_step(results.data);
@@ -1011,7 +1014,7 @@ function file_reader_csv(file) {
         info: "ошибка при открытии фаила.csv"
       });
     },
-    delimitersToGuess: ["\t", "|", papaparse__WEBPACK_IMPORTED_MODULE_6__.RECORD_SEP, papaparse__WEBPACK_IMPORTED_MODULE_6__.UNIT_SEP]
+    delimitersToGuess: ["\t", "|", papaparse__WEBPACK_IMPORTED_MODULE_7__.RECORD_SEP, papaparse__WEBPACK_IMPORTED_MODULE_7__.UNIT_SEP]
   });
 }
 
@@ -1056,6 +1059,42 @@ function file_check_final(input) {
   text_header.innerHTML = "Document:".concat(pages + 1, " codes:").concat(input.length);
   pages++;
   qr_info.style.display = "none";
+}
+
+
+
+/***/ }),
+
+/***/ "./ts/qr/qr_form.ts":
+/*!**************************!*\
+  !*** ./ts/qr/qr_form.ts ***!
+  \**************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "init": function() { return /* binding */ init; }
+/* harmony export */ });
+/* harmony import */ var _qr_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./qr_utils */ "./ts/qr/qr_utils.ts");
+
+
+
+
+function init() {
+  var form = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_0__.find_element)("js-btn_decomp_n");
+  form.addEventListener("change", form_change);
+}
+
+function form_change(e) {
+  var target = e.target;
+
+  if (Number(target.value) > Number(target.max)) {
+    target.value = target.max;
+  }
+
+  if (Number(target.value) < Number(target.min)) {
+    target.value = target.min;
+  }
 }
 
 
@@ -1569,4 +1608,4 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.c2de9461e251c971a6ae.js.map
+//# sourceMappingURL=index.0896788fab09c1e5131f.js.map

@@ -985,7 +985,9 @@ function file_reader_csv(file) {
       qr_size_n.innerHTML = "";
       file_content.style.display = "none";
       (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_2__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_2__.btn_download, true);
-      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_2__.btn_active_deactive)(btn_decomp_n, false);
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_2__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_2__.btn_filter, true);
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_2__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_2__.btn_decomp, true);
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_2__.btn_active_deactive)(btn_decomp_n, true);
       new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_3__.CustomErrEditor({
         type: "read_file_csv_final_Step",
         file: new Error(),
@@ -1567,4 +1569,4 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.07f7f9175ac02bfa8617.js.map
+//# sourceMappingURL=index.c2de9461e251c971a6ae.js.map

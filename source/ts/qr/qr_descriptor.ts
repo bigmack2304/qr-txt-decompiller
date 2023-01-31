@@ -10,7 +10,7 @@ import { btn_active_deactive, btn_filter, btn_decomp, btn_download } from "./qr_
 import { CustomErrEditor } from "./../my_libs/addon_error_edit";
 import { arry_renderer, arry_renderer_chunk, find_element } from "./qr_utils";
 import { Dark_theme } from "./../pages_scripts/index";
-import * as form_valide from "./qr_form";
+import "./qr_form";
 import * as Papa from "papaparse";
 
 import type * as CustomErrEditor_types from "./../my_libs/addon_error_edit";
@@ -35,8 +35,6 @@ const file_uploader = find_element<HTMLInputElement>("js-file_uploader"); // п�
 
 let custom_spoilers: Addon_spoiler = new Addon_spoiler({});
 custom_spoilers.init();
-
-form_valide.init();
 
 file_uploader.addEventListener("change", file_input); // вешаем на него событие загрузки
 file_content.style.display = "none";

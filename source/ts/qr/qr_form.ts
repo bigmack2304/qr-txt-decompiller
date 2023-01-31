@@ -2,10 +2,8 @@
 
 import { find_element } from "./qr_utils";
 
-function init() {
-    const form = find_element<HTMLInputElement>("js-btn_decomp_n");
-    form.addEventListener("change", form_change);
-}
+const form = find_element<HTMLInputElement>("js-btn_decomp_n");
+form.addEventListener("change", form_change);
 
 function form_change(e: Event) {
     const target = e.target as HTMLInputElement;
@@ -19,4 +17,4 @@ function form_change(e: Event) {
     }
 }
 
-export { init };
+export {};

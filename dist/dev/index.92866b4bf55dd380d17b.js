@@ -877,7 +877,6 @@ var btn_decomp_n = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_4__.find_element)("js-b
 var file_uploader = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_4__.find_element)("js-file_uploader");
 var custom_spoilers = new _my_libs_s_addon_spoiler__WEBPACK_IMPORTED_MODULE_0__.Addon_spoiler({});
 custom_spoilers.init();
-_qr_form__WEBPACK_IMPORTED_MODULE_6__.init();
 file_uploader.addEventListener("change", file_input);
 file_content.style.display = "none";
 qr_info.style.display = "none";
@@ -1072,18 +1071,12 @@ function file_check_final(input) {
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "init": function() { return /* binding */ init; }
-/* harmony export */ });
 /* harmony import */ var _qr_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./qr_utils */ "./ts/qr/qr_utils.ts");
 
 
 
-
-function init() {
-  var form = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_0__.find_element)("js-btn_decomp_n");
-  form.addEventListener("change", form_change);
-}
+var form = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_0__.find_element)("js-btn_decomp_n");
+form.addEventListener("change", form_change);
 
 function form_change(e) {
   var target = e.target;
@@ -1096,8 +1089,6 @@ function form_change(e) {
     target.value = target.min;
   }
 }
-
-
 
 /***/ }),
 
@@ -1608,4 +1599,4 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.0896788fab09c1e5131f.js.map
+//# sourceMappingURL=index.92866b4bf55dd380d17b.js.map

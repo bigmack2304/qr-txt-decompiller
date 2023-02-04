@@ -40,7 +40,11 @@ window.addEventListener("scroll", modal_update);
 
 // абдейтим при изменении скролла, движении мыши
 function modal_update(e: any) {
-    if (is_device_mobile()) return; //todo: в релизе это раскоментировать
+    if (is_device_mobile()) {
+        is_cutsor_in = false;
+        one_hide();
+        return;
+    }
 
     if (e instanceof MouseEvent) {
         mouse_pos_x = e.clientX;

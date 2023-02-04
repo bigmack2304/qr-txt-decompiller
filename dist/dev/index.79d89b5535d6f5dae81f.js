@@ -739,7 +739,7 @@ function btn_filter_klick() {
       _qr_descriptor__WEBPACK_IMPORTED_MODULE_0__.file_txt[i] = _qr_descriptor__WEBPACK_IMPORTED_MODULE_0__.file_txt[i].slice(0, (0,_qr_utils__WEBPACK_IMPORTED_MODULE_2__.is_tab)(_qr_descriptor__WEBPACK_IMPORTED_MODULE_0__.file_txt[i]));
 
       if (_qr_descriptor__WEBPACK_IMPORTED_MODULE_0__.file_txt[i] == "") {
-        _qr_descriptor__WEBPACK_IMPORTED_MODULE_0__.file_txt.splice(i);
+        _qr_descriptor__WEBPACK_IMPORTED_MODULE_0__.file_txt.splice(i - 1);
       }
     }
 
@@ -852,8 +852,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _qr_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./qr_utils */ "./ts/qr/qr_utils.ts");
 /* harmony import */ var _pages_scripts_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../pages_scripts/index */ "./ts/pages_scripts/index.ts");
 /* harmony import */ var _qr_form__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./qr_form */ "./ts/qr/qr_form.ts");
-/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! papaparse */ "../node_modules/papaparse/papaparse.min.js");
-/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _qr_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./qr_modal */ "./ts/qr/qr_modal.ts");
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! papaparse */ "../node_modules/papaparse/papaparse.min.js");
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_8__);
+
 
 
 
@@ -927,8 +929,8 @@ function file_input(e) {
     file_reader_csv(file);
   }
 
-  doc_size_n.innerHTML = "".concat(Math.ceil(file.size / 1024), " Kb");
-  qr_name_n.innerHTML = file.name;
+  doc_size_n.textContent = "".concat(Math.ceil(file.size / 1024), " Kb");
+  qr_name_n.textContent = file.name;
   qr_name_n.title = file.name;
 }
 
@@ -998,7 +1000,7 @@ function file_reader_csv(file) {
     }
   };
 
-  papaparse__WEBPACK_IMPORTED_MODULE_7__.parse(file, {
+  papaparse__WEBPACK_IMPORTED_MODULE_8__.parse(file, {
     worker: true,
     step: function step(results) {
       load_step(results.data);
@@ -1013,7 +1015,7 @@ function file_reader_csv(file) {
         info: "ошибка при открытии фаила.csv"
       });
     },
-    delimitersToGuess: ["\t", "|", papaparse__WEBPACK_IMPORTED_MODULE_7__.RECORD_SEP, papaparse__WEBPACK_IMPORTED_MODULE_7__.UNIT_SEP]
+    delimitersToGuess: ["\t", "|", papaparse__WEBPACK_IMPORTED_MODULE_8__.RECORD_SEP, papaparse__WEBPACK_IMPORTED_MODULE_8__.UNIT_SEP]
   });
 }
 
@@ -1026,7 +1028,7 @@ function file_check(input) {
     _qr_icons__WEBPACK_IMPORTED_MODULE_1__.addonIcon_chunk.icon_off();
   };
 
-  file_content_container.innerHTML = "<div class=\"text_in_file__container\">\n                                            <xmp class= \"text_in_file__text\"></xmp>\n                                        </div> ".trim();
+  file_content_container.innerHTML = "<div class=\"text_in_file__container\">\n                                            <pre class= \"text_in_file__text\"></pre>\n                                        </div> ".trim();
   var text_cotainer = file_content_container.querySelector(".text_in_file__text");
 
   if (input.length < 8000) {
@@ -1037,7 +1039,7 @@ function file_check(input) {
     (0,_qr_utils__WEBPACK_IMPORTED_MODULE_4__.arry_renderer_chunk)(input, text_cotainer, callback_chunk);
   }
 
-  qr_size_n.innerHTML = input.length.toString();
+  qr_size_n.textContent = input.length.toString();
 }
 
 function file_check_final(input) {
@@ -1049,14 +1051,19 @@ function file_check_final(input) {
   var spoiler_body_dark = _pages_scripts_index__WEBPACK_IMPORTED_MODULE_5__.Dark_theme.get_dark_theme_state() ? "addon_spoiler_body--dark" : "";
   var list = document.createElement("div");
   list.className = "text_in_file__content_container";
-  list.innerHTML = "<div class=\"js-addon_spoiler\"> \n                        <div class=\"addon_spoiler_heder ".concat(spoiler_heder_dark, "\" tabindex=\"0\">\n                            <p></p>\n                            <div class=\"addon_spoiler_indicator\"></div>\n                        </div> \n                        <div class=\"addon_spoiler_body ").concat(spoiler_body_dark, "\">\n                            <xmp class=\"final_page\"></xmp>\n                        </div>\n                      </div>").trim();
+  list.innerHTML = "<div class=\"js-addon_spoiler\"> \n                        <div class=\"addon_spoiler_heder ".concat(spoiler_heder_dark, "\" tabindex=\"0\">\n                            <p></p>\n                            <div class=\"addon_spoiler_indicator\"></div>\n                        </div> \n                        <div class=\"addon_spoiler_body ").concat(spoiler_body_dark, "\">\n                            <pre class=\"final_page\"></pre>\n                        </div>\n                      </div>").trim();
   file_content_container.append(list);
   var text_cotainer = list.querySelector(".final_page");
   var text_header = list.querySelector(".addon_spoiler_heder > p");
   _qr_icons__WEBPACK_IMPORTED_MODULE_1__.addonIcon_load.icon_on();
-  (0,_qr_utils__WEBPACK_IMPORTED_MODULE_4__.arry_renderer)(input, text_cotainer, callback);
-  text_header.innerHTML = "Document:".concat(pages + 1, " codes:").concat(input.length);
-  pages++;
+
+  if ((0,_qr_utils__WEBPACK_IMPORTED_MODULE_4__.is_device_mobile)()) {
+    (0,_qr_utils__WEBPACK_IMPORTED_MODULE_4__.arry_renderer)(input, text_cotainer, callback);
+  } else {
+    (0,_qr_utils__WEBPACK_IMPORTED_MODULE_4__.arry_renderer_pre_container)(input, text_cotainer, "text_in_file__qr_item", callback);
+  }
+
+  text_header.textContent = "Document:".concat(++pages, " codes:").concat(input.length);
   qr_info.style.display = "none";
 }
 
@@ -1195,6 +1202,102 @@ var AddonIcon = function () {
 
 /***/ }),
 
+/***/ "./ts/qr/qr_modal.ts":
+/*!***************************!*\
+  !*** ./ts/qr/qr_modal.ts ***!
+  \***************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _qr_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./qr_utils */ "./ts/qr/qr_utils.ts");
+
+
+var QRIOUS_CLASS = __webpack_require__(/*! qrious */ "../node_modules/qrious/dist/qrious.js");
+
+var qrRender = new QRIOUS_CLASS({
+  element: (0,_qr_utils__WEBPACK_IMPORTED_MODULE_0__.find_element)("modal_qr_preview__vieport"),
+  size: 150,
+  level: "L"
+});
+var modal_block = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_0__.find_element)("modal_qr_preview");
+var one_open_delay_dec = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_0__.first_caller_delay_callback)(one_open, function () {}, 1000);
+var qr_render_update_delay_dec = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_0__.first_caller_delay_callback)(qr_render_update, function () {}, 100);
+var is_cutsor_in = false;
+var mouse_pos_x = 0;
+var mouse_pos_y = 0;
+document.body.addEventListener("mousemove", modal_update);
+window.addEventListener("scroll", modal_update);
+
+function modal_update(e) {
+  if ((0,_qr_utils__WEBPACK_IMPORTED_MODULE_0__.is_device_mobile)()) return;
+
+  if (e instanceof MouseEvent) {
+    mouse_pos_x = e.clientX;
+    mouse_pos_y = e.clientY;
+  }
+
+  var hover_element = document.elementFromPoint(mouse_pos_x, mouse_pos_y);
+
+  if (!hover_element) {
+    is_cutsor_in = false;
+    one_hide();
+    return;
+  }
+
+  if (hover_element.closest(".text_in_file__qr_item")) {
+    is_cutsor_in = true;
+    one_open_delay_dec();
+    modal_pos_update();
+    qr_render_update_delay_dec(hover_element);
+  } else {
+    is_cutsor_in = false;
+    one_hide();
+  }
+}
+
+function qr_render_update(hover_element) {
+  var _a;
+
+  qrRender.set({
+    value: (_a = hover_element.textContent) !== null && _a !== void 0 ? _a : ""
+  });
+}
+
+function modal_pos_update() {
+  var scroll_bar_width = 10;
+  var X_OFFSET = 30;
+  var Y_OFFSET = -70;
+  var win_h = window.innerHeight;
+  var win_w = window.innerWidth;
+
+  if (mouse_pos_x + modal_block.offsetWidth + X_OFFSET + scroll_bar_width < win_w && mouse_pos_x + X_OFFSET > 0) {
+    modal_block.style.left = "".concat(mouse_pos_x + X_OFFSET, "px");
+  } else if (mouse_pos_x + modal_block.offsetWidth + X_OFFSET > win_w && mouse_pos_x - X_OFFSET - modal_block.offsetWidth > 0) {
+    modal_block.style.left = "".concat(mouse_pos_x - X_OFFSET - modal_block.offsetWidth, "px");
+  } else {
+    modal_block.style.left = "".concat(mouse_pos_x - modal_block.offsetWidth / 2, "px");
+  }
+
+  if (mouse_pos_y - Y_OFFSET * 2.65 < win_h) {
+    modal_block.style.top = "".concat(mouse_pos_y - Y_OFFSET / 2.5, "px");
+  } else {
+    modal_block.style.top = "".concat(mouse_pos_y + Y_OFFSET * 2.5, "px");
+  }
+}
+
+function one_open() {
+  if (is_cutsor_in) {
+    modal_block.style.display = "block";
+    setTimeout(modal_pos_update);
+  }
+}
+
+function one_hide() {
+  modal_block.style.display = "none";
+}
+
+/***/ }),
+
 /***/ "./ts/qr/qr_utils.ts":
 /*!***************************!*\
   !*** ./ts/qr/qr_utils.ts ***!
@@ -1205,8 +1308,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "arry_renderer": function() { return /* binding */ arry_renderer; },
 /* harmony export */   "arry_renderer_chunk": function() { return /* binding */ arry_renderer_chunk; },
+/* harmony export */   "arry_renderer_pre_container": function() { return /* binding */ arry_renderer_pre_container; },
 /* harmony export */   "caller_delay_callback": function() { return /* binding */ caller_delay_callback; },
 /* harmony export */   "find_element": function() { return /* binding */ find_element; },
+/* harmony export */   "first_caller_delay_callback": function() { return /* binding */ first_caller_delay_callback; },
+/* harmony export */   "is_device_mobile": function() { return /* binding */ is_device_mobile; },
+/* harmony export */   "is_mobile_screen": function() { return /* binding */ is_mobile_screen; },
+/* harmony export */   "is_multiTuch": function() { return /* binding */ is_multiTuch; },
 /* harmony export */   "is_tab": function() { return /* binding */ is_tab; }
 /* harmony export */ });
 
@@ -1228,7 +1336,7 @@ function arry_renderer(arry, target, callback) {
 
   var counter = 0;
   var MAX_COUNTER = arry.length;
-  var BLOCK_SIZE = 1000;
+  var BLOCK_SIZE = 500;
 
   var get_block = function get_block() {
     var temp = "";
@@ -1243,13 +1351,49 @@ function arry_renderer(arry, target, callback) {
   };
 
   var render = function render(str) {
-    target.innerHTML += str;
+    target.textContent += str;
   };
 
   var render_dec = caller_delay_callback(render, callback);
 
   while (counter < MAX_COUNTER) {
     var block = get_block();
+    render_dec(block);
+  }
+}
+
+function arry_renderer_pre_container(arry, target, container_className, callback) {
+  if (callback === void 0) {
+    callback = function callback() {};
+  }
+
+  var counter = 0;
+  var MAX_COUNTER = arry.length;
+  var BLOCK_SIZE = 500;
+
+  function get_block_fragment() {
+    var fragment = new DocumentFragment();
+
+    for (var i = 0; counter < MAX_COUNTER && i < BLOCK_SIZE;) {
+      var pre_element = document.createElement("pre");
+      pre_element.className = container_className;
+      pre_element.textContent = arry[counter];
+      fragment.append(pre_element);
+      counter++;
+      i++;
+    }
+
+    return fragment;
+  }
+
+  var render = function render(fragment) {
+    target.append(fragment);
+  };
+
+  var render_dec = caller_delay_callback(render, callback);
+
+  while (counter < MAX_COUNTER) {
+    var block = get_block_fragment();
     render_dec(block);
   }
 }
@@ -1285,7 +1429,7 @@ function arry_renderer_chunk(arry, target, callback) {
   };
 
   var frame = function frame() {
-    target.innerHTML += get_block();
+    target.textContent += get_block();
 
     if (counter >= MAX_COUNTER) {
       scrollEnded();
@@ -1301,13 +1445,16 @@ function arry_renderer_chunk(arry, target, callback) {
   observer.observe(fake_block);
 }
 
-function caller_delay_callback(func, callback) {
+function caller_delay_callback(func, callback, delay) {
   if (callback === void 0) {
     callback = function callback() {};
   }
 
+  if (delay === void 0) {
+    delay = 0;
+  }
+
   var call_stack = [];
-  var T_DELAY = 0;
   var is_start = false;
   return function caller() {
     var args = [];
@@ -1322,9 +1469,9 @@ function caller_delay_callback(func, callback) {
 
     var func_call = function func_call() {
       if (call_stack.length >= 1) {
-        var fun = call_stack.shift();
-        func.apply(void 0, fun.argum);
-        setTimeout(func_call, T_DELAY);
+        var argum = call_stack.shift().argum;
+        func.apply(void 0, argum);
+        setTimeout(func_call, delay);
       } else {
         is_start = false;
         callback();
@@ -1333,8 +1480,47 @@ function caller_delay_callback(func, callback) {
 
     if (!is_start) {
       is_start = true;
-      setTimeout(func_call, T_DELAY);
+      setTimeout(func_call, delay);
     }
+  };
+}
+
+function first_caller_delay_callback(func, callback, delay) {
+  if (callback === void 0) {
+    callback = function callback() {};
+  }
+
+  if (delay === void 0) {
+    delay = 0;
+  }
+
+  var call_stack;
+  var is_start = false;
+  var timer_id = 0;
+  return function caller() {
+    var args = [];
+
+    for (var _i = 0; _i < arguments.length; _i++) {
+      args[_i] = arguments[_i];
+    }
+
+    call_stack = {
+      argum: args
+    };
+
+    var func_call = function func_call() {
+      var argum = call_stack.argum;
+      func.apply(void 0, argum);
+      is_start = false;
+      callback();
+    };
+
+    if (is_start) {
+      clearTimeout(timer_id);
+    }
+
+    is_start = true;
+    timer_id = setTimeout(func_call, delay);
   };
 }
 
@@ -1350,6 +1536,22 @@ function find_element(HtmlClassName, root) {
   } else {
     throw new Error("selector '.".concat(HtmlClassName, "' not fund in HTML"));
   }
+}
+
+function is_mobile_screen() {
+  return window.innerWidth >= 440 ? false : true;
+}
+
+function is_multiTuch() {
+  if (window.navigator.maxTouchPoints > 1) {
+    return true;
+  }
+
+  return false;
+}
+
+function is_device_mobile() {
+  return is_mobile_screen() || is_multiTuch() ? true : false;
 }
 
 
@@ -1592,11 +1794,11 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_require__("./ts/pages_scripts/index.ts"); })
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_require__("./ts/qr/qr_descriptor.ts"); })
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_require__("./ts/my_libs/dev_sticker.ts"); })
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-027651"], function() { return __webpack_require__("./ts/pages_scripts/index.ts"); })
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-027651"], function() { return __webpack_require__("./ts/qr/qr_descriptor.ts"); })
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-027651"], function() { return __webpack_require__("./ts/my_libs/dev_sticker.ts"); })
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.92866b4bf55dd380d17b.js.map
+//# sourceMappingURL=index.79d89b5535d6f5dae81f.js.map

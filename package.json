@@ -45,6 +45,7 @@
     },
     "dependencies": {
         "jszip": "^3.10.1",
-        "papaparse": "^5.3.2"
+        "papaparse": "^5.3.2",
+        "qrious": "^4.0.2"
     }
 }

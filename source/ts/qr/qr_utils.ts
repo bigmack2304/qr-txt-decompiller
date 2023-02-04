@@ -23,14 +23,14 @@ function is_tab(str: string): number {
 }
 
 /* 
-    выводит содержимое arry в target.innerHTML не целиком а кусками.
+    выводит содержимое arry в target.textContent не целиком а кусками.
     Каждый элемент массива = строка 
 */
 
 function arry_renderer(arry: string[], target: HTMLElement, callback = () => {}): void {
     let counter: number = 0;
     const MAX_COUNTER: number = arry.length; // максимальное количество отрисоввываемых элементов
-    const BLOCK_SIZE: number = 1000; // количество строк за отрисовку
+    const BLOCK_SIZE: number = 500; // количество строк за отрисовку
 
     const get_block = () => {
         let temp: string = "";
@@ -43,7 +43,7 @@ function arry_renderer(arry: string[], target: HTMLElement, callback = () => {})
     };
 
     const render = (str: string) => {
-        target.innerHTML += str;
+        target.textContent += str;
     };
 
     const render_dec = caller_delay_callback(render, callback);
@@ -55,7 +55,42 @@ function arry_renderer(arry: string[], target: HTMLElement, callback = () => {})
 }
 
 /*
-    выводит содержимое arry в target.innerHTML не целиком а кусками.
+    помещает каждый элемент arry в свой pre тег, получившийся набор pre елементов ложит в target
+ */
+function arry_renderer_pre_container(arry: string[], target: HTMLElement, container_className: string, callback = () => {}): void {
+    let counter: number = 0;
+    const MAX_COUNTER: number = arry.length; // максимальное количество отрисоввываемых элементов
+    const BLOCK_SIZE: number = 500; // количество строк за отрисовку
+
+    function get_block_fragment(): DocumentFragment {
+        let fragment = new DocumentFragment(); // создаем DocumentFragment
+
+        for (let i = 0; counter < MAX_COUNTER && i < BLOCK_SIZE; ) {
+            const pre_element = document.createElement("pre"); // создаем элемент
+            pre_element.className = container_className;
+            pre_element.textContent = arry[counter];
+            fragment.append(pre_element);
+            counter++;
+            i++;
+        }
+
+        return fragment; // возвращаем обертку
+    }
+
+    const render = (fragment: DocumentFragment) => {
+        target.append(fragment);
+    };
+
+    const render_dec = caller_delay_callback(render, callback);
+
+    while (counter < MAX_COUNTER) {
+        let block: DocumentFragment = get_block_fragment();
+        render_dec(block);
+    }
+}
+
+/*
+    выводит содержимое arry в target.textContent не целиком а кусками.
     эти куски будут добавлятся по мере приблежения скролла к краю не отрисованной
     части.
     Каждый элемент массива = строка 
@@ -86,7 +121,7 @@ function arry_renderer_chunk(arry: string[], target: HTMLElement, callback = () 
     };
 
     const frame = () => {
-        target.innerHTML += get_block();
+        target.textContent += get_block();
         if (counter >= MAX_COUNTER) {
             scrollEnded();
         }
@@ -109,19 +144,18 @@ function arry_renderer_chunk(arry: string[], target: HTMLElement, callback = () 
     мы должны указать.
 */
 
-function caller_delay_callback(func: TanyFunc, callback = () => {}): TanyVoidFunc {
+function caller_delay_callback<T extends TanyFunc>(func: T, callback = () => {}, delay: number = 0) {
     let call_stack: ICallStackElement[] = [];
-    const T_DELAY: number = 0;
     let is_start: boolean = false;
 
-    return function caller(...args: any[]): void {
+    return function caller(...args: Parameters<T>): void {
         call_stack.push({ argum: args });
 
         const func_call = () => {
             if (call_stack.length >= 1) {
-                let fun: ICallStackElement = call_stack.shift() as ICallStackElement; // трудоемкая процедура
-                func(...fun.argum);
-                setTimeout(func_call, T_DELAY);
+                let { argum } = call_stack.shift() as ICallStackElement; // трудоемкая процедура
+                func(...argum);
+                setTimeout(func_call, delay);
             } else {
                 is_start = false;
                 callback();
@@ -130,8 +164,36 @@ function caller_delay_callback(func: TanyFunc, callback = () => {}): TanyVoidFun
 
         if (!is_start) {
             is_start = true; // выставляем флаг работы
-            setTimeout(func_call, T_DELAY);
+            setTimeout(func_call, delay);
         }
+    };
+}
+
+/*
+    не позволяет вызывать функцию непрерывно, вместо этого вызывает функцию с последними переданными аргументами
+*/
+
+function first_caller_delay_callback<T extends TanyFunc>(func: T, callback = () => {}, delay: number = 0) {
+    let call_stack: ICallStackElement;
+    let is_start: boolean = false;
+    let timer_id: any = 0;
+
+    return function caller(...args: Parameters<T>): void {
+        call_stack = { argum: args };
+
+        const func_call = () => {
+            let { argum } = call_stack as ICallStackElement; // трудоемкая процедура
+            func(...argum);
+            is_start = false;
+            callback();
+        };
+
+        if (is_start) {
+            clearTimeout(timer_id);
+        }
+
+        is_start = true; // выставляем флаг работы
+        timer_id = setTimeout(func_call, delay);
     };
 }
 
@@ -145,5 +207,31 @@ function find_element<T>(HtmlClassName: string, root: Document | HTMLElement = d
     }
 }
 
-export { is_tab, arry_renderer, arry_renderer_chunk, caller_delay_callback, find_element };
+function is_mobile_screen(): boolean {
+    return window.innerWidth >= 440 ? false : true;
+}
+
+function is_multiTuch(): boolean {
+    if (window.navigator.maxTouchPoints > 1) {
+        return true;
+    }
+    return false;
+}
+
+function is_device_mobile() {
+    return is_mobile_screen() || is_multiTuch() ? true : false;
+}
+
+export {
+    is_tab,
+    arry_renderer,
+    arry_renderer_chunk,
+    caller_delay_callback,
+    find_element,
+    arry_renderer_pre_container,
+    first_caller_delay_callback,
+    is_mobile_screen,
+    is_multiTuch,
+    is_device_mobile,
+};
 export type {};

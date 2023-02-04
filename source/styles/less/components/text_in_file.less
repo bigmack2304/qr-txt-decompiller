@@ -14,6 +14,12 @@
         .scroll--dark(10px, 2px);
         background-color: #282a36;
         color: #dbdbb7;
+
+        & .text_in_file__qr_item {
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.178);
+            }
+        }
     }
 
     &__text {
@@ -23,6 +29,17 @@
 
     &__content_container:nth-of-type(n + 2) {
         border-top: 3px solid black;
+    }
+
+    &__qr_item {
+        margin: 0;
+        padding: 0;
+        width: fit-content;
+        cursor: default;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.178);
+        }
     }
 
     @media (min-width: @const_win_size_min) and (max-width: calc(@const_win_size_mobile - 1px)) {

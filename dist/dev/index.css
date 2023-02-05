@@ -1008,9 +1008,11 @@ button:disabled {
   line-height: 0;
   padding: 3px;
   display: none;
+  -webkit-box-shadow: 0px 0px 8px black;
+          box-shadow: 0px 0px 8px black;
 }
-.modal_qr_preview__vieport {
-  border-radius: 7px;
+.modal_qr_preview--dark > svg {
+  fill: #002350;
 }
 
 /*!*****************************************************************************************************************************************************************************************************************************!*\

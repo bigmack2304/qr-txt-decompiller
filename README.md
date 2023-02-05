@@ -55,6 +55,6 @@
 
 #### Используемые библиотеки:
 
--   jszip (генерация и сохранение .zip архива)
--   papaparse (обработка .csv таблиц)
--   qrious (рендер QR кода)
+-   [jszip](https://github.com/Stuk/jszip) (генерация и сохранение .zip архива)
+-   [papaparse](https://github.com/mholt/PapaParse) (обработка .csv таблиц)
+-   [datamatrix.js](https://github.com/datalog/datamatrix-svg) (рендер QR кода формата "data matrix")

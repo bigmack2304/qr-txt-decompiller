@@ -1,41 +1,16 @@
 import { find_element, first_caller_delay_callback, is_device_mobile } from "./qr_utils";
+import { DATAMatrix } from "../../js/libs/datamatrix";
 
-interface IInstanceQrious {
-    background: string;
-    backgroundAlpha: number;
-    element: HTMLCanvasElement;
-    foreground: string;
-    foregroundAlpha: number;
-    level: "L" | "M" | "Q" | "H";
-    mime: "image/jpeg" | "image/png";
-    padding: number;
-    size: number;
-    value: string;
-    set: (settings: Partial<Omit<IInstanceQrious, "set" | "toDataURL">>) => void;
-    toDataURL: (type?: string) => string;
-}
-
-interface IClassQrious {
-    new (parameters: Partial<Omit<IInstanceQrious, "set" | "toDataURL">>): IInstanceQrious;
-}
-
-const QRIOUS_CLASS: IClassQrious = require("qrious");
-
-let qrRender = new QRIOUS_CLASS({
-    element: find_element<HTMLCanvasElement>("modal_qr_preview__vieport"),
-    size: 150,
-    level: "L",
-});
-
-const modal_block = find_element<HTMLDivElement>("modal_qr_preview");
+const modal_block = find_element<HTMLDivElement>("modal_qr_preview"); // блок с отображаемым qr кодом
 const one_open_delay_dec = first_caller_delay_callback(one_open, () => {}, 1000); // пониженный абдейт для открытия молального окна
 const qr_render_update_delay_dec = first_caller_delay_callback(qr_render_update, () => {}, 100); // пониженный абдейт для рендера qr кода
 
-let is_cutsor_in: boolean = false;
+let is_cutsor_in: boolean = false; // находится-ли курсор над text_in_file__qr_item
 let mouse_pos_x = 0; // храним координаты положения мышки
 let mouse_pos_y = 0;
 
 document.body.addEventListener("mousemove", modal_update);
+document.body.addEventListener("mouseout", modal_update);
 window.addEventListener("scroll", modal_update);
 
 // абдейтим при изменении скролла, движении мыши
@@ -70,9 +45,16 @@ function modal_update(e: any) {
 }
 
 function qr_render_update(hover_element: Element) {
-    qrRender.set({
-        value: hover_element.textContent ?? "",
+    let svgNode = DATAMatrix({
+        msg: hover_element.textContent ?? "",
+        dim: 150,
+        rct: 0,
+        pad: 1,
+        pal: ["#000000", "#f2f4f8"],
+        vrb: 0,
     });
+
+    modal_block.replaceChildren(svgNode);
 }
 
 function modal_pos_update() {
@@ -106,6 +88,7 @@ function one_open() {
 
 function one_hide() {
     modal_block.style.display = "none";
+    modal_block.replaceChildren();
 }
 
 export {};

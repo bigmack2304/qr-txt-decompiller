@@ -1705,6 +1705,7 @@ var mouse_pos_x = 0;
 var mouse_pos_y = 0;
 document.body.addEventListener("mousemove", modal_update);
 document.body.addEventListener("mouseout", modal_update);
+window.addEventListener("scroll", modal_update);
 
 function modal_update(e) {
   if ((0,_qr_utils__WEBPACK_IMPORTED_MODULE_0__.is_device_mobile)()) {
@@ -1713,9 +1714,12 @@ function modal_update(e) {
     return;
   }
 
-  mouse_pos_x = e.clientX;
-  mouse_pos_y = e.clientY;
-  var hover_element = e.target;
+  if (e instanceof MouseEvent) {
+    mouse_pos_x = e.clientX;
+    mouse_pos_y = e.clientY;
+  }
+
+  var hover_element = document.elementFromPoint(mouse_pos_x, mouse_pos_y);
 
   if (!hover_element) {
     is_cutsor_in = false;
@@ -2287,4 +2291,4 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.3ca814e2259b8299e04f.js.map
+//# sourceMappingURL=index.324bfbf7342e3d916b7e.js.map

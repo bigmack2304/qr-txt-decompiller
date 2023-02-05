@@ -1,6 +1,8 @@
 import { find_element, first_caller_delay_callback, is_device_mobile } from "./qr_utils";
 import { DATAMatrix } from "../../js/libs/datamatrix";
 
+type TevtTarget = Element | null;
+
 const modal_block = find_element<HTMLDivElement>("modal_qr_preview"); // блок с отображаемым qr кодом
 const one_open_delay_dec = first_caller_delay_callback(one_open, () => {}, 1000); // пониженный абдейт для открытия молального окна
 const qr_render_update_delay_dec = first_caller_delay_callback(qr_render_update, () => {}, 100); // пониженный абдейт для рендера qr кода
@@ -13,8 +15,7 @@ document.body.addEventListener("mousemove", modal_update);
 document.body.addEventListener("mouseout", modal_update);
 window.addEventListener("scroll", modal_update);
 
-// абдейтим при изменении скролла, движении мыши
-function modal_update(e: any) {
+function modal_update(e: MouseEvent | Event) {
     if (is_device_mobile()) {
         is_cutsor_in = false;
         one_hide();
@@ -25,6 +26,7 @@ function modal_update(e: any) {
         mouse_pos_x = e.clientX;
         mouse_pos_y = e.clientY;
     }
+
     const hover_element = document.elementFromPoint(mouse_pos_x, mouse_pos_y);
 
     if (!hover_element) {
@@ -53,7 +55,6 @@ function qr_render_update(hover_element: Element) {
         pal: ["#000000", "#f2f4f8"],
         vrb: 0,
     });
-
     modal_block.replaceChildren(svgNode);
 }
 

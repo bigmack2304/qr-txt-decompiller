@@ -64,7 +64,7 @@ class QrPreviewer {
         data_block_calssName = "js-modal_qr_preview--undefined",
         render_setting_padding = 0,
         render_setting_size = 100,
-    }: IConstructorInput) {
+    }: IConstructorInput = {}) {
         this._modal_block = find_element<HTMLElement>("js-modal_qr_preview");
         this._modal_block_vieport = find_element<HTMLElement>("js-modal_qr_preview__render_vieport", this._modal_block);
         this._dynamic = is_dynamic;

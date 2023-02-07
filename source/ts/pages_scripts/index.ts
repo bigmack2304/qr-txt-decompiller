@@ -31,7 +31,7 @@ let support_class_dark_theme: string[] = [
     "js-sidebar__element",
     "js-sidebar__elements",
     "header__button_wrapper",
-    "modal_qr_preview",
+    "js-modal_qr_preview",
 ];
 
 let Dark_theme: Addon_dark_theme = new Addon_dark_theme({ classes_dark_style: support_class_dark_theme });

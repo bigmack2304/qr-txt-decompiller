@@ -918,14 +918,16 @@ __webpack_require__.r(__webpack_exports__);
 
 var QrPreviewer = function () {
   function QrPreviewer(_a) {
-    var _b = _a.is_dynamic,
-        is_dynamic = _b === void 0 ? false : _b,
-        _c = _a.data_block_calssName,
-        data_block_calssName = _c === void 0 ? "js-modal_qr_preview--undefined" : _c,
-        _d = _a.render_setting_padding,
-        render_setting_padding = _d === void 0 ? 0 : _d,
-        _e = _a.render_setting_size,
-        render_setting_size = _e === void 0 ? 100 : _e;
+    var _b = _a === void 0 ? {} : _a,
+        _c = _b.is_dynamic,
+        is_dynamic = _c === void 0 ? false : _c,
+        _d = _b.data_block_calssName,
+        data_block_calssName = _d === void 0 ? "js-modal_qr_preview--undefined" : _d,
+        _e = _b.render_setting_padding,
+        render_setting_padding = _e === void 0 ? 0 : _e,
+        _f = _b.render_setting_size,
+        render_setting_size = _f === void 0 ? 100 : _f;
+
     this._is_cutsor_in = false;
     this._mouse_pos_x = 0;
     this._mouse_pos_y = 0;
@@ -1289,7 +1291,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var support_class_dark_theme = ["body", "header", "main", "footer", "def_icon__icon", "header__horisontal_line", "file_info", "text_in_file", "text_blue", "addon_spoiler_heder", "addon_spoiler_body", "js-sidebar__element", "js-sidebar__elements", "header__button_wrapper", "modal_qr_preview"];
+var support_class_dark_theme = ["body", "header", "main", "footer", "def_icon__icon", "header__horisontal_line", "file_info", "text_in_file", "text_blue", "addon_spoiler_heder", "addon_spoiler_body", "js-sidebar__element", "js-sidebar__elements", "header__button_wrapper", "js-modal_qr_preview"];
 var Dark_theme = new _my_libs_addon_dark_theme__WEBPACK_IMPORTED_MODULE_2__.Addon_dark_theme({
   classes_dark_style: support_class_dark_theme
 });
@@ -2412,4 +2414,4 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.1ecaafe682d37c9a7efe.js.map
+//# sourceMappingURL=index.bcdcc9d5bac86bbb65ce.js.map

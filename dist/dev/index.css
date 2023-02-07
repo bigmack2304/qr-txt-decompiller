@@ -1619,7 +1619,7 @@ button:disabled {
 .js-modal_qr_preview .js-modal_qr_preview__render_vieport {
   line-height: 0;
 }
-.js-modal_qr_preview--dark > svg {
+.js-modal_qr_preview--dark > .js-modal_qr_preview__render_vieport > svg {
   fill: #002350;
 }
 

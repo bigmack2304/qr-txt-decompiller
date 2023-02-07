@@ -138,8 +138,10 @@ function arry_renderer_chunk(arry: string[], target: HTMLElement, callback = () 
 }
 
 /* 
-    декоратор, позволяет накапливать вызовы функции (func) но при этом осуществлять
-    эти вызовы по интервалу асинхронно. 
+
+    декоратор, не позволяет вызывать функцию непрерывно, вместо этого накопливает параметры вызовов
+    функции (func) и по интервалу delay вызывает func асинхронно столько раз сколько мы ее вызывали, с темиже параметрами.
+
     После выполнения всего стека вызовов будет вызвана функция (callback) которую
     мы должны указать.
 */
@@ -171,6 +173,11 @@ function caller_delay_callback<T extends TanyFunc>(func: T, callback = () => {},
 
 /*
     не позволяет вызывать функцию непрерывно, вместо этого вызывает функцию с последними переданными аргументами
+    delay это милисекунды в течении которых вызов функции будет обновлять последние переданные аргументы
+    и сбрасывать delay
+
+    После выполнения оборачиваемой функции будет вызвана функция (callback) которую
+    мы должны указать.
 */
 
 function first_caller_delay_callback<T extends TanyFunc>(func: T, callback = () => {}, delay: number = 0) {
@@ -197,6 +204,38 @@ function first_caller_delay_callback<T extends TanyFunc>(func: T, callback = () 
     };
 }
 
+/*
+    декоратор, не позволяет вызывать функцию непрерывно, вместо этого функция будет вызыватся с 
+    задержкой delay ms, с последними переданными параметрами функции
+    вызов функции до истечения delay приведет к обновлению переданных ранее параметров на новые.
+
+    После выполнения оборачиваемой функции будет вызвана функция (callback) которую
+    мы должны указать.
+*/
+
+function low_update_decorator<T extends TanyFunc>(func: T, callback = () => {}, delay: number = 100) {
+    let call_stack: ICallStackElement;
+    let is_start: boolean = false;
+
+    return function caller(...args: Parameters<T>): void {
+        call_stack = { argum: args };
+
+        if (is_start) {
+            return;
+        }
+
+        const func_call = () => {
+            let { argum } = call_stack as ICallStackElement; // трудоемкая процедура
+            func(...argum);
+            is_start = false;
+            callback();
+        };
+
+        is_start = true; // выставляем флаг работы
+        setTimeout(func_call, delay);
+    };
+}
+
 /* ищет элемент по указанному классу, если не находит бросает исключение */
 function find_element<T>(HtmlClassName: string, root: Document | HTMLElement = document): T {
     let selector: T | null = root.querySelector(`.${HtmlClassName}`) as T;
@@ -207,16 +246,29 @@ function find_element<T>(HtmlClassName: string, root: Document | HTMLElement = d
     }
 }
 
+/*
+    возврощает true если ширина окна менее 440px
+*/
 function is_mobile_screen(): boolean {
     return window.innerWidth >= 440 ? false : true;
 }
 
+/*
+    возврощает true если на устройстве мультитач
+    (для пк в 98% вернет false, тк мало у кого сенсорный экран)
+*/
 function is_multiTuch(): boolean {
     if (window.navigator.maxTouchPoints > 1) {
         return true;
     }
     return false;
 }
+
+/*
+    Попытка определить мобильное устройство.
+    true если это мобила
+    PS: метод не самый лучший, но для начала сойдет
+*/
 
 function is_device_mobile() {
     return is_mobile_screen() || is_multiTuch() ? true : false;
@@ -233,5 +285,6 @@ export {
     is_mobile_screen,
     is_multiTuch,
     is_device_mobile,
+    low_update_decorator,
 };
 export type {};

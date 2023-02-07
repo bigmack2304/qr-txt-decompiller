@@ -5,13 +5,13 @@
 */
 
 import { Addon_spoiler } from "./../my_libs/s_addon_spoiler";
+import { QrPreviewer } from "../my_libs/qr_preview";
+import { Dark_theme } from "./../pages_scripts/index";
 import * as qr_icons from "./qr_icons";
 import { btn_active_deactive, btn_filter, btn_decomp, btn_download } from "./qr_buttons";
 import { CustomErrEditor } from "./../my_libs/addon_error_edit";
 import { arry_renderer, arry_renderer_chunk, find_element, arry_renderer_pre_container, is_device_mobile } from "./qr_utils";
-import { Dark_theme } from "./../pages_scripts/index";
 import "./qr_form";
-import "./qr_modal";
 import * as Papa from "papaparse";
 
 import type * as CustomErrEditor_types from "./../my_libs/addon_error_edit";
@@ -33,6 +33,14 @@ const file_content = find_element<HTMLDivElement>("text_in_file"); // окно, 
 const file_content_container = find_element<HTMLDivElement>("text_in_file__container");
 const btn_decomp_n = find_element<HTMLInputElement>("js-btn_decomp_n"); // поле для задания максимального количества кодов в фаиле при разбиении
 const file_uploader = find_element<HTMLInputElement>("js-file_uploader"); // получаем загрузчик фаила
+
+let qr_modal_wnd = new QrPreviewer({
+    is_dynamic: true,
+    data_block_calssName: "text_in_file__qr_item",
+    render_setting_size: 150,
+    render_setting_padding: 1,
+});
+qr_modal_wnd.init();
 
 let custom_spoilers: Addon_spoiler = new Addon_spoiler({});
 custom_spoilers.init();

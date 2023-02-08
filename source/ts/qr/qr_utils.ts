@@ -26,7 +26,6 @@ function is_tab(str: string): number {
     выводит содержимое arry в target.textContent не целиком а кусками.
     Каждый элемент массива = строка 
 */
-
 function arry_renderer(arry: string[], target: HTMLElement, callback = () => {}): void {
     let counter: number = 0;
     const MAX_COUNTER: number = arry.length; // максимальное количество отрисоввываемых элементов
@@ -95,7 +94,6 @@ function arry_renderer_pre_container(arry: string[], target: HTMLElement, contai
     части.
     Каждый элемент массива = строка 
 */
-
 function arry_renderer_chunk(arry: string[], target: HTMLElement, callback = () => {}): void {
     let counter: number = 0; // счетчик отрисованных строк
     const MAX_COUNTER: number = arry.length; // максимальное количество отрисоввываемых элементов
@@ -145,7 +143,6 @@ function arry_renderer_chunk(arry: string[], target: HTMLElement, callback = () 
     После выполнения всего стека вызовов будет вызвана функция (callback) которую
     мы должны указать.
 */
-
 function caller_delay_callback<T extends TanyFunc>(func: T, callback = () => {}, delay: number = 0) {
     let call_stack: ICallStackElement[] = [];
     let is_start: boolean = false;
@@ -179,7 +176,6 @@ function caller_delay_callback<T extends TanyFunc>(func: T, callback = () => {},
     После выполнения оборачиваемой функции будет вызвана функция (callback) которую
     мы должны указать.
 */
-
 function first_caller_delay_callback<T extends TanyFunc>(func: T, callback = () => {}, delay: number = 0) {
     let call_stack: ICallStackElement;
     let is_start: boolean = false;
@@ -269,7 +265,6 @@ function is_multiTuch(): boolean {
     true если это мобила
     PS: метод не самый лучший, но для начала сойдет
 */
-
 function is_device_mobile() {
     return is_mobile_screen() || is_multiTuch() ? true : false;
 }

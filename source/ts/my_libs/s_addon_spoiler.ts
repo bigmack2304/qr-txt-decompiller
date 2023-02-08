@@ -38,34 +38,87 @@ class Addon_spoiler {
     public addon_spoiler_use_one: boolean; // при открытии одного споилера, закрывать остальные открытые
     public addon_spoiler_def_hide: boolean; // все споилеры закрыты по умолчанию
     public addon_spoiler_resize_upd: boolean; // обновлять размер открытого спойлера при изменении размеров окна браузера
-    private _get_addon_spoilers: HTMLCollectionOf<Element>; // получить все закрытые _evt_lstr_spoiler_click2 спойлеры
+    private _is_inited: boolean = false;
+    private _MutationObserver: MutationObserver = new MutationObserver(this._ObserverCalback.bind(this));
+    private _ObserverConfig: object = {
+        childList: true,
+        subtree: true,
+        attributes: false,
+        characterData: false,
+        characterDataOldValue: false,
+        attributeOldValue: false,
+    };
 
     constructor({ use_one = false, def_hide = true, resize_upd = true }: IConstructorInput = {}) {
         this.addon_spoiler_use_one = use_one; // задаем дефолтные значения для переменных
         this.addon_spoiler_def_hide = def_hide;
         this.addon_spoiler_resize_upd = resize_upd;
-        this._get_addon_spoilers = document.getElementsByClassName("js-addon_spoiler"); // получаем живую коллекцию всех спойлеров
     }
 
     public init(): void {
+        if (this._is_inited) return;
+
+        this._is_inited = true;
         let body_element: HTMLBodyElement | null = document.querySelector("body");
 
         if (body_element) {
             body_element.addEventListener("click", this._evt_lstr_spoiler_click.bind(this) as EventListener); // повесить новый обработчик "клик мышкой" на body
             body_element.addEventListener("keydown", this._evt_lstr_spoiler_keydown.bind(this)); // повесить новый обработчик "выбор enter,ом" на body
+            this._MutationObserver.observe(body_element, this._ObserverConfig);
         }
 
-        //if (this.addon_spoiler_resize_upd && this._is_object_valid(this._get_addon_spoilers)) {
         if (this.addon_spoiler_resize_upd) {
             // если нужно обновлять размер спойлеров при ресайзе окна и на странице есть спойлеры
             document.addEventListener("DOMContentLoaded", this._evt_lstr_dom_load.bind(this), { once: true }); // повесить новый обработчик "полной загрузки" на DOM
         }
+    }
 
-        if (!this.addon_spoiler_def_hide && this._is_object_valid(this._get_addon_spoilers)) {
-            // если спойлеры должны быть скрыты и на странице есть спойлеры
-            for (let elem of this._get_addon_spoilers as unknown as HTMLElement[]) {
-                // обходим все найденные спойлеры
-                this._addon_spoiler_use(elem); // выполняем действие при нажатии на спойлер
+    // следим за добовлением споилеров в DOM
+    private _ObserverCalback(updateElements: MutationRecord[], observer: MutationObserver) {
+        for (let obseverElem of updateElements) {
+            let addedNode: Node;
+            for (addedNode of obseverElem.addedNodes as any as []) {
+                if (addedNode.nodeName === "DIV") {
+                    let element: HTMLElement = addedNode as HTMLElement;
+                    const innerSpoilers = element.querySelectorAll<HTMLElement>(".js-addon_spoiler");
+
+                    if (element.classList.contains("js-addon_spoiler")) {
+                        this._CallbackAddSpoilers([element]);
+                    }
+
+                    if (innerSpoilers.length !== 0) {
+                        this._CallbackAddSpoilers(Array.from(innerSpoilers));
+                    }
+                }
+            }
+        }
+    }
+
+    // вызывается если в DOM добавлены спойлеры
+    private _CallbackAddSpoilers(spoilers: HTMLElement[]) {
+        if (spoilers.length == 0) return;
+
+        if (!this.addon_spoiler_def_hide) {
+            // если спойлеры должны быть открыты
+            for (let elem of spoilers) {
+                // имитируем нажатие на добавленные спойлеры
+                setTimeout(this._addon_spoiler_use.bind(this, elem));
+                /* 
+                    в споилерах я рендерю содержимое асинхронно (вне этой библиотеки),
+                    поэтому если вызвать этот метод не асинхронно то споилер откроется на 10px
+                    потому что на момент вызова этой функции в нем еще не отрендерилось содержимое
+                    я оборачиваю эту команду в setTimeout чтобы поместить ее в стек Макро задачь
+                    а так как все макро задачи выполняются поочереди от старой кновой между рендерами dom
+                    получается что эта задача выполнется после того как в этом споилере отрендерится
+                    содержимое, и он откроется нормально. 
+                */
+            }
+        } else {
+            // если спойлеры должны быть закрыты
+            for (let elem of spoilers) {
+                let object_body: HTMLElement = elem.lastElementChild as HTMLElement; // обьект с содержимым слайдера
+                object_body.toggleAttribute("inert", true); // сделать содержимое его body не фокусируемым.
+                // ps: firefox не поддерживает inert, в opera он отключен в настройках
             }
         }
     }
@@ -96,12 +149,6 @@ class Addon_spoiler {
 
             timer_id = Number(setTimeout(caller.bind(null, this), 300));
         };
-    }
-
-    ////////////////////////////////////////////
-
-    private _is_object_valid(obj: HTMLCollectionOf<Element>): boolean {
-        return obj.length != 0 ? true : false;
     }
 
     private _evt_lstr_dom_load(evt: Event) {
@@ -168,7 +215,6 @@ class Addon_spoiler {
     }
 
     private _addon_spoiler_use(DOM_obj: HTMLElement): void {
-        //let is_active: boolean = DOM_obj.classList.contains("js-addon_spoiler--active") ? true : false; // проверяет наличие нужного класса в списке, если он есть значит спойлер открыт
         let is_active: boolean = DOM_obj.classList.contains("js-addon_spoiler--active");
         let object_body: HTMLElement = DOM_obj.lastElementChild as HTMLElement; // обьект с содержимым слайдера
         let object_body_height: number = object_body.scrollHeight; // размер содержимого слайдера, в пикселях
@@ -176,13 +222,15 @@ class Addon_spoiler {
         DOM_obj.classList.toggle("js-addon_spoiler--active"); // удаляем у родителя класс если он был, если нет то добавляем
 
         if (!is_active) {
-            // если споилер закрыт
+            // если споилер закрыт, открываем
             object_body.style.maxHeight = object_body_height + "px"; // делаем высату для содержимого, равной его размеру
             this._upd_parent_height(DOM_obj, object_body_height);
+            object_body.toggleAttribute("inert", false);
         } else {
-            // если споилер открыт
+            // если споилер открыт, закрываем
             object_body.style.maxHeight = "0px"; // делаем высату для содержимого 0
             this._upd_parent_height(DOM_obj, 0);
+            object_body.toggleAttribute("inert", true);
         }
     }
 

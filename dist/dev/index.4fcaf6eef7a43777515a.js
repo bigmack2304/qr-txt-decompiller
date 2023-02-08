@@ -1091,18 +1091,31 @@ var Addon_spoiler = function () {
         _e = _b.resize_upd,
         resize_upd = _e === void 0 ? true : _e;
 
+    this._is_inited = false;
+    this._MutationObserver = new MutationObserver(this._ObserverCalback.bind(this));
+    this._ObserverConfig = {
+      childList: true,
+      subtree: true,
+      attributes: false,
+      characterData: false,
+      characterDataOldValue: false,
+      attributeOldValue: false
+    };
     this.addon_spoiler_use_one = use_one;
     this.addon_spoiler_def_hide = def_hide;
     this.addon_spoiler_resize_upd = resize_upd;
-    this._get_addon_spoilers = document.getElementsByClassName("js-addon_spoiler");
   }
 
   Addon_spoiler.prototype.init = function () {
+    if (this._is_inited) return;
+    this._is_inited = true;
     var body_element = document.querySelector("body");
 
     if (body_element) {
       body_element.addEventListener("click", this._evt_lstr_spoiler_click.bind(this));
       body_element.addEventListener("keydown", this._evt_lstr_spoiler_keydown.bind(this));
+
+      this._MutationObserver.observe(body_element, this._ObserverConfig);
     }
 
     if (this.addon_spoiler_resize_upd) {
@@ -1110,12 +1123,45 @@ var Addon_spoiler = function () {
         once: true
       });
     }
+  };
 
-    if (!this.addon_spoiler_def_hide && this._is_object_valid(this._get_addon_spoilers)) {
-      for (var _i = 0, _a = this._get_addon_spoilers; _i < _a.length; _i++) {
-        var elem = _a[_i];
+  Addon_spoiler.prototype._ObserverCalback = function (updateElements, observer) {
+    for (var _i = 0, updateElements_1 = updateElements; _i < updateElements_1.length; _i++) {
+      var obseverElem = updateElements_1[_i];
+      var addedNode = void 0;
 
-        this._addon_spoiler_use(elem);
+      for (var _a = 0, _b = obseverElem.addedNodes; _a < _b.length; _a++) {
+        addedNode = _b[_a];
+
+        if (addedNode.nodeName === "DIV") {
+          var element = addedNode;
+          var innerSpoilers = element.querySelectorAll(".js-addon_spoiler");
+
+          if (element.classList.contains("js-addon_spoiler")) {
+            this._CallbackAddSpoilers([element]);
+          }
+
+          if (innerSpoilers.length !== 0) {
+            this._CallbackAddSpoilers(Array.from(innerSpoilers));
+          }
+        }
+      }
+    }
+  };
+
+  Addon_spoiler.prototype._CallbackAddSpoilers = function (spoilers) {
+    if (spoilers.length == 0) return;
+
+    if (!this.addon_spoiler_def_hide) {
+      for (var _i = 0, spoilers_1 = spoilers; _i < spoilers_1.length; _i++) {
+        var elem = spoilers_1[_i];
+        setTimeout(this._addon_spoiler_use.bind(this, elem));
+      }
+    } else {
+      for (var _a = 0, spoilers_2 = spoilers; _a < spoilers_2.length; _a++) {
+        var elem = spoilers_2[_a];
+        var object_body = elem.lastElementChild;
+        object_body.toggleAttribute("inert", true);
       }
     }
   };
@@ -1151,10 +1197,6 @@ var Addon_spoiler = function () {
 
       timer_id = Number(setTimeout(caller.bind(null, _this), 300));
     };
-  };
-
-  Addon_spoiler.prototype._is_object_valid = function (obj) {
-    return obj.length != 0 ? true : false;
   };
 
   Addon_spoiler.prototype._evt_lstr_dom_load = function (evt) {
@@ -1223,10 +1265,14 @@ var Addon_spoiler = function () {
       object_body.style.maxHeight = object_body_height + "px";
 
       this._upd_parent_height(DOM_obj, object_body_height);
+
+      object_body.toggleAttribute("inert", false);
     } else {
       object_body.style.maxHeight = "0px";
 
       this._upd_parent_height(DOM_obj, 0);
+
+      object_body.toggleAttribute("inert", true);
     }
   };
 
@@ -2414,4 +2460,4 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.bcdcc9d5bac86bbb65ce.js.map
+//# sourceMappingURL=index.4fcaf6eef7a43777515a.js.map

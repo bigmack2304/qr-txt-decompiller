@@ -1528,7 +1528,7 @@ button:disabled {
       flex-wrap: nowrap;
   color: black;
 }
-.js-addon_spoiler--active .addon_spoiler_heder {
+.js-addon_spoiler--active > .addon_spoiler_heder {
   /* заголовок  */
   cursor: pointer;
   -webkit-column-gap: 10px;
@@ -1558,10 +1558,10 @@ button:disabled {
   transition: border 0.1s ease-out;
   background-color: #cacaca;
 }
-.js-addon_spoiler--active .addon_spoiler_heder--dark {
+.js-addon_spoiler--active > .addon_spoiler_heder--dark {
   background-color: #888888;
 }
-.js-addon_spoiler--active .addon_spoiler_heder .addon_spoiler_indicator {
+.js-addon_spoiler--active > .addon_spoiler_heder .addon_spoiler_indicator {
   /* индикатор */
   width: 1em;
   height: 1em;
@@ -1588,6 +1588,9 @@ button:disabled {
   -webkit-box-shadow: inset black 1px 0px 0px 0px;
           box-shadow: inset black 1px 0px 0px 0px;
   max-height: 0px;
+}
+.js-addon_spoiler--active .addon_spoiler_body div[class*="js-addon_spoiler"]:nth-of-type(n + 2) {
+  border-top: 2px solid black;
 }
 .js-addon_spoiler--active .addon_spoiler_body--dark {
   background-color: #282a36;

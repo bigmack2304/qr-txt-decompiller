@@ -1599,33 +1599,6 @@ button:disabled {
           box-shadow: inset #888888 2px 0px 0px 0px;
 }
 
-/*!**************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ../node_modules/css-loader/dist/cjs.js!../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../node_modules/less-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./styles/less/libs/modal_qr_preview.less ***!
-  \**************************************************************************************************************************************************************************************************************************************/
-.js-modal_qr_preview {
-  border-radius: 7px;
-  border-width: 1px;
-  border-color: black;
-  border-style: solid;
-  background-color: #e7e7e7;
-  padding: 3px;
-  display: none;
-}
-.js-modal_qr_preview--open {
-  display: block;
-}
-.js-modal_qr_preview--dynamic {
-  position: fixed;
-  -webkit-box-shadow: 0px 0px 8px black;
-          box-shadow: 0px 0px 8px black;
-}
-.js-modal_qr_preview .js-modal_qr_preview__render_vieport {
-  line-height: 0;
-}
-.js-modal_qr_preview--dark > .js-modal_qr_preview__render_vieport > svg {
-  fill: #002350;
-}
-
 /*!********************************************************************************************************************************************************************************************************************************************!*\
   !*** css ../node_modules/css-loader/dist/cjs.js!../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../node_modules/less-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./styles/less/components/dev_mode_sticker.less ***!
   \********************************************************************************************************************************************************************************************************************************************/

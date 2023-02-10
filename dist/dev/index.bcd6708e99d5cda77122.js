@@ -1,490 +1,5 @@
-/******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
-
-/***/ "./js/libs/datamatrix.js":
-/*!*******************************!*\
-  !*** ./js/libs/datamatrix.js ***!
-  \*******************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DATAMatrix": function() { return /* binding */ DATAMatrix; }
-/* harmony export */ });
-/**
-	https://github.com/datalog/datamatrix-svg
-	under MIT license
-	# datamatrix.js has no dependencies
-	Copyright (c) 2020 Constantine
-*/
-
-
-function DATAMatrix(Q) {
-  var M = [],
-      xx = 0,
-      yy = 0,
-      bit = function bit(x, y) {
-    M[y] = M[y] || [], M[y][x] = 1;
-  },
-      toAscii = function toAscii(t) {
-    var r = [],
-        l = t.length;
-
-    for (var i = 0; i < l; i++) {
-      var c = t.charCodeAt(i),
-          c1 = i + 1 < l ? t.charCodeAt(i + 1) : 0;
-
-      if (c > 47 && c < 58 && c1 > 47 && c1 < 58) {
-        /* 2 digits */
-        r.push((c - 48) * 10 + c1 + 82),
-        /* - 48 + 130 = 82 */
-        i++;
-      } else if (c > 127) {
-        /* extended char */
-        r.push(235), r.push(c - 127 & 255);
-      } else r.push(c + 1);
-      /* char */
-
-    }
-
-    return r;
-  },
-      toBase = function toBase(t) {
-    var r = [231],
-
-    /* switch to Base 256 */
-    l = t.length;
-
-    if (250 < l) {
-      r.push(37 + (l / 250 | 0) & 255);
-      /* length high byte (in 255 state algo) */
-    }
-
-    r.push(l % 250 + 149 * (r.length + 1) % 255 + 1 & 255);
-    /* length low byte (in 255 state algo) */
-
-    for (var i = 0; i < l; i++) {
-      r.push(t.charCodeAt(i) + 149 * (r.length + 1) % 255 + 1 & 255);
-      /* data in 255 state algo */
-    }
-
-    return r;
-  },
-      toEdifact = function toEdifact(t) {
-    var n = t.length,
-        l = n + 1 & -4,
-        cw = 0,
-        ch,
-        r = l > 0 ? [240] : [];
-    /* switch to Edifact */
-
-    for (var i = 0; i < l; i++) {
-      if (i < l - 1) {
-        /* encode char */
-        ch = t.charCodeAt(i);
-        if (ch < 32 || ch > 94) return [];
-        /* not in set */
-      } else ch = 31;
-      /* return to ASCII */
-
-
-      cw = cw * 64 + (ch & 63);
-
-      if ((i & 3) == 3) {
-        /* 4 data in 3 words */
-        r.push(cw >> 16), r.push(cw >> 8 & 255), r.push(cw & 255), cw = 0;
-      }
-    }
-
-    ;
-    return l > n ? r : r.concat(toAscii(t.substr(l == 0 ? 0 : l - 1)));
-    /* last chars*/
-  },
-      toText = function toText(t, s) {
-    var i,
-        j,
-        cc = 0,
-        cw = 0,
-        l = t.length,
-        r = [s[0]],
-
-    /* start switch */
-    push = function push(v) {
-      /* pack 3 chars in 2 codes */
-      cw = 40 * cw + v;
-      /* add code */
-
-      if (cc++ == 2) {
-        r.push(++cw >> 8), r.push(cw & 255), cc = cw = 0;
-      }
-    };
-
-    for (i = 0; i < l; i++) {
-      /* last char in ASCII is shorter */
-      if (0 == cc && i == l - 1) break;
-      var ch = t.charCodeAt(i);
-
-      if (ch > 127 && 238 != r[0]) {
-        /* extended char */
-        push(1), push(30), ch -= 128;
-        /* hi bit in C40 & TEXT */
-      }
-
-      for (j = 1; ch > s[j]; j += 3) {
-        ;
-      }
-      /* select char set */
-
-
-      var x = s[j + 1];
-      /* shift */
-
-      if (8 == x || 9 == x && 0 == cc && i == l - 1) return [];
-      /* char not in set or padding fails */
-
-      if (x < 5 && cc == 2 && i == l - 1) break;
-      /* last char in ASCII */
-
-      if (x < 5) push(x);
-      /* shift */
-
-      push(ch - s[j + 2]);
-      /* char offset */
-    }
-
-    if (2 == cc && 238 !== r[0]) {
-      /* add pad */
-      push(0);
-    }
-
-    r.push(254);
-    /* return to ASCII */
-
-    if (cc > 0 || i < l) r = r.concat(toAscii(t.substr(i - cc)));
-    /* last chars */
-
-    return r;
-  },
-      encodeMsg = function encodeMsg(text, rct) {
-    text = unescape(encodeURI(text));
-    var M = [];
-    var enc = toAscii(text),
-        el = enc.length,
-        k = toText(text, [
-    /* C40 */
-    230, 31, 0, 0, 32, 9, 29, 47, 1, 33, 57, 9, 44, 64, 1, 43, 90, 9, 51, 95, 1, 69, 127, 2, 96, 255, 1, 0]),
-        l = k.length;
-    if (l > 0 && l < el) enc = k, el = l;
-    k = toText(text, [
-    /* TEXT */
-    239, 31, 0, 0, 32, 9, 29, 47, 1, 33, 57, 9, 44, 64, 1, 43, 90, 2, 64, 95, 1, 69, 122, 9, 83, 127, 2, 96, 255, 1, 0]);
-    l = k.length;
-    if (l > 0 && l < el) enc = k, el = l;
-    k = toText(text, [
-    /* X12*/
-    238, 12, 8, 0, 13, 9, 13, 31, 8, 0, 32, 9, 29, 41, 8, 0, 42, 9, 41, 47, 8, 0, 57, 9, 44, 64, 8, 0, 90, 9, 51, 255, 8, 0]);
-    l = k.length;
-    if (l > 0 && l < el) enc = k, el = l;
-    k = toEdifact(text);
-    l = k.length;
-    if (l > 0 && l < el) enc = k, el = l;
-    k = toBase(text);
-    l = k.length;
-    if (l > 0 && l < el) enc = k, el = l;
-    var h,
-        w,
-        nc = 1,
-        nr = 1,
-        fw,
-        fh,
-
-    /* symbol size, regions, region size */
-    i,
-        j = -1,
-        c,
-        r,
-        s,
-        b = 1,
-
-    /* compute symbol size */
-    rs = new Array(70),
-
-    /* reed / solomon code */
-    rc = new Array(70),
-        lg = new Array(256),
-
-    /* log / exp table for multiplication */
-    ex = new Array(255);
-
-    if (rct && el < 50) {
-      /* rect */
-      k = [
-      /* symbol width, checkwords */
-      16, 7, 28, 11, 24, 14, 32, 18, 32, 24, 44, 28];
-
-      do {
-        w = k[++j];
-        /* width */
-
-        h = 6 + (j & 12);
-        /* height */
-
-        l = w * h / 8;
-        /* bytes count in symbol */
-      } while (l - k[++j] < el);
-      /* could we fill the rect? */
-
-      /* column regions */
-
-
-      if (w > 25) nc = 2;
-    } else {
-      /* square */
-      w = h = 6;
-      i = 2;
-      /* size increment */
-
-      k = [5, 7, 10, 12, 14, 18, 20, 24, 28, 36, 42, 48, 56, 68, 84, 112, 144, 192, 224, 272, 336, 408, 496, 620];
-      /* rs checkwords */
-
-      do {
-        if (++j == k.length) return [0, 0];
-        /* msg is too long */
-
-        if (w > 11 * i) i = 4 + i & 12;
-        /* advance increment */
-
-        w = h += i;
-        l = w * h >> 3;
-      } while (l - k[j] < el);
-
-      if (w > 27) nr = nc = 2 * (w / 54 | 0) + 2;
-      /* regions */
-
-      if (l > 255) b = 2 * (l >> 9) + 2;
-      /* blocks */
-    }
-
-    s = k[j],
-    /* rs checkwords */
-    fw = w / nc,
-    /* region size */
-    fh = h / nr;
-    /* first padding */
-
-    if (el < l - s) enc[el++] = 129;
-    /* more padding */
-
-    while (el < l - s) {
-      enc[el++] = (149 * el % 253 + 130) % 254;
-    }
-    /* Reed Solomon error detection and correction */
-
-
-    s /= b;
-    /* log / exp table of Galois field */
-
-    for (j = 1, i = 0; i < 255; i++) {
-      ex[i] = j, lg[j] = i, j += j;
-      if (j > 255) j ^= 301;
-      /* 301 == a^8 + a^5 + a^3 + a^2 + 1 */
-    }
-    /* RS generator polynomial */
-
-
-    for (rs[s] = 0, i = 1; i <= s; i++) {
-      for (j = s - i, rs[j] = 1; j < s; j++) {
-        rs[j] = rs[j + 1] ^ ex[(lg[rs[j]] + i) % 255];
-      }
-    }
-    /* RS correction data for each block */
-
-
-    for (c = 0; c < b; c++) {
-      for (i = 0; i <= s; i++) {
-        rc[i] = 0;
-      }
-
-      for (i = c; i < el; i += b) {
-        for (j = 0, x = rc[0] ^ enc[i]; j < s; j++) {
-          rc[j] = rc[j + 1] ^ (x ? ex[(lg[rs[j]] + lg[x]) % 255] : 0);
-        }
-      }
-      /* interleaved correction data */
-
-
-      for (i = 0; i < s; i++) {
-        enc[el + c + i * b] = rc[i];
-      }
-    }
-    /* layout perimeter finder pattern */
-
-    /* horizontal */
-
-
-    for (i = 0; i < h + 2 * nr; i += fh + 2) {
-      for (j = 0; j < w + 2 * nc; j++) {
-        bit(j, i + fh + 1);
-        if ((j & 1) == 0) bit(j, i);
-      }
-    }
-    /* vertical */
-
-
-    for (i = 0; i < w + 2 * nc; i += fw + 2) {
-      for (j = 0; j < h; j++) {
-        bit(i, j + (j / fh | 0) * 2 + 1);
-        if ((j & 1) == 1) bit(i + fw + 1, j + (j / fh | 0) * 2);
-      }
-    }
-
-    s = 2,
-    /* step */
-    c = 0,
-    /* column */
-    r = 4,
-    /* row */
-    b = [
-    /* nominal byte layout */
-    0, 0, -1, 0, -2, 0, 0, -1, -1, -1, -2, -1, -1, -2, -2, -2];
-    /* diagonal steps */
-
-    for (i = 0; i < l; r -= s, c += s) {
-      if (r == h - 3 && c == -1) k = [
-      /* corner A layout */
-      w, 6 - h, w, 5 - h, w, 4 - h, w, 3 - h, w - 1, 3 - h, 3, 2, 2, 2, 1, 2];else if (r == h + 1 && c == 1 && (w & 7) == 0 && (h & 7) == 6) k = [
-      /* corner D layout */
-      w - 2, -h, w - 3, -h, w - 4, -h, w - 2, -1 - h, w - 3, -1 - h, w - 4, -1 - h, w - 2, -2, -1, -2];else {
-        if (r == 0 && c == w - 2 && w & 3) continue;
-        /* corner B: omit upper left */
-
-        if (r < 0 || c >= w || r >= h || c < 0) {
-          /* outside */
-          s = -s,
-          /* turn around */
-          r += 2 + s / 2, c += 2 - s / 2;
-
-          while (r < 0 || c >= w || r >= h || c < 0) {
-            r -= s, c += s;
-          }
-        }
-
-        if (r == h - 2 && c == 0 && w & 3) k = [
-        /* corner B layout */
-        w - 1, 3 - h, w - 1, 2 - h, w - 2, 2 - h, w - 3, 2 - h, w - 4, 2 - h, 0, 1, 0, 0, 0, -1];else if (r == h - 2 && c == 0 && (w & 7) == 4) k = [
-        /* corner C layout */
-        w - 1, 5 - h, w - 1, 4 - h, w - 1, 3 - h, w - 1, 2 - h, w - 2, 2 - h, 0, 1, 0, 0, 0, -1];else if (r == 1 && c == w - 1 && (w & 7) == 0 && (h & 7) == 6) continue;
-        /* omit corner D */
-        else k = b;
-        /* nominal L - shape layout */
-      }
-      /* layout each bit */
-
-      for (el = enc[i++], j = 0; el > 0; j += 2, el >>= 1) {
-        if (el & 1) {
-          var x = c + k[j],
-              y = r + k[j + 1];
-          /* wrap around */
-
-          if (x < 0) x += w, y += 4 - (w + 4 & 7);
-          if (y < 0) y += h, x += 4 - (h + 4 & 7);
-          /* region gap */
-
-          bit(x + 2 * (x / fw | 0) + 1, y + 2 * (y / fh | 0) + 1);
-        }
-      }
-    }
-    /* unfilled corner */
-
-
-    for (i = w; i & 3; i--) {
-      bit(i, i);
-    }
-
-    xx = w + 2 * nc, yy = h + 2 * nr;
-  };
-
-  return function () {
-    function ishex(c) {
-      return /^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/i.test(c);
-    }
-
-    function svg(n, a) {
-      n = document.createElementNS(ns, n);
-
-      for (var o in a || {}) {
-        n.setAttribute(o, a[o]);
-      }
-
-      return n;
-    }
-
-    var abs = Math.abs,
-        r,
-        x,
-        y,
-        d,
-        sx,
-        sy,
-        ns = 'http://www.w3.org/2000/svg',
-        path = '',
-        q = 'string' == typeof Q ? {
-      msg: Q
-    } : Q || {},
-        p = q.pal || ['#000'],
-        dm = abs(q.dim) || 256,
-        pd = abs(q.pad),
-        pd = pd > -1 ? pd : 2,
-        mx = [1, 0, 0, 1, pd, pd],
-        fg = p[0],
-        fg = ishex(fg) ? fg : '#000',
-        bg = p[1],
-        bg = ishex(bg) ? bg : 0,
-
-    /* render optimized or verbose svg */
-    optimized = q.vrb ? 0 : 1;
-    encodeMsg(q.msg || '', q.rct);
-    sx = xx + pd * 2, sy = yy + pd * 2;
-    y = yy;
-
-    while (y--) {
-      d = 0, x = xx;
-
-      while (x--) {
-        if (M[y][x]) {
-          if (optimized) {
-            d++;
-            if (!M[y][x - 1]) path += 'M' + x + ',' + y + 'h' + d + 'v1h-' + d + 'v-1z', d = 0;
-          } else path += 'M' + x + ',' + y + 'h1v1h-1v-1z';
-        }
-      }
-    }
-
-    r = svg('svg', {
-      'viewBox': [0, 0, sx, sy].join(' '),
-      'width': dm / sy * sx | 0,
-      'height': dm,
-      'fill': fg,
-      'shape-rendering': 'crispEdges',
-      'xmlns': ns,
-      'version': '1.1'
-    });
-    if (bg) r.appendChild(svg('path', {
-      'fill': bg,
-      'd': 'M0,0v' + sy + 'h' + sx + 'V0H0Z'
-    }));
-    r.appendChild(svg('path', {
-      'transform': 'matrix(' + mx + ')',
-      'd': path
-    }));
-    return r;
-  }();
-}
-
-
-
-/***/ }),
+"use strict";
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["index"],{
 
 /***/ "./ts/my_libs/addon_dark_theme.ts":
 /*!****************************************!*\
@@ -899,173 +414,6 @@ function onLoad(e) {
 
 /***/ }),
 
-/***/ "./ts/my_libs/qr_preview.ts":
-/*!**********************************!*\
-  !*** ./ts/my_libs/qr_preview.ts ***!
-  \**********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "QrPreviewer": function() { return /* binding */ QrPreviewer; }
-/* harmony export */ });
-/* harmony import */ var _qr_qr_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../qr/qr_utils */ "./ts/qr/qr_utils.ts");
-/* harmony import */ var _js_libs_datamatrix__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../js/libs/datamatrix */ "./js/libs/datamatrix.js");
-/* harmony import */ var _styles_less_libs_modal_qr_preview_less__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../styles/less/libs/modal_qr_preview.less */ "./styles/less/libs/modal_qr_preview.less");
-
-
-
-
-var QrPreviewer = function () {
-  function QrPreviewer(_a) {
-    var _b = _a === void 0 ? {} : _a,
-        _c = _b.is_dynamic,
-        is_dynamic = _c === void 0 ? false : _c,
-        _d = _b.data_block_calssName,
-        data_block_calssName = _d === void 0 ? "js-modal_qr_preview--undefined" : _d,
-        _e = _b.render_setting_padding,
-        render_setting_padding = _e === void 0 ? 0 : _e,
-        _f = _b.render_setting_size,
-        render_setting_size = _f === void 0 ? 100 : _f;
-
-    this._is_cutsor_in = false;
-    this._mouse_pos_x = 0;
-    this._mouse_pos_y = 0;
-    this._dynamic = false;
-    this._is_inited = false;
-    this._FLOAT_OFFSET = 20;
-    this._dynamic_open_delay_dec = (0,_qr_qr_utils__WEBPACK_IMPORTED_MODULE_0__.first_caller_delay_callback)(this._dynamic_open.bind(this), function () {}, 1000);
-    this._qr_render_update_delay_dec = (0,_qr_qr_utils__WEBPACK_IMPORTED_MODULE_0__.first_caller_delay_callback)(this._qr_render_update.bind(this), function () {}, 100);
-    this._modal_block = (0,_qr_qr_utils__WEBPACK_IMPORTED_MODULE_0__.find_element)("js-modal_qr_preview");
-    this._modal_block_vieport = (0,_qr_qr_utils__WEBPACK_IMPORTED_MODULE_0__.find_element)("js-modal_qr_preview__render_vieport", this._modal_block);
-    this._dynamic = is_dynamic;
-    this._data_block_calssName = data_block_calssName;
-    this._qr_setting_padding = render_setting_padding;
-    this._qr_setting_size = render_setting_size;
-  }
-
-  QrPreviewer.prototype.init = function () {
-    if (this._is_inited) return;
-    this._is_inited = true;
-
-    if (!this._dynamic) {
-      this._modal_block.classList.add("js-modal_qr_preview--static");
-
-      this._modal_block.classList.add("js-modal_qr_preview--open");
-    } else {
-      this._modal_block.classList.add("js-modal_qr_preview--dynamic");
-
-      document.body.addEventListener("mousemove", this._dynamic_modal_update.bind(this));
-      document.body.addEventListener("mouseout", this._dynamic_modal_update.bind(this));
-      window.addEventListener("scroll", this._dynamic_modal_update.bind(this));
-    }
-  };
-
-  QrPreviewer.prototype.qr_renderer = function (value) {
-    if (!this._is_inited) return;
-
-    this._qr_render_update(value);
-  };
-
-  QrPreviewer.prototype.get_dom_element = function () {
-    return this._modal_block;
-  };
-
-  QrPreviewer.prototype._dynamic_modal_update = function (e) {
-    var _a;
-
-    if ((0,_qr_qr_utils__WEBPACK_IMPORTED_MODULE_0__.is_device_mobile)()) {
-      this._is_cutsor_in = false;
-
-      this._dynamic_hide();
-
-      return;
-    }
-
-    if (e instanceof MouseEvent) {
-      this._mouse_pos_x = e.clientX;
-      this._mouse_pos_y = e.clientY;
-    }
-
-    var hover_element = document.elementFromPoint(this._mouse_pos_x, this._mouse_pos_y);
-
-    if (!hover_element) {
-      this._is_cutsor_in = false;
-
-      this._dynamic_hide();
-
-      return;
-    }
-
-    if (hover_element.closest(".".concat(this._data_block_calssName))) {
-      this._is_cutsor_in = true;
-
-      this._dynamic_open_delay_dec();
-
-      this._modal_pos_update();
-
-      this._qr_render_update_delay_dec((_a = hover_element.textContent) !== null && _a !== void 0 ? _a : "");
-    } else {
-      this._is_cutsor_in = false;
-
-      this._dynamic_hide();
-    }
-  };
-
-  QrPreviewer.prototype._modal_pos_update = function () {
-    var scroll_bar_width = 10;
-    var X_OFFSET = this._modal_block.offsetWidth / 100 * this._FLOAT_OFFSET;
-    var Y_OFFSET = -(this._modal_block.offsetHeight / 100 * this._FLOAT_OFFSET);
-    var win_h = window.innerHeight;
-    var win_w = window.innerWidth;
-
-    if (this._mouse_pos_x + this._modal_block.offsetWidth + X_OFFSET + scroll_bar_width < win_w && this._mouse_pos_x + X_OFFSET > 0) {
-      this._modal_block.style.left = "".concat(this._mouse_pos_x + X_OFFSET, "px");
-    } else if (this._mouse_pos_x + this._modal_block.offsetWidth + X_OFFSET > win_w && this._mouse_pos_x - X_OFFSET - this._modal_block.offsetWidth > 0) {
-      this._modal_block.style.left = "".concat(this._mouse_pos_x - X_OFFSET - this._modal_block.offsetWidth, "px");
-    } else {}
-
-    if (this._mouse_pos_y + this._modal_block.offsetHeight - Y_OFFSET < win_h) {
-      this._modal_block.style.top = "".concat(this._mouse_pos_y - Y_OFFSET, "px");
-    } else {
-      this._modal_block.style.top = "".concat(this._mouse_pos_y - this._modal_block.offsetHeight + Y_OFFSET, "px");
-    }
-  };
-
-  QrPreviewer.prototype._qr_render_update = function (encode_message) {
-    var svgNode = (0,_js_libs_datamatrix__WEBPACK_IMPORTED_MODULE_1__.DATAMatrix)({
-      msg: encode_message,
-      dim: this._qr_setting_size,
-      rct: 0,
-      pad: this._qr_setting_padding,
-      pal: ["#000000", "#f2f4f8"],
-      vrb: 0
-    });
-
-    this._modal_block_vieport.replaceChildren(svgNode);
-  };
-
-  QrPreviewer.prototype._dynamic_open = function () {
-    if (this._is_cutsor_in) {
-      this._modal_block.classList.add("js-modal_qr_preview--open");
-
-      setTimeout(this._modal_pos_update.bind(this));
-    }
-  };
-
-  QrPreviewer.prototype._dynamic_hide = function () {
-    this._modal_block.classList.remove("js-modal_qr_preview--open");
-
-    this._modal_block_vieport.replaceChildren();
-  };
-
-  return QrPreviewer;
-}();
-
-
-
-/***/ }),
-
 /***/ "./ts/my_libs/s_addon_spoiler.ts":
 /*!***************************************!*\
   !*** ./ts/my_libs/s_addon_spoiler.ts ***!
@@ -1331,6 +679,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_less_pages_main_index_less__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../styles/less/pages_main/index.less */ "./styles/less/pages_main/index.less");
 /* harmony import */ var _my_libs_addon_dark_theme__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../my_libs/addon_dark_theme */ "./ts/my_libs/addon_dark_theme.ts");
 /* harmony import */ var _my_libs_addon_sidebar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../my_libs/addon_sidebar */ "./ts/my_libs/addon_sidebar.ts");
+/* harmony import */ var _qr_qr_descriptor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../qr/qr_descriptor */ "./ts/qr/qr_descriptor.ts");
+
 
 
 
@@ -1543,15 +893,158 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "text_pages": function() { return /* binding */ text_pages; }
 /* harmony export */ });
 /* harmony import */ var _my_libs_s_addon_spoiler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../my_libs/s_addon_spoiler */ "./ts/my_libs/s_addon_spoiler.ts");
-/* harmony import */ var _my_libs_qr_preview__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../my_libs/qr_preview */ "./ts/my_libs/qr_preview.ts");
-/* harmony import */ var _pages_scripts_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../pages_scripts/index */ "./ts/pages_scripts/index.ts");
-/* harmony import */ var _qr_icons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./qr_icons */ "./ts/qr/qr_icons.ts");
-/* harmony import */ var _qr_buttons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./qr_buttons */ "./ts/qr/qr_buttons.ts");
-/* harmony import */ var _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../my_libs/addon_error_edit */ "./ts/my_libs/addon_error_edit.ts");
-/* harmony import */ var _qr_utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./qr_utils */ "./ts/qr/qr_utils.ts");
-/* harmony import */ var _qr_form__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./qr_form */ "./ts/qr/qr_form.ts");
-/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! papaparse */ "../node_modules/papaparse/papaparse.min.js");
-/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _pages_scripts_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../pages_scripts/index */ "./ts/pages_scripts/index.ts");
+/* harmony import */ var _qr_icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./qr_icons */ "./ts/qr/qr_icons.ts");
+/* harmony import */ var _qr_buttons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./qr_buttons */ "./ts/qr/qr_buttons.ts");
+/* harmony import */ var _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../my_libs/addon_error_edit */ "./ts/my_libs/addon_error_edit.ts");
+/* harmony import */ var _qr_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./qr_utils */ "./ts/qr/qr_utils.ts");
+/* harmony import */ var _qr_form__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./qr_form */ "./ts/qr/qr_form.ts");
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! papaparse */ "../node_modules/papaparse/papaparse.min.js");
+/* harmony import */ var papaparse__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(papaparse__WEBPACK_IMPORTED_MODULE_7__);
+
+
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = undefined && undefined.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function sent() {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (g && (g = 0, op[0] && (_ = 0)), _) {
+      try {
+        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+        if (y = 0, t) op = [op[0] & 2, t.value];
+
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+
+          case 4:
+            _.label++;
+            return {
+              value: op[1],
+              done: false
+            };
+
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+
+          case 7:
+            op = _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+
+          default:
+            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              _ = 0;
+              continue;
+            }
+
+            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              _.label = op[1];
+              break;
+            }
+
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+
+              _.ops.push(op);
+
+              break;
+            }
+
+            if (t[2]) _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+        }
+
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
 
 
 
@@ -1561,38 +1054,65 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var qr_modal_wnd;
+load_qrModalWndComponent()["catch"](function (err) {
+  isLoad_qrModalWndComponent = false;
+  console.error(err);
+});
 
+function load_qrModalWndComponent() {
+  return __awaiter(this, void 0, void 0, function () {
+    var QrPreviewer;
+    return __generator(this, function (_a) {
+      switch (_a.label) {
+        case 0:
+          if (!(!(0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.is_device_mobile)() && !isLoad_qrModalWndComponent)) return [3, 2];
+          return [4, __webpack_require__.e(/*! import() */ "ts_my_libs_qr_preview_ts").then(__webpack_require__.bind(__webpack_require__, /*! ../my_libs/qr_preview */ "./ts/my_libs/qr_preview.ts"))];
+
+        case 1:
+          QrPreviewer = _a.sent().QrPreviewer;
+          qr_modal_wnd = new QrPreviewer({
+            is_dynamic: true,
+            data_block_calssName: "text_in_file__qr_item",
+            render_setting_size: 150,
+            render_setting_padding: 1
+          });
+          qr_modal_wnd.init();
+          isLoad_qrModalWndComponent = true;
+          return [2];
+
+        case 2:
+          isLoad_qrModalWndComponent = false;
+          return [2];
+      }
+    });
+  });
+}
 
 var file_txt = "";
 var pages = 0;
 var text_pages = [];
-var qr_info = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.find_element)("file_info");
-var qr_name_n = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.find_element)("file_info__name", qr_info).children[0];
-var qr_size_n = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.find_element)("file_info__QRn", qr_info).children[0];
-var doc_size_n = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.find_element)("file_info__size", qr_info).children[0];
-var file_content = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.find_element)("text_in_file");
-var file_content_container = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.find_element)("text_in_file__container");
-var btn_decomp_n = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.find_element)("js-btn_decomp_n");
-var file_uploader = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.find_element)("js-file_uploader");
-var qr_modal_wnd = new _my_libs_qr_preview__WEBPACK_IMPORTED_MODULE_1__.QrPreviewer({
-  is_dynamic: true,
-  data_block_calssName: "text_in_file__qr_item",
-  render_setting_size: 150,
-  render_setting_padding: 1
-});
-qr_modal_wnd.init();
+var qr_info = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.find_element)("file_info");
+var qr_name_n = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.find_element)("file_info__name", qr_info).children[0];
+var qr_size_n = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.find_element)("file_info__QRn", qr_info).children[0];
+var doc_size_n = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.find_element)("file_info__size", qr_info).children[0];
+var file_content = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.find_element)("text_in_file");
+var file_content_container = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.find_element)("text_in_file__container");
+var btn_decomp_n = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.find_element)("js-btn_decomp_n");
+var file_uploader = (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.find_element)("js-file_uploader");
+var isLoad_qrModalWndComponent = false;
 var custom_spoilers = new _my_libs_s_addon_spoiler__WEBPACK_IMPORTED_MODULE_0__.Addon_spoiler({});
 custom_spoilers.init();
 file_uploader.addEventListener("change", file_input);
 file_content.style.display = "none";
 qr_info.style.display = "none";
-_qr_icons__WEBPACK_IMPORTED_MODULE_3__.addonIcon_load.icon_off_hand();
-_qr_icons__WEBPACK_IMPORTED_MODULE_3__.addonIcon_chunk.icon_off_hand();
-(0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(file_uploader, false);
-(0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_filter, true);
-(0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_decomp, true);
-(0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_download, true);
-(0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(btn_decomp_n, false);
+_qr_icons__WEBPACK_IMPORTED_MODULE_2__.addonIcon_load.icon_off_hand();
+_qr_icons__WEBPACK_IMPORTED_MODULE_2__.addonIcon_chunk.icon_off_hand();
+(0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(file_uploader, false);
+(0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_filter, true);
+(0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_decomp, true);
+(0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_download, true);
+(0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(btn_decomp_n, false);
 window.addEventListener("new_CustomErrEditor_error", CustomErrEditor_onError);
 
 function CustomErrEditor_onError(_a) {
@@ -1600,18 +1120,18 @@ function CustomErrEditor_onError(_a) {
 
   if (err.type == "read_file_txt" || err.type == "read_file_csv" || err.type == "read_file_csv_final_Step" || err.type == "zip_download_stage") {
     alert(err.info);
-    _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_5__.CustomErrEditor.get_error_info(err.type);
+    _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_4__.CustomErrEditor.get_error_info(err.type);
     file_uploader.value = "";
   }
 
   if (err.type == "open_file") {
-    _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_5__.CustomErrEditor.get_error_info(err.type);
+    _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_4__.CustomErrEditor.get_error_info(err.type);
   }
 }
 
 function file_input(e) {
   if (typeof e.target.files[0] == "undefined") {
-    new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_5__.CustomErrEditor({
+    new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_4__.CustomErrEditor({
       type: "open_file",
       duble: false,
       file: new Error(),
@@ -1621,8 +1141,8 @@ function file_input(e) {
   }
 
   var file = e.target.files[0];
-  _qr_icons__WEBPACK_IMPORTED_MODULE_3__.addonIcon_load.icon_off_hand();
-  _qr_icons__WEBPACK_IMPORTED_MODULE_3__.addonIcon_chunk.icon_off_hand();
+  _qr_icons__WEBPACK_IMPORTED_MODULE_2__.addonIcon_load.icon_off_hand();
+  _qr_icons__WEBPACK_IMPORTED_MODULE_2__.addonIcon_chunk.icon_off_hand();
   file_txt = "";
   pages = 0;
   text_pages = [];
@@ -1648,14 +1168,14 @@ function file_reader_txt(file) {
     file_check(file_txt);
     qr_info.style.display = "block";
     file_content.style.display = "block";
-    (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_filter, false);
-    (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_decomp, false);
-    (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(btn_decomp_n, false);
-    (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_download, true);
+    (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_filter, false);
+    (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_decomp, false);
+    (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(btn_decomp_n, false);
+    (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_download, true);
   };
 
   reader.onerror = function () {
-    new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_5__.CustomErrEditor({
+    new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_4__.CustomErrEditor({
       type: "read_file_txt",
       file: new Error(),
       info: "ошибка при открытии фаила.txt"
@@ -1668,7 +1188,7 @@ function file_reader_csv(file) {
     if (row.length == 3) {
       file_txt += row[0] + "\t" + row[1] + "\t" + row[2] + "\n";
     } else {
-      new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_5__.CustomErrEditor({
+      new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_4__.CustomErrEditor({
         type: "read_file_csv_step",
         duble: false,
         file: new Error(),
@@ -1678,25 +1198,25 @@ function file_reader_csv(file) {
   };
 
   var load_comlete = function load_comlete() {
-    if (!_my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_5__.CustomErrEditor.get_error_info("read_file_csv_step")) {
+    if (!_my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_4__.CustomErrEditor.get_error_info("read_file_csv_step")) {
       file_txt = file_txt.split("\n");
       file_txt.pop();
       file_check(file_txt);
       qr_info.style.display = "block";
       file_content.style.display = "block";
-      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_filter, false);
-      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_decomp, false);
-      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(btn_decomp_n, false);
-      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_download, true);
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_filter, false);
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_decomp, false);
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(btn_decomp_n, false);
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_download, true);
     } else {
       doc_size_n.innerHTML = "";
       qr_size_n.innerHTML = "";
       file_content.style.display = "none";
-      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_download, true);
-      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_filter, true);
-      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_decomp, true);
-      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_4__.btn_active_deactive)(btn_decomp_n, true);
-      new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_5__.CustomErrEditor({
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_download, true);
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_filter, true);
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_decomp, true);
+      (0,_qr_buttons__WEBPACK_IMPORTED_MODULE_3__.btn_active_deactive)(btn_decomp_n, true);
+      new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_4__.CustomErrEditor({
         type: "read_file_csv_final_Step",
         file: new Error(),
         info: "ошибка при чтении фаила.csv"
@@ -1704,7 +1224,7 @@ function file_reader_csv(file) {
     }
   };
 
-  papaparse__WEBPACK_IMPORTED_MODULE_8__.parse(file, {
+  papaparse__WEBPACK_IMPORTED_MODULE_7__.parse(file, {
     worker: true,
     step: function step(results) {
       load_step(results.data);
@@ -1713,34 +1233,34 @@ function file_reader_csv(file) {
       load_comlete();
     },
     error: function error(err, file) {
-      new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_5__.CustomErrEditor({
+      new _my_libs_addon_error_edit__WEBPACK_IMPORTED_MODULE_4__.CustomErrEditor({
         type: "read_file_csv",
         file: new Error(),
         info: "ошибка при открытии фаила.csv"
       });
     },
-    delimitersToGuess: ["\t", "|", papaparse__WEBPACK_IMPORTED_MODULE_8__.RECORD_SEP, papaparse__WEBPACK_IMPORTED_MODULE_8__.UNIT_SEP]
+    delimitersToGuess: ["\t", "|", papaparse__WEBPACK_IMPORTED_MODULE_7__.RECORD_SEP, papaparse__WEBPACK_IMPORTED_MODULE_7__.UNIT_SEP]
   });
 }
 
 function file_check(input) {
   var callback = function callback() {
-    _qr_icons__WEBPACK_IMPORTED_MODULE_3__.addonIcon_load.icon_off();
+    _qr_icons__WEBPACK_IMPORTED_MODULE_2__.addonIcon_load.icon_off();
   };
 
   var callback_chunk = function callback_chunk() {
-    _qr_icons__WEBPACK_IMPORTED_MODULE_3__.addonIcon_chunk.icon_off();
+    _qr_icons__WEBPACK_IMPORTED_MODULE_2__.addonIcon_chunk.icon_off();
   };
 
   file_content_container.innerHTML = "<div class=\"text_in_file__container\">\n                                            <pre class= \"text_in_file__text\"></pre>\n                                        </div> ".trim();
   var text_cotainer = file_content_container.querySelector(".text_in_file__text");
 
   if (input.length < 8000) {
-    _qr_icons__WEBPACK_IMPORTED_MODULE_3__.addonIcon_load.icon_on();
-    (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.arry_renderer)(input, text_cotainer, callback);
+    _qr_icons__WEBPACK_IMPORTED_MODULE_2__.addonIcon_load.icon_on();
+    (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.arry_renderer)(input, text_cotainer, callback);
   } else {
-    _qr_icons__WEBPACK_IMPORTED_MODULE_3__.addonIcon_chunk.icon_on();
-    (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.arry_renderer_chunk)(input, text_cotainer, callback_chunk);
+    _qr_icons__WEBPACK_IMPORTED_MODULE_2__.addonIcon_chunk.icon_on();
+    (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.arry_renderer_chunk)(input, text_cotainer, callback_chunk);
   }
 
   qr_size_n.textContent = input.length.toString();
@@ -1748,23 +1268,23 @@ function file_check(input) {
 
 function file_check_final(input) {
   var callback = function callback() {
-    _qr_icons__WEBPACK_IMPORTED_MODULE_3__.addonIcon_load.icon_off();
+    _qr_icons__WEBPACK_IMPORTED_MODULE_2__.addonIcon_load.icon_off();
   };
 
-  var spoiler_heder_dark = _pages_scripts_index__WEBPACK_IMPORTED_MODULE_2__.Dark_theme.get_dark_theme_state() ? "addon_spoiler_heder--dark" : "";
-  var spoiler_body_dark = _pages_scripts_index__WEBPACK_IMPORTED_MODULE_2__.Dark_theme.get_dark_theme_state() ? "addon_spoiler_body--dark" : "";
+  var spoiler_heder_dark = _pages_scripts_index__WEBPACK_IMPORTED_MODULE_1__.Dark_theme.get_dark_theme_state() ? "addon_spoiler_heder--dark" : "";
+  var spoiler_body_dark = _pages_scripts_index__WEBPACK_IMPORTED_MODULE_1__.Dark_theme.get_dark_theme_state() ? "addon_spoiler_body--dark" : "";
   var list = document.createElement("div");
   list.className = "text_in_file__content_container";
   list.innerHTML = "<div class=\"js-addon_spoiler\"> \n                        <div class=\"addon_spoiler_heder ".concat(spoiler_heder_dark, "\" tabindex=\"0\">\n                            <p></p>\n                            <div class=\"addon_spoiler_indicator\"></div>\n                        </div> \n                        <div class=\"addon_spoiler_body ").concat(spoiler_body_dark, "\">\n                            <pre class=\"final_page\"></pre>\n                        </div>\n                      </div>").trim();
   file_content_container.append(list);
   var text_cotainer = list.querySelector(".final_page");
   var text_header = list.querySelector(".addon_spoiler_heder > p");
-  _qr_icons__WEBPACK_IMPORTED_MODULE_3__.addonIcon_load.icon_on();
+  _qr_icons__WEBPACK_IMPORTED_MODULE_2__.addonIcon_load.icon_on();
 
-  if ((0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.is_device_mobile)()) {
-    (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.arry_renderer)(input, text_cotainer, callback);
+  if (!(0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.is_device_mobile)() && isLoad_qrModalWndComponent) {
+    (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.arry_renderer_pre_container)(input, text_cotainer, "text_in_file__qr_item", callback);
   } else {
-    (0,_qr_utils__WEBPACK_IMPORTED_MODULE_6__.arry_renderer_pre_container)(input, text_cotainer, "text_in_file__qr_item", callback);
+    (0,_qr_utils__WEBPACK_IMPORTED_MODULE_5__.arry_renderer)(input, text_cotainer, callback);
   }
 
   text_header.textContent = "Document:".concat(++pages, " codes:").concat(input.length);
@@ -2241,18 +1761,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./styles/less/libs/modal_qr_preview.less":
-/*!************************************************!*\
-  !*** ./styles/less/libs/modal_qr_preview.less ***!
-  \************************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
 /***/ "./styles/less/libs/sidebar.less":
 /*!***************************************!*\
   !*** ./styles/less/libs/sidebar.less ***!
@@ -2277,187 +1785,11 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ })
 
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = __webpack_modules__;
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/chunk loaded */
-/******/ 	!function() {
-/******/ 		var deferred = [];
-/******/ 		__webpack_require__.O = function(result, chunkIds, fn, priority) {
-/******/ 			if(chunkIds) {
-/******/ 				priority = priority || 0;
-/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
-/******/ 				deferred[i] = [chunkIds, fn, priority];
-/******/ 				return;
-/******/ 			}
-/******/ 			var notFulfilled = Infinity;
-/******/ 			for (var i = 0; i < deferred.length; i++) {
-/******/ 				var chunkIds = deferred[i][0];
-/******/ 				var fn = deferred[i][1];
-/******/ 				var priority = deferred[i][2];
-/******/ 				var fulfilled = true;
-/******/ 				for (var j = 0; j < chunkIds.length; j++) {
-/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every(function(key) { return __webpack_require__.O[key](chunkIds[j]); })) {
-/******/ 						chunkIds.splice(j--, 1);
-/******/ 					} else {
-/******/ 						fulfilled = false;
-/******/ 						if(priority < notFulfilled) notFulfilled = priority;
-/******/ 					}
-/******/ 				}
-/******/ 				if(fulfilled) {
-/******/ 					deferred.splice(i--, 1)
-/******/ 					var r = fn();
-/******/ 					if (r !== undefined) result = r;
-/******/ 				}
-/******/ 			}
-/******/ 			return result;
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	!function() {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	!function() {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = function(exports) {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/jsonp chunk loading */
-/******/ 	!function() {
-/******/ 		// no baseURI
-/******/ 		
-/******/ 		// object to store loaded and loading chunks
-/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
-/******/ 		var installedChunks = {
-/******/ 			"index": 0
-/******/ 		};
-/******/ 		
-/******/ 		// no chunk on demand loading
-/******/ 		
-/******/ 		// no prefetching
-/******/ 		
-/******/ 		// no preloaded
-/******/ 		
-/******/ 		// no HMR
-/******/ 		
-/******/ 		// no HMR manifest
-/******/ 		
-/******/ 		__webpack_require__.O.j = function(chunkId) { return installedChunks[chunkId] === 0; };
-/******/ 		
-/******/ 		// install a JSONP callback for chunk loading
-/******/ 		var webpackJsonpCallback = function(parentChunkLoadingFunction, data) {
-/******/ 			var chunkIds = data[0];
-/******/ 			var moreModules = data[1];
-/******/ 			var runtime = data[2];
-/******/ 			// add "moreModules" to the modules object,
-/******/ 			// then flag all "chunkIds" as loaded and fire callback
-/******/ 			var moduleId, chunkId, i = 0;
-/******/ 			if(chunkIds.some(function(id) { return installedChunks[id] !== 0; })) {
-/******/ 				for(moduleId in moreModules) {
-/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
-/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
-/******/ 					}
-/******/ 				}
-/******/ 				if(runtime) var result = runtime(__webpack_require__);
-/******/ 			}
-/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
-/******/ 			for(;i < chunkIds.length; i++) {
-/******/ 				chunkId = chunkIds[i];
-/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
-/******/ 					installedChunks[chunkId][0]();
-/******/ 				}
-/******/ 				installedChunks[chunkId] = 0;
-/******/ 			}
-/******/ 			return __webpack_require__.O(result);
-/******/ 		}
-/******/ 		
-/******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
-/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
-/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
-/******/ 	}();
-/******/ 	
-/************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_require__("./ts/pages_scripts/index.ts"); })
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_require__("./ts/qr/qr_descriptor.ts"); })
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_require__("./ts/my_libs/dev_sticker.ts"); })
-/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
-/******/ 	
-/******/ })()
-;
-//# sourceMappingURL=index.4fcaf6eef7a43777515a.js.map
+},
+/******/ function(__webpack_require__) { // webpackRuntimeModules
+/******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
+/******/ __webpack_require__.O(0, ["vendors-node_modules_jszip_dist_jszip_min_js-node_modules_jszip_vendor_FileSaver_js-node_modu-826c7d"], function() { return __webpack_exec__("./ts/pages_scripts/index.ts"), __webpack_exec__("./ts/my_libs/dev_sticker.ts"); });
+/******/ var __webpack_exports__ = __webpack_require__.O();
+/******/ }
+]);
+//# sourceMappingURL=index.bcd6708e99d5cda77122.js.map

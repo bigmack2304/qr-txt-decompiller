@@ -12,10 +12,10 @@ const isProd = !isDev;
 // для dev и final сборок, подключаемые скрипты для страниц могут различатся
 const enrys = {
     dev_version: {
-        index: ["./ts/pages_scripts/index.ts", "./ts/qr/qr_descriptor.ts", "./ts/my_libs/dev_sticker.ts"], // подключаемый скрипт
+        index: ["./ts/pages_scripts/index.ts", "./ts/my_libs/dev_sticker.ts"], // подключаемый скрипт
     },
     final_version: {
-        index: ["./ts/pages_scripts/index.ts", "./ts/qr/qr_descriptor.ts"],
+        index: ["./ts/pages_scripts/index.ts"],
     },
 };
 
@@ -148,7 +148,7 @@ function compute_optimization() {
         maxSize: 245760, // максимальный размер фаилов с общим кодом для скриптов (240кб)
     };
 
-    optimization.runtimeChunk = "single"; // общая среда выполнения для подключаемых скриптов
+    optimization.runtimeChunk = "single"; // общая среда выполнения для подключаемых скриптов. (походу изза этого точки входа имели свои области видимости)
 
     if (isDev) {
         // если режим разроботки

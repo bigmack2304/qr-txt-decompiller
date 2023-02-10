@@ -13,6 +13,7 @@ import "../../styles/less/pages_main/index.less";
 
 import { Addon_dark_theme } from "./../my_libs/addon_dark_theme";
 import { Addon_sidebar } from "./../my_libs/addon_sidebar";
+import "./../qr/qr_descriptor";
 
 // dark-theme
 // классы, для которых должна приминятся темная тема

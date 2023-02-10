@@ -46,6 +46,8 @@ interface IConstructorInput {
     render_setting_size?: number;
 }
 
+type TInstanceQrPreviewer = InstanceType<typeof QrPreviewer>;
+
 class QrPreviewer {
     private _modal_block: HTMLElement; // блок с отображаемым qr кодом
     private _modal_block_vieport: HTMLElement; // внутренний блок, в котором код будет рендерится
@@ -189,3 +191,4 @@ class QrPreviewer {
 }
 
 export { QrPreviewer };
+export type { TInstanceQrPreviewer };

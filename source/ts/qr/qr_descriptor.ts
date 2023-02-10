@@ -5,7 +5,6 @@
 */
 
 import { Addon_spoiler } from "./../my_libs/s_addon_spoiler";
-import { QrPreviewer } from "../my_libs/qr_preview";
 import { Dark_theme } from "./../pages_scripts/index";
 import * as qr_icons from "./qr_icons";
 import { btn_active_deactive, btn_filter, btn_decomp, btn_download } from "./qr_buttons";
@@ -16,10 +15,34 @@ import * as Papa from "papaparse";
 
 import type * as CustomErrEditor_types from "./../my_libs/addon_error_edit";
 import type * as Papa_types from "papaparse";
-
-//interface CustomError
+import type * as QrPreviewer_types from "./../my_libs/qr_preview";
 
 /*--------------------------------------------------------------------------------------------*/
+
+let qr_modal_wnd: QrPreviewer_types.TInstanceQrPreviewer;
+
+// думаю это лучше подгружать на этапе загрузки страницы
+load_qrModalWndComponent().catch((err) => {
+    isLoad_qrModalWndComponent = false;
+    console.error(err);
+});
+
+async function load_qrModalWndComponent() {
+    if (!is_device_mobile() && !isLoad_qrModalWndComponent) {
+        let { QrPreviewer } = await import("../my_libs/qr_preview");
+        qr_modal_wnd = new QrPreviewer({
+            is_dynamic: true,
+            data_block_calssName: "text_in_file__qr_item",
+            render_setting_size: 150,
+            render_setting_padding: 1,
+        });
+        qr_modal_wnd.init();
+        isLoad_qrModalWndComponent = true;
+        return;
+    }
+
+    isLoad_qrModalWndComponent = false;
+}
 
 let file_txt: string | string[] = ""; // будет содержать в себе временный текст из загруженного фаила
 let pages: number = 0;
@@ -34,13 +57,7 @@ const file_content_container = find_element<HTMLDivElement>("text_in_file__conta
 const btn_decomp_n = find_element<HTMLInputElement>("js-btn_decomp_n"); // поле для задания максимального количества кодов в фаиле при разбиении
 const file_uploader = find_element<HTMLInputElement>("js-file_uploader"); // получаем загрузчик фаила
 
-let qr_modal_wnd = new QrPreviewer({
-    is_dynamic: true,
-    data_block_calssName: "text_in_file__qr_item",
-    render_setting_size: 150,
-    render_setting_padding: 1,
-});
-qr_modal_wnd.init();
+let isLoad_qrModalWndComponent: boolean = false; // флаг успешной загрузки динамического импорта QrPreviewer
 
 let custom_spoilers: Addon_spoiler = new Addon_spoiler({});
 custom_spoilers.init();
@@ -262,11 +279,13 @@ function file_check_final(input: string[]): void {
     let text_cotainer: HTMLElement = list.querySelector(".final_page") as HTMLElement;
     let text_header: HTMLElement = list.querySelector(".addon_spoiler_heder > p") as HTMLElement;
     qr_icons.addonIcon_load.icon_on();
-    if (is_device_mobile()) {
-        arry_renderer(input, text_cotainer, callback);
-    } else {
+
+    if (!is_device_mobile() && isLoad_qrModalWndComponent) {
         arry_renderer_pre_container(input, text_cotainer, "text_in_file__qr_item", callback);
+    } else {
+        arry_renderer(input, text_cotainer, callback);
     }
+
     text_header.textContent = `Document:${++pages} codes:${input.length}`;
     qr_info.style.display = "none";
 }

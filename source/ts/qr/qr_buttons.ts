@@ -63,7 +63,7 @@ function btn_filter_klick(): void {
         for (let i = 0; i < file_txt.length; i++) {
             file_txt[i] = file_txt[i].slice(0, is_tab(file_txt[i])); // удаляем все после таба
             if (file_txt[i] == "") {
-                file_txt.splice(i);
+                file_txt.splice(i - 1);
             }
         }
 

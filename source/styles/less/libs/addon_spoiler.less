@@ -95,7 +95,7 @@
     &--active {
         .js-addon_spoiler-base;
 
-        .addon_spoiler_heder {
+        & > .addon_spoiler_heder {
             /* заголовок  */
             .addon_spoiler_heder-base;
             background-color: @addon_spoiler_heder_active;
@@ -115,6 +115,10 @@
             /* содержание  */
             .addon_spoiler_body-base;
             max-height: 0px;
+
+            div[class*="js-addon_spoiler"]:nth-of-type(n + 2) {
+                border-top: 2px solid black;
+            }
 
             &--dark {
                 background-color: #282a36;

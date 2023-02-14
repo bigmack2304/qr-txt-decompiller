@@ -13,6 +13,7 @@ import "../../styles/less/pages_main/index.less";
 
 import { Addon_dark_theme } from "./../my_libs/addon_dark_theme";
 import { Addon_sidebar } from "./../my_libs/addon_sidebar";
+import "./../qr/qr_descriptor";
 
 // dark-theme
 // классы, для которых должна приминятся темная тема
@@ -31,6 +32,7 @@ let support_class_dark_theme: string[] = [
     "js-sidebar__element",
     "js-sidebar__elements",
     "header__button_wrapper",
+    "js-modal_qr_preview",
 ];
 
 let Dark_theme: Addon_dark_theme = new Addon_dark_theme({ classes_dark_style: support_class_dark_theme });

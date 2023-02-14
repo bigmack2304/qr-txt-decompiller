@@ -12,10 +12,10 @@ const isProd = !isDev;
 // для dev и final сборок, подключаемые скрипты для страниц могут различатся
 const enrys = {
     dev_version: {
-        index: ["./ts/pages_scripts/index.ts", "./ts/qr/qr_descriptor.ts", "./ts/my_libs/dev_sticker.ts"], // подключаемый скрипт
+        index: ["./ts/pages_scripts/index.ts", "./ts/my_libs/dev_sticker.ts"], // подключаемый скрипт
     },
     final_version: {
-        index: ["./ts/pages_scripts/index.ts", "./ts/qr/qr_descriptor.ts"],
+        index: ["./ts/pages_scripts/index.ts"],
     },
 };
 
@@ -36,6 +36,7 @@ let webpack_custom_config = {
     output: {
         // параметры сборки
         filename: "[name].[contenthash].js", // название общего собранного скрипта
+        chunkFilename: "dynamic.[name].[contenthash].js", // имя для модулей с динамическим импортом
         path: path.resolve(process.cwd(), compute_out_folder_name()), // складывать собранные фаилы в папку dist
     },
 
@@ -115,8 +116,8 @@ function compute_plugins() {
 
     plugins.push(
         new CleanWebpackPlugin({
-            //dangerouslyAllowCleanPatternsOutsideProject: true, // пришлось активировать это, иначе была ошибка при удалении фаилов вне каталога проекта
-            //dry: true,
+            // dangerouslyAllowCleanPatternsOutsideProject: true, // пришлось активировать это, иначе была ошибка при удалении фаилов вне каталога проекта
+            // dry: true,
             // снова закоментил это, выяснилось что в корне проекта создался фаил desctop.ini хз откуда он взялся
             // но после его удаления все стало нормально.
         }) // удаляет все лишнее из папки dist
@@ -146,6 +147,8 @@ function compute_optimization() {
         chunks: "all", // поможет избежать дублирования кода
         maxSize: 245760, // максимальный размер фаилов с общим кодом для скриптов (240кб)
     };
+
+    optimization.runtimeChunk = "single"; // общая среда выполнения для подключаемых скриптов. (походу изза этого точки входа имели свои области видимости)
 
     if (isDev) {
         // если режим разроботки

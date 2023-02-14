@@ -5,20 +5,44 @@
 */
 
 import { Addon_spoiler } from "./../my_libs/s_addon_spoiler";
+import { Dark_theme } from "./../pages_scripts/index";
 import * as qr_icons from "./qr_icons";
 import { btn_active_deactive, btn_filter, btn_decomp, btn_download } from "./qr_buttons";
 import { CustomErrEditor } from "./../my_libs/addon_error_edit";
-import { arry_renderer, arry_renderer_chunk, find_element } from "./qr_utils";
-import { Dark_theme } from "./../pages_scripts/index";
-import * as form_valide from "./qr_form";
+import { arry_renderer, arry_renderer_chunk, find_element, arry_renderer_pre_container, is_device_mobile } from "./qr_utils";
+import "./qr_form";
 import * as Papa from "papaparse";
 
 import type * as CustomErrEditor_types from "./../my_libs/addon_error_edit";
 import type * as Papa_types from "papaparse";
-
-//interface CustomError
+import type * as QrPreviewer_types from "./../my_libs/qr_preview";
 
 /*--------------------------------------------------------------------------------------------*/
+
+let qr_modal_wnd: QrPreviewer_types.TInstanceQrPreviewer;
+
+// думаю это лучше подгружать на этапе загрузки страницы
+load_qrModalWndComponent().catch((err) => {
+    isLoad_qrModalWndComponent = false;
+    console.error(err);
+});
+
+async function load_qrModalWndComponent() {
+    if (!is_device_mobile() && !isLoad_qrModalWndComponent) {
+        let { QrPreviewer } = await import("../my_libs/qr_preview");
+        qr_modal_wnd = new QrPreviewer({
+            is_dynamic: true,
+            data_block_calssName: "text_in_file__qr_item",
+            render_setting_size: 150,
+            render_setting_padding: 1,
+        });
+        qr_modal_wnd.init();
+        isLoad_qrModalWndComponent = true;
+        return;
+    }
+
+    isLoad_qrModalWndComponent = false;
+}
 
 let file_txt: string | string[] = ""; // будет содержать в себе временный текст из загруженного фаила
 let pages: number = 0;
@@ -33,10 +57,10 @@ const file_content_container = find_element<HTMLDivElement>("text_in_file__conta
 const btn_decomp_n = find_element<HTMLInputElement>("js-btn_decomp_n"); // поле для задания максимального количества кодов в фаиле при разбиении
 const file_uploader = find_element<HTMLInputElement>("js-file_uploader"); // получаем загрузчик фаила
 
+let isLoad_qrModalWndComponent: boolean = false; // флаг успешной загрузки динамического импорта QrPreviewer
+
 let custom_spoilers: Addon_spoiler = new Addon_spoiler({});
 custom_spoilers.init();
-
-form_valide.init();
 
 file_uploader.addEventListener("change", file_input); // вешаем на него событие загрузки
 file_content.style.display = "none";
@@ -96,8 +120,8 @@ function file_input(e: Event): void {
         file_reader_csv(file);
     }
 
-    doc_size_n.innerHTML = `${Math.ceil(file.size / 1024)} Kb`;
-    qr_name_n.innerHTML = file.name;
+    doc_size_n.textContent = `${Math.ceil(file.size / 1024)} Kb`;
+    qr_name_n.textContent = file.name;
     qr_name_n.title = file.name;
 }
 
@@ -206,7 +230,7 @@ function file_check(input: string[]): void {
     };
 
     file_content_container.innerHTML = `<div class="text_in_file__container">
-                                            <xmp class= "text_in_file__text"></xmp>
+                                            <pre class= "text_in_file__text"></pre>
                                         </div> `.trim();
 
     let text_cotainer: HTMLElement = file_content_container.querySelector(".text_in_file__text") as HTMLElement;
@@ -217,7 +241,7 @@ function file_check(input: string[]): void {
         qr_icons.addonIcon_chunk.icon_on();
         arry_renderer_chunk(input, text_cotainer, callback_chunk); // отрисоввываем частями с подгрузкой
     }
-    qr_size_n.innerHTML = input.length.toString();
+    qr_size_n.textContent = input.length.toString();
 }
 
 // заполняем окно просмотра раскрывающимся текстом (после нажатия кнопки разбить на фаилы)
@@ -247,7 +271,7 @@ function file_check_final(input: string[]): void {
                             <div class="addon_spoiler_indicator"></div>
                         </div> 
                         <div class="addon_spoiler_body ${spoiler_body_dark}">
-                            <xmp class="final_page"></xmp>
+                            <pre class="final_page"></pre>
                         </div>
                       </div>`.trim();
 
@@ -255,9 +279,14 @@ function file_check_final(input: string[]): void {
     let text_cotainer: HTMLElement = list.querySelector(".final_page") as HTMLElement;
     let text_header: HTMLElement = list.querySelector(".addon_spoiler_heder > p") as HTMLElement;
     qr_icons.addonIcon_load.icon_on();
-    arry_renderer(input, text_cotainer, callback);
-    text_header.innerHTML = `Document:${pages + 1} codes:${input.length}`;
-    pages++;
+
+    if (!is_device_mobile() && isLoad_qrModalWndComponent) {
+        arry_renderer_pre_container(input, text_cotainer, "text_in_file__qr_item", callback);
+    } else {
+        arry_renderer(input, text_cotainer, callback);
+    }
+
+    text_header.textContent = `Document:${++pages} codes:${input.length}`;
     qr_info.style.display = "none";
 }
 
